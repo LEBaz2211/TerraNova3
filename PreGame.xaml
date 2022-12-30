@@ -58,8 +58,8 @@
         </HorizontalStackLayout>
         <Slider
             Minimum="0"
-            Maximum="100"
-            Value="50"
+            Maximum="20"
+            Value="10"
             x:Name="PlantSlider"
             
             />
@@ -76,8 +76,8 @@
         </HorizontalStackLayout>
         <Slider
             Minimum="0"
-            Maximum="100"
-            Value="50"
+            Maximum="20"
+            Value="10"
             x:Name="HerbivoresSlider"
             />
         <HorizontalStackLayout>
@@ -91,8 +91,8 @@
         </HorizontalStackLayout>
         <Slider
             Minimum="0"
-            Maximum="100"
-            Value="50"
+            Maximum="20"
+            Value="10"
             x:Name="CarnivoresSlider"
             
             />

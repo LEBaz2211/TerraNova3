@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.Maui.Controls;
-using TerraNova2._0.View_Models;
+using TerraNova3.View_Models;
 
-namespace TerraNova2._0;
+namespace TerraNova3;
 
 public partial class TestOutput : ContentPage
 {

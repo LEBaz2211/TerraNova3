@@ -1,5 +1,5 @@
 ﻿
-namespace TerraNova2._0;
+namespace TerraNova3;
 
 
 
@@ -9,6 +9,9 @@ public partial class PreGame : ContentPage
     public PreGame()
     {
         InitializeComponent();
+        PlantSlider.Value = (int)Preferences.Get("PlantsNumber", 10);
+        HerbivoresSlider.Value = (int)Preferences.Get("HerbivoresNumber", 10);
+        CarnivoresSlider.Value = (int)Preferences.Get("CarnivoresNumber", 10);
     }
     private void OnBackClicked(object sender, EventArgs e)
     {
