@@ -19,12 +19,12 @@ public abstract class AbstractEntity
     // The type of the living entity (e.g. "herbivore", "predator", "plant")
     protected string entityType;
 
-    public AbstractEntity(int startX, int startY)
+    public AbstractEntity(int startRow, int startColumn)
     {
         position = new Dictionary<char, int>
         {
-            { 'x', startX },
-            { 'y', startY }
+            { 'r', startRow },
+            { 'c', startColumn }
         };
 
         contactZone = 1;
@@ -32,22 +32,22 @@ public abstract class AbstractEntity
 
     public int GetX()
     {
-        return position['x'];
+        return position['r'];
     }
 
     public int GetY()
     {
-        return position['y'];
+        return position['c'];
     }
 
     public void SetX(int x)
     {
-        position['x'] = x;
+        position['r'] = x;
     }
 
     public void SetY(int y)
     {
-        position['y'] = y;
+        position['c'] = y;
     }
 
     public int GetContactZone()
