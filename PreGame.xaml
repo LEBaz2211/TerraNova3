@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:TerraNova3"
+             x:Class="TerraNova3.PreGame"
+             Title="PreGame">
+    <ContentPage.Resources>
+        <local:FloatToIntConverter x:Key="floatToInt" />
+    </ContentPage.Resources>
+
+    <Grid>
+        <Image
+                Source="main_bg_c.png"
+                Aspect="AspectFill"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                />
+
+    <VerticalStackLayout
+        Padding="35"
+        Spacing="17.5"
+        >
+        <HorizontalStackLayout
+            VerticalOptions="Start"
+            
+            >
+            <Button
+                x:Name="BackBtn"
+                Text="Back"
+                Clicked="OnBackClicked"
+
+                WidthRequest="70"
+                HeightRequest="35"
+
+                BackgroundColor="Grey"
+                TextColor="AliceBlue"
+                />
+           
+        </HorizontalStackLayout>
+
+        <Label
+            FontSize="40"
+            Text="set your rules"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        
+       
+        <HorizontalStackLayout>
+
+
+        <Label Text="Number of Plants: "/>
+
+        <Label Text="{Binding Source={x:Reference PlantSlider},
+                                  Path=Value, Converter={StaticResource floatToInt}}"/>
+          
+            
+
+        </HorizontalStackLayout>
+        <Slider
+            Minimum="0"
+            Maximum="100"
+            Value="50"
+            x:Name="PlantSlider"
+            
+            />
+        
+
+        <HorizontalStackLayout>
+
+
+        <Label Text="Number of Herbivores: "/>
+
+        <Label Text="{Binding Source={x:Reference HerbivoresSlider},
+                                  Path=Value, Converter={StaticResource floatToInt}}"/>
+
+        </HorizontalStackLayout>
+        <Slider
+            Minimum="0"
+            Maximum="100"
+            Value="50"
+            x:Name="HerbivoresSlider"
+            />
+        <HorizontalStackLayout>
+
+
+        <Label Text="Number of Carnivores: "/>
+
+        <Label Text="{Binding Source={x:Reference CarnivoresSlider},
+                                  Path=Value, Converter={StaticResource floatToInt}}"/>
+
+        </HorizontalStackLayout>
+        <Slider
+            Minimum="0"
+            Maximum="100"
+            Value="50"
+            x:Name="CarnivoresSlider"
+            
+            />
+
+        <Button
+                x:Name="PlayBtn"
+                Text="Play"
+                Clicked="OnPlayClicked"
+                BackgroundColor="Grey"
+                TextColor="AntiqueWhite"
+                />
+    </VerticalStackLayout>
+
+     </Grid>
+</ContentPage>

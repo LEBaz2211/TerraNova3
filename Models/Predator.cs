@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Terranova2_0.Models;
+namespace Terranova3.Models;
 
 internal class Predator : AbstractKiller
 {

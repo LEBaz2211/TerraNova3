@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TerraNova3.MobileMainView">
+<Grid>
+            <!-- both children default to cell (0,0). Overlaid. -->
+            <Image
+                Source="main_bg.png"
+                Aspect="AspectFill"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                />
+            <Image
+                Source="terranova.png"
+                Aspect="AspectFit"
+                />
+            <!-- nested grid. OR StackLayout, etc. -->
+        
+        <Grid
+                RowDefinitions=".6*,.1*,.1*,.2*"
+                ColumnDefinitions=".1*,.8*,.1*"
+                >
+                
+
+            <ImageButton
+                x:Name="PlayBtn"
+                Source="terranova.png"
+                Aspect="AspectFit"
+                Clicked="OnPlayClicked"
+                Grid.Row="1"
+                Grid.Column="1"
+                
+
+
+                />
+            <ImageButton
+                x:Name="LoadBtn"
+                Source="terranova.png"
+                Aspect="AspectFit"
+                Clicked="OnLoadClicked"               
+                Grid.Row="2"
+                Grid.Column="1"
+                
+                
+               />
+
+        </Grid>
+        
+        </Grid>
+</ContentView>
+

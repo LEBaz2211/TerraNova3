@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TerraNova3.App">
+             Title="TestOutput">
+    <ScrollView >
+        <VerticalStackLayout>
+            <Label Text="Number of P: " x:Name="P"/>
+            <Label Text="Number of H: " x:Name="H"/>
+            <Label Text="Number of C: " x:Name="C"/>
+        <HorizontalStackLayout>
+                <Button
+                    Text="Back"
+                    Clicked="OnBackClicked"/>
+                <Button
+                    Text="fill"
+                    Clicked="OnFillClicked"/>
+                <Button
+                    Text="Clear"
+                    Clicked="OnClearClicked"/>
+
+        </HorizontalStackLayout>
+        <Grid x:Name="Layout">
+            
+
+        </Grid>
+        </VerticalStackLayout>
+        
+    </ScrollView>
+</ContentPage>

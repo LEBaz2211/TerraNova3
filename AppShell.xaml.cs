@@ -1,4 +1,4 @@
-﻿namespace TerraNova3;
+﻿namespace TerraNova2._0;
 
 public partial class AppShell : Shell
 {

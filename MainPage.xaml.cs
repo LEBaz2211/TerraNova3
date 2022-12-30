@@ -2,23 +2,29 @@
 
 public partial class MainPage : ContentPage
 {
-	int count = 0;
+    
 
-	public MainPage()
-	{
-		InitializeComponent();
-	}
+    public MainPage()
+    {
+        InitializeComponent();
+        if (DeviceInfo.Platform == DevicePlatform.Android || DeviceInfo.Platform == DevicePlatform.iOS)
+        {
+            MainGrid.Add(new MobileMainView());
+        }
 
-	private void OnCounterClicked(object sender, EventArgs e)
-	{
-		count++;
+        else
+        {
+            MainGrid.Add(new DesktopMainView());
+        }
+    }
 
-		if (count == 1)
-			CounterBtn.Text = $"Clicked {count} time";
-		else
-			CounterBtn.Text = $"Clicked {count} times";
-
-		SemanticScreenReader.Announce(CounterBtn.Text);
-	}
+    private void OnPlayClicked(object sender, EventArgs e)
+    {
+        Application.Current.MainPage.Navigation.PushModalAsync(new PreGame(), true);
+    }
+    private void OnLoadClicked(object sender, EventArgs e)
+    {
+        Application.Current.MainPage.Navigation.PushModalAsync(new PreGame(), true);
+    }
 }
 

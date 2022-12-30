@@ -1,6 +1,6 @@
 ﻿
 
-namespace Terranova2_0.Models;
+namespace Terranova3.Models;
 
 internal abstract class AbstractKiller : AbstractMoving
 {

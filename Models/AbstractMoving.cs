@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Terranova2_0.Models;
+namespace Terranova3.Models;
 
 public abstract class AbstractMoving : AbstractLiving
 {
