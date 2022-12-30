@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Terranova3.Models;
+using TerraNova3.Models;
 
 namespace TerraNova3.View_Models;
 
 public class OverlayGrid
 {
     private Grid _grid;
-    public Dictionary<Entity, Image> _entityImages;
+    public List< Entity> _entity;
     private TerraGrid _terraGrid;
     private int _cellSize;
     private int _numRows;
@@ -37,27 +37,26 @@ public class OverlayGrid
             _grid.ColumnDefinitions.Add(new ColumnDefinition());
         }
 
-        _entityImages = new Dictionary<Entity, Image>();
+        _entity = new List<Entity>();
     }
 
-    public void AddEntity(Entity entity, string imageFile)
+    public void AddEntity(Entity entity)
     {
-        Image image = new Image();
-        image.Source = imageFile;
-        image.WidthRequest = 40;
-        image.HeightRequest = 40;
-        _grid.SetRow(image, entity.Row);
-        _grid.SetColumn(image, entity.Column);
-        image.IsVisible = true;
-        _grid.Children.Add(image);
-        _entityImages.Add(entity, image);
+
+        entity.Image.WidthRequest = 40;
+        entity.Image.HeightRequest = 40;
+        _grid.SetRow(entity.Image, entity.Row);
+        _grid.SetColumn(entity.Image, entity.Col);
+        entity.Image.IsVisible = true;
+        _grid.Children.Add(entity.Image);
+        _entity.Add(entity);
     }
 
     public void RemoveEntity(Entity entity)
     {
-        Image image = _entityImages[entity];
-        _grid.Children.Remove(image);
-        _entityImages.Remove(entity);
+        
+        _grid.Children.Remove(entity.Image);
+        _entity.Remove(entity);
     }
 
 
