@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 
-namespace Terranova3.Models;
+namespace TerraNova3.Models;
 
 public abstract class AbstractEntity
 {

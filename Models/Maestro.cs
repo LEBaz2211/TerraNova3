@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Terranova3.Models;
+namespace TerraNova3.Models;
 
 internal class TileSet
 {
@@ -13,7 +13,7 @@ internal class TileSet
     private SmartList apexs;
     private SmartList pFood;
     private SmartList aFood;
-    
+
     private int plNumber;
     private int heNumber;
     private int prNumber;

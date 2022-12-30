@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Terranova3.Models;
+namespace TerraNova3.Models;
 
 public abstract class AbstractLiving
 {

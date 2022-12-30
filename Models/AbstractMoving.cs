@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Terranova3.Models;
+namespace TerraNova3.Models;
 
 public abstract class AbstractMoving
 {
@@ -18,7 +18,7 @@ public abstract class AbstractMoving
     // The movement radius of the moving entity
     protected int movementRadius;
 
-    public AbstractMoving(int startX, int startY, int maxEnergy, int maxHitPoints, string type, int speed, int visionRadius, int movementRadius) : base(startX, startY, maxEnergy, maxHitPoints, type)
+    public AbstractMoving(int startX, int startY, int maxEnergy, int maxHitPoints, string type, int speed, int visionRadius, int movementRadius)
     {
         this.speed = speed;
         this.visionRadius = visionRadius;

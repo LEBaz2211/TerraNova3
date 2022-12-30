@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Terranova.Model
+namespace TerraNova3.Model
 {
     internal class OrganicMatter
     {

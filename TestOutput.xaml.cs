@@ -48,6 +48,7 @@ public partial class TestOutput : ContentPage
             (int, int) temp = positions[i];
             positions[i] = positions[j];
             positions[j] = temp;
+            
         }
 
         for (var i = 0;i< pn;i++)

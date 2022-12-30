@@ -14,6 +14,10 @@ namespace TerraNova3.Models
 			Col = col;
         
         }
+		public void update()
+		{
+			
+		}
 	}
 }
 
