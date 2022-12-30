@@ -7,10 +7,12 @@ namespace TerraNova3.Models
         public int Col;
         public Image Image;
 
-		public Entity(int row, int col, string imageFile)
+		public Entity(int row, int col, Image image)
 		{
-            Image image = new Image();
-            image.Source = imageFile;
+            Image =  image;
+			Row = row;
+			Col = col;
+        
         }
 	}
 }

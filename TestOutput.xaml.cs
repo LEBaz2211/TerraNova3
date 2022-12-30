@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Maui.Controls;
 using TerraNova3.View_Models;
-
+using TerraNova3.Models;
 namespace TerraNova3;
 
 public partial class TestOutput : ContentPage
@@ -13,64 +13,67 @@ public partial class TestOutput : ContentPage
     public TestOutput()
 	{
 		InitializeComponent();
-        P.Text = Preferences.Get("PlantsNumber",0).ToString();
-        H.Text = Preferences.Get("HerbivoresNumber", 0).ToString();
-        C.Text = Preferences.Get("CarnivoresNumber", 0).ToString();
+        int pn = Preferences.Get("PlantsNumber", 0);
+        int hn = Preferences.Get("HerbivoresNumber", 0);
+        int cn = Preferences.Get("CarnivoresNumber", 0);
 
-
-        /*        var i = 20;
-                var j = 20;
-
-
-                grid.WidthRequest = 40*j;
-                overlay.WidthRequest = 40 * j;
-
-
-                for (var m = 0; m < i; m++)
-                {
-                    grid.RowDefinitions.Add(new RowDefinition());
-                    overlay.RowDefinitions.Add(new RowDefinition());
-                }
-                for (var n = 0; n < j; n++)
-                {
-                    grid.ColumnDefinitions.Add(new ColumnDefinition());
-                    overlay.ColumnDefinitions.Add(new ColumnDefinition());
-                }
-                for (var m =0; m<i; m++)
-                {
-                    for (var n = 0; n < j; n++)
-                    {
-                        Image grass = new Image();
-
-                        grass.Source = "tile1.png";
-
-                        grass.WidthRequest = 40;
-                        grass.HeightRequest = 40;
-                        grid.SetRow(grass, m);
-                        grid.SetColumn(grass, n);
-                        grid.Children.Add(grass);
-                        Image imposter = new Image();
-
-                        imposter.Source = "dotnet_bot.png";
-
-                        imposter.WidthRequest = 40;
-                        imposter.HeightRequest = 40;
-                        imposters[-1] = imposter;
-
-
-
-                    }
-                }*/
-
+        P.Text = pn.ToString();
+        H.Text = hn.ToString();
+        C.Text = cn.ToString();
+        
         TerraGrid gridGen = new TerraGrid(20, 20);
+        OverlayGrid overlayGrid = new OverlayGrid(gridGen);
+        
         gridGen.GenerateGrid();
 
         Grid grid = gridGen.GetGrid();
+        Grid overlay = overlayGrid.GetGrid();
+        
+
+        // Create a list of all the positions in the grid
+        List<(int, int)> positions = new List<(int, int)>();
+        for (int x = 0; x < 20; x++)
+        {
+            for (int y = 0; y < 20; y++)
+            {
+                positions.Add((x, y));
+            }
+        }
+
+        // Shuffle the list of positions
+        Random rnd = new Random();
+        for (int i = positions.Count - 1; i > 0; i--)
+        {
+            int j = rnd.Next(i + 1);
+            (int, int) temp = positions[i];
+            positions[i] = positions[j];
+            positions[j] = temp;
+        }
+
+        for (var i = 0;i< pn;i++)
+        {
+            Image image = new Image();
+            image.Source = "plant.png";
+            overlayGrid.AddEntity(new Entity(positions[i].Item1, positions[i].Item2, image));
+        }
+        for (var i = pn; i < hn+pn; i++)
+        {
+            Image image = new Image();
+            image.Source = "herbivores.png";
+            overlayGrid.AddEntity(new Entity(positions[i].Item1, positions[i].Item2, image));
+        }
+        for (var i = hn + pn; i < hn + pn + cn; i++)
+        {
+            Image image = new Image();
+            image.Source = "carnivores.png";
+            overlayGrid.AddEntity(new Entity(positions[i].Item1, positions[i].Item2, image));
+        }
+
+
+
 
         Layout.Add(grid);
-        //Layout.Add(overlay);
-
-
+        Layout.Add(overlay);
 
 
     }

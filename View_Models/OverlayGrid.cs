@@ -43,8 +43,8 @@ public class OverlayGrid
     public void AddEntity(Entity entity)
     {
 
-        entity.Image.WidthRequest = 40;
-        entity.Image.HeightRequest = 40;
+        entity.Image.WidthRequest = _cellSize;
+        entity.Image.HeightRequest = _cellSize;
         _grid.SetRow(entity.Image, entity.Row);
         _grid.SetColumn(entity.Image, entity.Col);
         entity.Image.IsVisible = true;
@@ -57,6 +57,10 @@ public class OverlayGrid
         
         _grid.Children.Remove(entity.Image);
         _entity.Remove(entity);
+    }
+    public Grid GetGrid()
+    {
+        return _grid;
     }
 
 
