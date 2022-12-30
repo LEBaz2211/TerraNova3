@@ -3,8 +3,12 @@ using System.Collections.Generic;
 
 namespace Terranova3.Models;
 
-public abstract class AbstractMoving : AbstractLiving
+public abstract class AbstractMoving
 {
+
+    // The sex of the moving entity
+    protected string sex;
+
     // The speed of the moving entity
     protected int speed;
 

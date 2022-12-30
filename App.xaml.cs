@@ -1,4 +1,4 @@
-﻿namespace TerraNova3;
+﻿namespace TerraNova3
 
 public partial class App : Application
 {

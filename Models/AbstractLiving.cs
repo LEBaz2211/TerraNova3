@@ -2,7 +2,7 @@
 
 namespace Terranova3.Models;
 
-public abstract class AbstractLiving : Entity
+public abstract class AbstractLiving
 {
     // The current hit points of the living entity
     protected int hitPoints;
@@ -10,14 +10,18 @@ public abstract class AbstractLiving : Entity
     // The maximum hit points of the living entity
     protected int maxHitPoints;
 
-    // The type of the living entity (e.g. "herbivore", "predator", "plant")
-    protected string entityType;
+    // The current energy of the living entity
+    protected int energy;
 
-    public AbstractLiving(int startX, int startY, int maxEnergy, int maxHitPoints, string entityType) : base(startX, startY, maxEnergy, maxHitPoints)
+    // The maximum energy of the living entity
+    protected int maxEnergy;
+
+    public AbstractLiving(int startX, int startY, int maxEnergy, int maxHitPoints)
     {
         this.hitPoints = maxHitPoints;
         this.maxHitPoints = maxHitPoints;
-        this.entityType = entityType;
+        this.energy = maxEnergy;
+        this.maxEnergy = maxEnergy;
     }
 
     // Returns the current hit points of the living entity
@@ -32,10 +36,16 @@ public abstract class AbstractLiving : Entity
         return maxHitPoints;
     }
 
-    // Returns the type of the living entity
-    public string GetEntityType()
+    // Returns the current energy of the living entity
+    public int GetEnergy()
     {
-        return entityType;
+        return energy;
+    }
+
+    // Returns the maximum energy of the living entity
+    public int GetMaxEnergy()
+    {
+        return maxEnergy;
     }
 
     // Returns true if the living entity is still alive, false otherwise

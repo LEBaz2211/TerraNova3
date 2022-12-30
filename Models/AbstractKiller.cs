@@ -2,7 +2,7 @@
 
 namespace Terranova3.Models;
 
-internal abstract class AbstractKiller : AbstractMoving
+/*internal abstract class AbstractKiller : AbstractMoving
 {
     // The amount of damage that the killer can inflict on its prey
     protected int attackDamage;
@@ -22,4 +22,4 @@ internal abstract class AbstractKiller : AbstractMoving
     // Abstract method that must be implemented by derived classes
     public abstract void Attack(Entity prey);
 }
-
+*/

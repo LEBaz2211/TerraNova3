@@ -12,60 +12,52 @@ namespace Terranova3.Models;
 public abstract class Entity
 {
     // A dictionary to store the x and y positions of the entity on the grid
-    private Dictionary<char, int> position;
+    protected Dictionary<char, int> position;
 
-    private int contactZone { get; set; }
+    protected int contactZone;
 
-    public Entity(int startX, int startY, int maxEnergy, int maxHitPoints)
+    // The type of the living entity (e.g. "herbivore", "predator", "plant")
+    protected string entityType;
+
+    public Entity(int startX, int startY)
     {
         position = new Dictionary<char, int>
         {
             { 'x', startX },
             { 'y', startY }
         };
-        energy = maxEnergy;
+
+        contactZone = 1;
     }
 
-    // Returns the current x position of the entity
     public int GetX()
     {
         return position['x'];
     }
 
-    // Returns the current y position of the entity
     public int GetY()
     {
         return position['y'];
     }
 
-    // Returns the current amount of energy that the entity has
-    public int GetEnergy()
-    {
-        return energy;
-    }
-
-    // Returns the maximum amount of energy that the entity can have
-    public int GetMaxEnergy()
-    {
-        return maxEnergy;
-    }
-
-    // Sets the current x position of the entity
     public void SetX(int x)
     {
         position['x'] = x;
     }
 
-    // Sets the current y position of the entity
     public void SetY(int y)
     {
         position['y'] = y;
     }
 
-    // Sets the current amount of energy that the entity has
-    public void SetEnergy(int energy)
+    public int GetContactZone()
     {
-        this.energy = energy;
+        return contactZone;
+    }
+
+    public void SetContactZone(int contactZone)
+    {
+        this.contactZone = contactZone;
     }
 
     // Abstract method that must be implemented by derived classes

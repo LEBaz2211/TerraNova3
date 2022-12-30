@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Terranova3.Models;
 
-internal class Predator : AbstractKiller
+/*internal class Predator
 {
 
     public Predator(int startX, int startY, int maxEnergy, int maxHitPoints, string entityType, int speed, int visionRadius, int movementRadius, int attackDamage) : base(startX, startY, maxEnergy, maxHitPoints, entityType, speed, visionRadius, movementRadius, attackDamage)
@@ -49,5 +49,5 @@ internal class Predator : AbstractKiller
         this.movementSpeed = movementSpeed;
     }
 
-    // Sets the range at which
+    // Sets the range at which*/
 
