@@ -175,8 +175,17 @@ internal class SmartList
                 overlayGrid.RemoveEntity(e);
                 overlayGrid.AddEntity(e);
             }
-            
 
         }
+    }
+}
+
+public static class Global
+{
+    public static int ID = 0;
+
+    public static int GetID()
+    {
+        return ID++;
     }
 }
