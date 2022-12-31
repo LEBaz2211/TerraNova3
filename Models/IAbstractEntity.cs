@@ -18,8 +18,20 @@ public interface IAbstractEntity
 
     int ContactZone { get; set; }
 
+    // The current energy of the living entity
+    int Energy { get; set; }
+
+    // The maximum energy of the living entity
+    int MaxEnergy { get; set; }
+
     Image EntityImage { get; set; }
 
     void Update();
+
+    void ConvertHPtoEnergy();
+
+    void ConvertEnergytoHP();
+
+    void EnergyDecay();
 }
 

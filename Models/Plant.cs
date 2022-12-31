@@ -22,16 +22,16 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
     public Image EntityImage { get => entityImage; set => entityImage = value; }
 
     private int _hitPoints;
-    public int HitPoints { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public int HitPoints { get => _hitPoints; set => _hitPoints = value; }
 
     private int _maxHitPoints;
-    public int MaxHitPoints { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public int MaxHitPoints { get => _maxHitPoints; set => _maxHitPoints = value; }
 
     private int _energy;
-    public int Energy { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public int Energy { get => _energy; set => _energy = value; }
 
     private int _maxEnergy;
-    public int MaxEnergy { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public int MaxEnergy { get => _maxEnergy; set => _maxEnergy = value; }
 
     private List<string> _dietList;
     public List<string> DietList { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
@@ -47,21 +47,29 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
         Row = row;
         Col = col;
         EntityImage = image;
+        MaxEnergy = 3000;
+        Energy = MaxEnergy;
+        MaxHitPoints = 100;
+        HitPoints = MaxHitPoints;
     }
 
     public void Update()
     {
-        
+        EnergyDecay();
     }
 
-    public void Feed()
+    public void Feed(IAbstractEntity entity)
     {
         throw new NotImplementedException();
     }
 
     public void ConvertHPtoEnergy()
     {
-        throw new NotImplementedException();
+        if (HitPoints > 0)
+        {
+            Energy += 100;
+            HitPoints -= 1;
+        }
     }
 
     public void Seed()
@@ -71,6 +79,35 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
 
     public void EnergyDecay()
     {
-        throw new NotImplementedException();
+
+        if (Energy >= MaxEnergy & HitPoints < MaxHitPoints)
+        {
+            ConvertEnergytoHP();
+        }
+        else if(Energy == 0) { ConvertHPtoEnergy(); }
+        else { Energy -= 1;}
+        
     }
+
+    public void ConvertEnergytoHP()
+    {
+        if (Energy >= MaxEnergy)
+        {
+            Energy -= 100;
+            HitPoints += 1;
+        }
+    }
+
+    public bool IsAlive()
+    {
+        if (HitPoints <= 0)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
 }

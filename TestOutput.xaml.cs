@@ -38,7 +38,7 @@ public partial class TestOutput : ContentPage
         {
             Image image = new Image();
             image.Source = "herbivores.png";
-            tiles.herbs.add(new Herbivore(positions[i].Item1, positions[i].Item2, image));
+            tiles.herbs.add(new Herbivore(positions[i].Item1, positions[i].Item2, image, tiles.plnts, tiles.herbs));
         }
         for (var i = hn + pn; i < hn + pn + cn; i++)
         {
@@ -53,15 +53,16 @@ public partial class TestOutput : ContentPage
         Grid grid = tiles.getBackground();
         Grid overlay = tiles.getOverlay().GetGrid();
 
-        P.Text = pn.ToString();
-        H.Text = hn.ToString();
+        //P.Text = pn.ToString();
+        //H.Text = hn.ToString();
         C.Text = cn.ToString();
+        
 
-        
-        
+
+
 
         // Create a list of all the positions in the grid
-        
+
 
 
 
@@ -101,6 +102,8 @@ public partial class TestOutput : ContentPage
 
             // Update Game at 60fps
             tiles.update();
+            P.Text = tiles.plnts.GetEntities()[0].Energy.ToString();
+            H.Text = tiles.herbs.GetEntities()[0].Energy.ToString();
             await Task.Delay(8);
         }
     }

@@ -65,15 +65,30 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     {
         throw new NotImplementedException();
     }
-
+    public void ConvertEnergytoHP()
+    {
+        if (Energy >= MaxEnergy)
+        {
+            Energy -= 100;
+            HitPoints += 1;
+        }
+    }
     public void ConvertHPtoEnergy()
     {
-        throw new NotImplementedException();
+        if (HitPoints > 0)
+        {
+            Energy += 100;
+            HitPoints -= 1;
+        }
     }
 
-    public void Feed()
+    public void Feed(IAbstractEntity entity)
     {
-
+        if(Energy <= MaxEnergy)
+        {
+            Energy += 100;
+            entity.Energy -= 100;
+        }
     }
 
     public void LookForEnemy()
@@ -99,7 +114,7 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
             Move(rowDist / Math.Abs(rowDist), 0);
         }
         else if(colDist != 0){ Move(0, (colDist/Math.Abs(colDist))); }
-        else { Feed(); }
+        else { Feed(closestPlant.Keys.First()); }
     }
 
     public void LookForMate()
@@ -110,7 +125,7 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
         {
             double distance = Math.Sqrt(Math.Pow(Math.Abs(herb.Row - Row), 2) + Math.Pow(Math.Abs(herb.Col - Col), 2));
             if (closestMate.Keys.Count == 0) { closestMate.Add(herb, distance); }
-            else if (distance < closestMate.Values.Last()) { closestMate.Remove(closestMate.Keys.First()); closestMate.Add(herb, distance); }
+            else if (distance < closestMate.Values.Last() & distance != 0) { closestMate.Remove(closestMate.Keys.First()); closestMate.Add(herb, distance); }
         }
 
         int rowDist = closestMate.Keys.First().Row - Row;
@@ -120,7 +135,7 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
             Move(rowDist / Math.Abs(rowDist), 0);
         }
         else if (colDist != 0) { Move(0, (colDist / Math.Abs(colDist))); }
-        else { Feed(); }
+        else { Breed(); }
     }
 
     public void Move(int row, int col)
@@ -144,6 +159,18 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
 
         LookForFood();
         
+    }
+
+    public bool IsAlive()
+    {
+        if (HitPoints <= 0)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 
 

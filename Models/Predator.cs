@@ -127,4 +127,19 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
     {
         throw new NotImplementedException();
     }
+
+    public void Feed(IAbstractEntity entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool IsAlive()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void ConvertEnergytoHP()
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -10,18 +10,10 @@ public interface IAbstractLiving
     // The maximum hit points of the living entity
     int MaxHitPoints { get; set; }
 
-    // The current energy of the living entity
-    int Energy { get; set; }
-
-    // The maximum energy of the living entity
-    int MaxEnergy { get; set; }
-
     List<string> DietList { get; set; }
 
-    void Feed();
+    void Feed(IAbstractEntity entity);
 
-    void ConvertHPtoEnergy();
-
-    void EnergyDecay();
+    bool IsAlive();
 
 }
