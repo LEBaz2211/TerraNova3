@@ -26,10 +26,6 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
 
     public int ContactZone { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-    
-    private string _entityType;
-
-    public string EntityType { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
     private int _hitPoints;
 

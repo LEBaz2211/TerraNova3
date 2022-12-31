@@ -18,9 +18,6 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
     private int _contactZone;
     public int ContactZone { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-    private string _entityType;
-    public string EntityType { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
     private Image entityImage;
     public Image EntityImage { get => entityImage; set => entityImage = value; }
 
