@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TerraNova3.Model;
 
 namespace TerraNova3.Models;
 
 internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
 {
+
+    SmartList plnts;
 
     private int _row;
     public int Row { get => _row; set => _row = value; }
@@ -45,12 +48,12 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     private int _visionRadius;
     public int VisionRadius { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-    public Herbivore(int row, int col, Image image)
+    public Herbivore(int row, int col, Image image, SmartList plnts)
     {
         Row = row;
         Col = col;
         EntityImage = image;
-
+        this.plnts = plnts;
     }
 
     public void Breed()
@@ -65,7 +68,7 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
 
     public void Feed()
     {
-        throw new NotImplementedException();
+
     }
 
     public void LookForEnemy()
@@ -75,7 +78,23 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
 
     public void LookForFood()
     {
-        throw new NotImplementedException();
+        var closestPlant = new Dictionary<IAbstractEntity,double>() ;
+
+        foreach(IAbstractEntity plant in plnts.GetEntities())
+        {
+            double distance = Math.Sqrt(Math.Pow(Math.Abs(plant.Row - Row), 2) + Math.Pow(Math.Abs(plant.Col - Col), 2));
+            if (closestPlant.Keys.Count == 0) { closestPlant.Add(plant, distance); }
+            else if (distance < closestPlant.Values.Last()) { closestPlant.Remove(closestPlant.Keys.First()); closestPlant.Add(plant, distance); }
+        }
+
+        int rowDist = closestPlant.Keys.First().Row - Row;
+        int colDist = closestPlant.Keys.First().Col - Col;
+        if (rowDist <= colDist & colDist != 0)
+        {
+            Move(0, (colDist/Math.Abs(colDist)));
+        }
+        else if(rowDist != 0){ Move(rowDist/ Math.Abs(rowDist), 0); }
+        else { Feed(); }
     }
 
     public void LookForMate()
@@ -83,9 +102,10 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
         throw new NotImplementedException();
     }
 
-    public void Move()
+    public void Move(int row, int col)
     {
-        Col++;
+        Row += row;
+        Col += col;
     }
 
     public void Repost()
@@ -95,6 +115,6 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
 
     public void Update()
     {
-        Move();
+        LookForFood();
     }
 }

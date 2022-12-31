@@ -108,7 +108,7 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
         throw new NotImplementedException();
     }
 
-    public void Move()
+    public void Move(int row, int col)
     {
         Row++;
     }
@@ -120,6 +120,6 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
 
     public void Update()
     {
-        Move();
+
     }
 }

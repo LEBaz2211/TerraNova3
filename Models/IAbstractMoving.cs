@@ -16,7 +16,7 @@ public interface IAbstractMoving
     int VisionRadius { get; set; }
 
     // Abstract method that must be implemented by derived classes
-    void Move();
+    void Move(int row, int col);
 
     void LookForFood();
 
