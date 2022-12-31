@@ -15,7 +15,8 @@ public interface IAbstractMoving
     // The vision radius of the moving entity
     int VisionRadius { get; set; }
 
-    // Abstract method that must be implemented by derived classes
+    bool Mated { get; set; }
+
     void Move(int row, int col);
 
     void LookForFood();

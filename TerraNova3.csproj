@@ -74,6 +74,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="Microsoft.Azure.Core.NewtonsoftJson" Version="1.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <MauiXaml Update="DesktopMainView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

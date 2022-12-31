@@ -52,6 +52,7 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
 
     private int _entityID;
     public int EntityID { get => _entityID; set => _entityID = value; }
+    public bool Mated { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
     public Herbivore(int row, int col, Image image, SmartList plnts, SmartList herbs)
     {

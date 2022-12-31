@@ -57,6 +57,7 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
 
     private int _entityID;
     public int EntityID { get => _entityID; set => _entityID = value; }
+    public bool Mated { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
 
 

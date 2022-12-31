@@ -52,7 +52,7 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
         EntityImage = image;
         MaxEnergy = 3000;
         Energy = MaxEnergy;
-        MaxHitPoints = 100;
+        MaxHitPoints = 10;
         HitPoints = MaxHitPoints;
 
         EntityID = Global.GetID();
