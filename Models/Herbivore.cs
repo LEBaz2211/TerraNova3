@@ -9,6 +9,8 @@ namespace TerraNova3.Models;
 internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
 {
 
+    TileSet tile;
+
     private int _row;
     public int Row { get => _row; set => _row = value; }
 

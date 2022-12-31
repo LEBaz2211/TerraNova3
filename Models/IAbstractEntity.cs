@@ -18,9 +18,6 @@ public interface IAbstractEntity
 
     int ContactZone { get; set; }
 
-    // The type of the living entity (e.g. "herbivore", "predator", "plant")
-    string EntityType { get; set; }
-
     Image EntityImage { get; set; }
 
     void Update();
