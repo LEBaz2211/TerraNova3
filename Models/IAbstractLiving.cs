@@ -22,4 +22,6 @@ public interface IAbstractLiving
 
     void ConvertHPtoEnergy();
 
+    void EnergyDecay();
+
 }

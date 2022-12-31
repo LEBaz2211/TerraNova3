@@ -68,4 +68,9 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
     {
         throw new NotImplementedException();
     }
+
+    public void EnergyDecay()
+    {
+        throw new NotImplementedException();
+    }
 }

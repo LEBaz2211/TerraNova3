@@ -122,4 +122,9 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
     {
 
     }
+
+    public void EnergyDecay()
+    {
+        throw new NotImplementedException();
+    }
 }

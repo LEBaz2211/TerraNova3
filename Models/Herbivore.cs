@@ -12,6 +12,8 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
 
     SmartList plnts;
 
+    SmartList herbs;
+
     private int _row;
     public int Row { get => _row; set => _row = value; }
 
@@ -31,10 +33,10 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     public int MaxHitPoints { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
     private int _energy;
-    public int Energy { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public int Energy { get => _energy; set => _energy = value; }
 
     private int _maxEnergy;
-    public int MaxEnergy { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public int MaxEnergy { get => _maxEnergy ; set => _maxEnergy = value; }
 
     private List<string> _dietList;
     public List<string> DietList { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
@@ -48,12 +50,15 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     private int _visionRadius;
     public int VisionRadius { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-    public Herbivore(int row, int col, Image image, SmartList plnts)
+    public Herbivore(int row, int col, Image image, SmartList plnts, SmartList herbs)
     {
         Row = row;
         Col = col;
         EntityImage = image;
         this.plnts = plnts;
+        this.herbs = herbs;
+        MaxEnergy = 3000;
+        Energy = MaxEnergy;
     }
 
     public void Breed()
@@ -89,17 +94,33 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
 
         int rowDist = closestPlant.Keys.First().Row - Row;
         int colDist = closestPlant.Keys.First().Col - Col;
-        if (rowDist <= colDist & colDist != 0)
+        if (Math.Abs(rowDist) >= Math.Abs(colDist) & rowDist != 0)
         {
-            Move(0, (colDist/Math.Abs(colDist)));
+            Move(rowDist / Math.Abs(rowDist), 0);
         }
-        else if(rowDist != 0){ Move(rowDist/ Math.Abs(rowDist), 0); }
+        else if(colDist != 0){ Move(0, (colDist/Math.Abs(colDist))); }
         else { Feed(); }
     }
 
     public void LookForMate()
     {
-        throw new NotImplementedException();
+        var closestMate = new Dictionary<IAbstractEntity, double>();
+
+        foreach (IAbstractEntity herb in herbs.GetEntities())
+        {
+            double distance = Math.Sqrt(Math.Pow(Math.Abs(herb.Row - Row), 2) + Math.Pow(Math.Abs(herb.Col - Col), 2));
+            if (closestMate.Keys.Count == 0) { closestMate.Add(herb, distance); }
+            else if (distance < closestMate.Values.Last()) { closestMate.Remove(closestMate.Keys.First()); closestMate.Add(herb, distance); }
+        }
+
+        int rowDist = closestMate.Keys.First().Row - Row;
+        int colDist = closestMate.Keys.First().Col - Col;
+        if (Math.Abs(rowDist) >= Math.Abs(colDist) & rowDist != 0)
+        {
+            Move(rowDist / Math.Abs(rowDist), 0);
+        }
+        else if (colDist != 0) { Move(0, (colDist / Math.Abs(colDist))); }
+        else { Feed(); }
     }
 
     public void Move(int row, int col)
@@ -112,9 +133,18 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     {
         throw new NotImplementedException();
     }
+    public void EnergyDecay()
+    {
+        Energy--;
+    }
 
     public void Update()
     {
+        EnergyDecay();
+
         LookForFood();
+        
     }
+
+
 }
