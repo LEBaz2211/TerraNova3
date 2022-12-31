@@ -12,6 +12,9 @@ namespace TerraNova3.Models;
 public interface IAbstractEntity
 {
     // A dictionary to store the x and y positions of the entity on the grid
+
+    int EntityID { get; set; }
+    
     int Row { get; set; }
 
     int Col { get; set; }

@@ -55,6 +55,9 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
     private int _attackDamage;
     public int AttackDamage { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
+    private int _entityID;
+    public int EntityID { get => _entityID; set => _entityID = value; }
+
 
 
     // Constructor
@@ -63,14 +66,17 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
         Row = row;
         Col = col;
         EntityImage = image;
-/*        _contactZone = contactZone;
-        _entityType = entityType;
-        _maxHitPoints = maxHitPoints;
-        _maxEnergy = maxEnergy;
-        _dietList = dietList;
-        _speed = speed;
-        _visionRadius = visionRadius;
-        _attackDamage = attackDamage;*/
+
+
+        EntityID = Global.GetID();
+        /*        _contactZone = contactZone;
+                _entityType = entityType;
+                _maxHitPoints = maxHitPoints;
+                _maxEnergy = maxEnergy;
+                _dietList = dietList;
+                _speed = speed;
+                _visionRadius = visionRadius;
+                _attackDamage = attackDamage;*/
     }
 
     public void Attack(IAbstractEntity prey)

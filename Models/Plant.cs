@@ -42,6 +42,9 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
     private int _seedZone;
     public int SeedZone { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
+    private int _entityID;
+    public int EntityID { get => _entityID; set => _entityID = value; }
+
     public Plant(int row, int col, Image image)
     {
         Row = row;
@@ -51,6 +54,8 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
         Energy = MaxEnergy;
         MaxHitPoints = 100;
         HitPoints = MaxHitPoints;
+
+        EntityID = Global.GetID();
     }
 
     public void Update()

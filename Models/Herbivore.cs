@@ -50,6 +50,9 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     private int _visionRadius;
     public int VisionRadius { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
+    private int _entityID;
+    public int EntityID { get => _entityID; set => _entityID = value; }
+
     public Herbivore(int row, int col, Image image, SmartList plnts, SmartList herbs)
     {
         Row = row;
@@ -62,6 +65,9 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
         MaxHitPoints = 100;
         HitPoints = MaxHitPoints;
         ContactZone = 10;
+
+        EntityID = Global.GetID();
+
     }
 
     public void Breed(IAbstractEntity mate)
