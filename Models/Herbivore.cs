@@ -130,7 +130,6 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
             else { Feed(closestPlant.Keys.First()); }
         }
         
-   
     }
 
     public void LookForMate()
