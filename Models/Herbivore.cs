@@ -178,8 +178,8 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     {
         EnergyDecay();
 
-        if(Energy <= MaxEnergy / 2) { LookForFood(); }
-        else if(Energy > MaxEnergy / 2) { LookForMate(); }
+        if(Energy <= MaxEnergy ) { LookForFood(); }
+        //else if(Energy > MaxEnergy / 2) { LookForMate(); }
         
         
     }
