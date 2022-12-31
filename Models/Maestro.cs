@@ -170,7 +170,7 @@ internal class SmartList
             else
             {
                 e.Update();
-                
+                overlayGrid.RemoveEntity(e);
                 overlayGrid.AddEntity(e);
             }
             
