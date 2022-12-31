@@ -2,6 +2,8 @@
 using Microsoft.Maui.Controls;
 using TerraNova3.View_Models;
 using TerraNova3.Models;
+using TerraNova3.Model;
+
 namespace TerraNova3;
 
 public partial class TestOutput : ContentPage
@@ -27,19 +29,19 @@ public partial class TestOutput : ContentPage
         {
             Image image = new Image();
             image.Source = "plant.png";
-            tiles.plnts.add(new Entity(positions[i].Item1, positions[i].Item2, image));
+            tiles.plnts.add(new Plant(positions[i].Item1, positions[i].Item2, image));
         }
         for (var i = pn; i < hn + pn; i++)
         {
             Image image = new Image();
             image.Source = "herbivores.png";
-            tiles.herbs.add(new Entity(positions[i].Item1, positions[i].Item2, image));
+            tiles.herbs.add(new Herbivore(positions[i].Item1, positions[i].Item2, image));
         }
         for (var i = hn + pn; i < hn + pn + cn; i++)
         {
             Image image = new Image();
             image.Source = "carnivores.png";
-            tiles.apexs.add(new Entity(positions[i].Item1, positions[i].Item2, image));
+            tiles.apexs.add(new Predator(positions[i].Item1, positions[i].Item2, image));
         }
 
         

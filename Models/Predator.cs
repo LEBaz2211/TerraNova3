@@ -6,49 +6,124 @@ using System.Threading.Tasks;
 
 namespace TerraNova3.Models;
 
-//internal class Predator : AbstractKiller
-//{
+class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKiller
+{
+    // Declare variables
+    public Image entityImage;
 
-//    public Predator(int startX, int startY, int maxEnergy, int maxHitPoints, string entityType, int speed, int visionRadius, int movementRadius, int attackDamage) : base(startX, startY, maxEnergy, maxHitPoints, entityType, speed, visionRadius, movementRadius, attackDamage)
-//    {
-//    }
+    public Image EntityImage { get => entityImage; set => entityImage = value; }
 
-//    // Returns the attack strength of the predator
-//    public int GetAttackStrength()
-//    {
-//        return attackStrength;
-//    }
+    private int _row;
 
-//    // Returns the range at which the predator can detect prey
-//    public int GetVisionRange()
-//    {
-//        return visionRange;
-//    }
+    public int Row { get => _row; set => _row = value; }
+    
+    private int _col;
 
-//    // Returns the range at which the predator can attack prey
-//    public int GetAttackRange()
-//    {
-//        return attackRange;
-//    }
+    public int Col { get => _col; set => _col = value; }
 
-//    // Sets the current amount of hit points that the predator has
-//    public void SetHitPoints(int hitPoints)
-//    {
-//        this.hitPoints = hitPoints;
-//    }
+    
+    private int _contactZone;
 
-//    // Sets the attack strength of the predator
-//    public void SetAttackStrength(int attackStrength)
-//    {
-//        this.attackStrength = attackStrength;
-//    }
+    public int ContactZone { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-//    // Sets the movement speed of the predator
-//    public void SetMovementSpeed(int movementSpeed)
-//    {
-//        this.movementSpeed = movementSpeed;
-//    }
+    
+    private string _entityType;
 
-//    // Sets the range at which
-//}
-//which
+    public string EntityType { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+    private int _hitPoints;
+
+    public int HitPoints { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+    private int _maxHitPoints;
+    public int MaxHitPoints { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+    private int _energy;
+    public int Energy { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+    private int _maxEnergy;
+    public int MaxEnergy { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+    private List<string> _dietList;
+    public List<string> DietList { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+    private string _sex;
+    public string Sex { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+    private int _speed;
+    public int Speed { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+    private int _visionRadius;
+    public int VisionRadius { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+    private int _attackDamage;
+    public int AttackDamage { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+
+
+    // Constructor
+    public Predator(int row, int col, Image image)
+    {
+        Row = row;
+        Col = col;
+        EntityImage = image;
+/*        _contactZone = contactZone;
+        _entityType = entityType;
+        _maxHitPoints = maxHitPoints;
+        _maxEnergy = maxEnergy;
+        _dietList = dietList;
+        _speed = speed;
+        _visionRadius = visionRadius;
+        _attackDamage = attackDamage;*/
+    }
+
+    public void Attack(IAbstractEntity prey)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Breed()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void ConvertHPtoEnergy()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Feed()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void LookForEnemy()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void LookForFood()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void LookForMate()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Move()
+    {
+        Row++;
+    }
+
+    public void Repost()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Update()
+    {
+        Move();
+    }
+}

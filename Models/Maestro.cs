@@ -40,11 +40,11 @@ internal class TileSet
 
     public void init()
     {
-        plnts = new SmartList( new List<Entity>());
-        herbs = new SmartList(new List<Entity>());
-        apexs = new SmartList(new List<Entity>());
-        pFood = new SmartList(new List<Entity>());
-        aFood = new SmartList(new List<Entity>());
+        plnts = new SmartList( new List<IAbstractEntity>());
+        herbs = new SmartList(new List<IAbstractEntity>());
+        apexs = new SmartList(new List<IAbstractEntity>());
+        pFood = new SmartList(new List<IAbstractEntity>());
+        aFood = new SmartList(new List<IAbstractEntity>());
 
         TerraGrid gridGen = new TerraGrid(size, size);
         gridGen.GenerateGrid();
@@ -79,30 +79,30 @@ internal class TileSet
 
 internal class SmartList
 {
-    private List<Entity> entities;
+    private List<IAbstractEntity> entities;
 
-    public SmartList(List<Entity> entitiesList)
+    public SmartList(List<IAbstractEntity> entitiesList)
     {
         entities = entitiesList;
     }
 
-    public void add(Entity entity)
+    public void add(IAbstractEntity entity)
     {
         entities.Add(entity);
     }
-    public void remove(Entity entity)
+    public void remove(IAbstractEntity entity)
     {
         entities.Remove(entity);
     }
-    public List<Entity> GetEntities()
+    public List<IAbstractEntity> GetEntities()
     {
         return entities;
     }
     public void update(OverlayGrid overlayGrid)
     {
-        foreach (Entity e in entities)
+        foreach (IAbstractEntity e in entities)
         {
-            e.update();
+            e.Update();
             overlayGrid.RemoveEntity(e);
             overlayGrid.AddEntity(e);
 
