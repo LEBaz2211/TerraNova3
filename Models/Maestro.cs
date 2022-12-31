@@ -160,7 +160,7 @@ internal class SmartList
     public void update(OverlayGrid overlayGrid)
     {
         makePos();
-        List<IAbstractEntity> temp = entities;
+        List<IAbstractEntity> temp = new List<IAbstractEntity>(entities);
         foreach (IAbstractEntity e in temp)
         {
 
