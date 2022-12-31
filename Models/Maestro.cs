@@ -40,7 +40,7 @@ internal class TileSet
 
     public void init()
     {
-        plnts = new SmartList( new List<IAbstractEntity>());
+        plnts = new SmartList(new List<IAbstractEntity>());
         herbs = new SmartList(new List<IAbstractEntity>());
         apexs = new SmartList(new List<IAbstractEntity>());
         pFood = new SmartList(new List<IAbstractEntity>());
@@ -81,7 +81,6 @@ internal class SmartList
 {
     private List<IAbstractEntity> entities;
     private Dictionary<(int,int), IAbstractEntity> entitiesPos;
-    
     
 
     public SmartList(List<IAbstractEntity> entitiesList)
@@ -146,11 +145,13 @@ internal class SmartList
             
             if (entitiesPos.Keys.Contains(pos))
             {
-                if (entitiesPos[pos].EntityID != e.EntityID)
+                if (!Object.ReferenceEquals(entitiesPos[pos],e))
                 {
                     proxy.Add((entitiesPos[pos], distance));
                 }
             }
+            
+            
 
         }
         return proxy;
@@ -177,15 +178,5 @@ internal class SmartList
             
 
         }
-    }
-}
-
-public static class Global
-{
-    public static int ID = 0;
-
-    public static int GetID()
-    {
-        return ID++;
     }
 }
