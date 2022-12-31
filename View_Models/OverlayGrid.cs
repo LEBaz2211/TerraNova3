@@ -54,14 +54,42 @@ public class OverlayGrid
 
     public void RemoveEntity(Entity entity)
     {
-        
-        _grid.Children.Remove(entity.Image);
-        _entity.Remove(entity);
+        if (_entity.Remove(entity)){ 
+            _grid.Children.Remove(entity.Image);
+            
+        }
     }
     public Grid GetGrid()
     {
         return _grid;
     }
+    public List<(int, int)> GetPositions() { 
 
+        List<(int, int)>positions = new List<(int, int)>();
+
+        for (int x = 0; x< _numRows; x++)
+        {
+            for (int y = 0; y< _numColumns; y++)
+            {
+                positions.Add((x, y));
+            }
+        }
+        return positions;
+    }
+    public List<(int, int)> GetRandomPositions()
+    {
+        List<(int, int)> positions = GetPositions();
+        // Shuffle the list of positions
+        Random rnd = new Random();
+        for (int i = positions.Count - 1; i > 0; i--)
+        {
+            int j = rnd.Next(i + 1);
+            (int, int) temp = positions[i];
+            positions[i] = positions[j];
+            positions[j] = temp;
+
+        }
+        return positions;
+    }
 
 }

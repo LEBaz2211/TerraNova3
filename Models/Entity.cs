@@ -16,7 +16,7 @@ namespace TerraNova3.Models
         }
 		public void update()
 		{
-			
+			Row += 1;
 		}
 	}
 }

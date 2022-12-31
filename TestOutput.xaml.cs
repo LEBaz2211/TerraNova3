@@ -6,9 +6,9 @@ namespace TerraNova3;
 
 public partial class TestOutput : ContentPage
 {
-    Microsoft.Maui.Controls.Grid grid = new Microsoft.Maui.Controls.Grid();
-    Microsoft.Maui.Controls.Grid overlay = new Microsoft.Maui.Controls.Grid();
-    List<Image> imposters;
+    TileSet tiles;
+
+
 
     public TestOutput()
 	{
@@ -17,58 +17,46 @@ public partial class TestOutput : ContentPage
         int hn = Preferences.Get("HerbivoresNumber", 0);
         int cn = Preferences.Get("CarnivoresNumber", 0);
 
-        P.Text = pn.ToString();
-        H.Text = hn.ToString();
-        C.Text = cn.ToString();
-        
-        TerraGrid gridGen = new TerraGrid(20, 20);
-        OverlayGrid overlayGrid = new OverlayGrid(gridGen);
-        
-        gridGen.GenerateGrid();
+        tiles = new TileSet(pn, hn, cn, 20);
 
-        Grid grid = gridGen.GetGrid();
-        Grid overlay = overlayGrid.GetGrid();
-        
 
-        // Create a list of all the positions in the grid
-        List<(int, int)> positions = new List<(int, int)>();
-        for (int x = 0; x < 20; x++)
-        {
-            for (int y = 0; y < 20; y++)
-            {
-                positions.Add((x, y));
-            }
-        }
+        OverlayGrid overlayGrid = tiles.getOverlay();
+        List<(int, int)> positions = overlayGrid.GetRandomPositions();
 
-        // Shuffle the list of positions
-        Random rnd = new Random();
-        for (int i = positions.Count - 1; i > 0; i--)
-        {
-            int j = rnd.Next(i + 1);
-            (int, int) temp = positions[i];
-            positions[i] = positions[j];
-            positions[j] = temp;
-            
-        }
-
-        for (var i = 0;i< pn;i++)
+        for (var i = 0; i < pn; i++)
         {
             Image image = new Image();
             image.Source = "plant.png";
-            overlayGrid.AddEntity(new Entity(positions[i].Item1, positions[i].Item2, image));
+            tiles.plnts.add(new Entity(positions[i].Item1, positions[i].Item2, image));
         }
-        for (var i = pn; i < hn+pn; i++)
+        for (var i = pn; i < hn + pn; i++)
         {
             Image image = new Image();
             image.Source = "herbivores.png";
-            overlayGrid.AddEntity(new Entity(positions[i].Item1, positions[i].Item2, image));
+            tiles.herbs.add(new Entity(positions[i].Item1, positions[i].Item2, image));
         }
         for (var i = hn + pn; i < hn + pn + cn; i++)
         {
             Image image = new Image();
             image.Source = "carnivores.png";
-            overlayGrid.AddEntity(new Entity(positions[i].Item1, positions[i].Item2, image));
+            tiles.apexs.add(new Entity(positions[i].Item1, positions[i].Item2, image));
         }
+
+        
+        tiles.update();
+
+        Grid grid = tiles.getBackground();
+        Grid overlay = tiles.getOverlay().GetGrid();
+
+        P.Text = pn.ToString();
+        H.Text = hn.ToString();
+        C.Text = cn.ToString();
+
+        
+        
+
+        // Create a list of all the positions in the grid
+        
 
 
 
@@ -86,22 +74,15 @@ public partial class TestOutput : ContentPage
     public void OnFillClicked(object sender, EventArgs e)
 
     {
-        
-        foreach (Image child in imposters)
-        {
-            overlay.Children.Append(child);
 
-        }
+        tiles.update();
 
     }
     public void OnClearClicked(object sender, EventArgs e)
     {
 
-        
-        foreach(Image child in overlay.Children.ToList()){
-            overlay.Children.Remove(child);
-        }
 
+        
 
 
     }

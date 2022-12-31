@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TerraNova3.View_Models;
 
 namespace TerraNova3.Models;
 
 internal class TileSet
 {
-    private SmartList plnts;
-    private SmartList herbs;
-    private SmartList apexs;
-    private SmartList pFood;
-    private SmartList aFood;
+    public SmartList plnts;
+    public SmartList herbs;
+    public SmartList apexs;
+    public SmartList pFood;
+    public SmartList aFood;
 
     private int plNumber;
     private int heNumber;
@@ -21,6 +22,11 @@ internal class TileSet
     private int turnC;
 
     private int size;
+
+    private Grid background;
+    private Grid overlay;
+    private OverlayGrid overlayGrid;
+
 
     public TileSet(int plantNumber, int herbivorNumber, int predatorNumber, int sz)
     {
@@ -34,17 +40,41 @@ internal class TileSet
 
     public void init()
     {
-        turnC = 0;
+        plnts = new SmartList( new List<Entity>());
+        herbs = new SmartList(new List<Entity>());
+        apexs = new SmartList(new List<Entity>());
+        pFood = new SmartList(new List<Entity>());
+        aFood = new SmartList(new List<Entity>());
+
+        TerraGrid gridGen = new TerraGrid(size, size);
+        gridGen.GenerateGrid();
+
+        overlayGrid = new OverlayGrid(gridGen);
+
+        
+
+        background = gridGen.GetGrid();
+        
+
+
     }
     public void update()
     {
-        plnts.update();
-        herbs.update();
-        apexs.update();
-        pFood.update();
-        aFood.update();
+        plnts.update(overlayGrid);
+        herbs.update(overlayGrid);
+        apexs.update(overlayGrid);
+        pFood.update(overlayGrid);
+        aFood.update(overlayGrid);
     }
 
+    public Grid getBackground()
+    {
+        return background;
+    }
+    public OverlayGrid getOverlay()
+    {
+        return overlayGrid;
+    }
 }
 
 internal class SmartList
@@ -68,11 +98,14 @@ internal class SmartList
     {
         return entities;
     }
-    public void update()
+    public void update(OverlayGrid overlayGrid)
     {
         foreach (Entity e in entities)
         {
             e.update();
+            overlayGrid.RemoveEntity(e);
+            overlayGrid.AddEntity(e);
+
         }
     }
 }
