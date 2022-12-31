@@ -142,4 +142,9 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
     {
         throw new NotImplementedException();
     }
+
+    public bool Removed()
+    {
+        return !IsAlive();
+    }
 }

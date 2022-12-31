@@ -33,5 +33,7 @@ public interface IAbstractEntity
     void ConvertEnergytoHP();
 
     void EnergyDecay();
+
+    bool Removed();
 }
 

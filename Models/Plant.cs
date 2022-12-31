@@ -110,4 +110,8 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
         }
     }
 
+    public bool Removed()
+    {
+        return !IsAlive();
+    }
 }

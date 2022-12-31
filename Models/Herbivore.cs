@@ -178,5 +178,8 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
         }
     }
 
-
+    public bool Removed()
+    {
+        return !IsAlive();
+    }
 }
