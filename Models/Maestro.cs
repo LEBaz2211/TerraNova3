@@ -162,10 +162,18 @@ internal class SmartList
         makePos();
         foreach (IAbstractEntity e in entities)
         {
+            if (e.Removed())
+            {
+                overlayGrid.RemoveEntity(e);
+                remove(e);
+            }
+            else
+            {
+                e.Update();
+                
+                overlayGrid.AddEntity(e);
+            }
             
-            e.Update();
-            overlayGrid.RemoveEntity(e);
-            overlayGrid.AddEntity(e);
 
         }
     }
