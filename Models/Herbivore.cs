@@ -86,12 +86,12 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
 
     public void EnergyDecay()
     {
-        if (HitPoints < MaxHitPoints)
+        if (Energy <= 0) { ConvertHPtoEnergy(); }
+        else if (HitPoints < MaxHitPoints)
         {
             ConvertEnergytoHP();
         }
-        else if (Energy == 0) { ConvertHPtoEnergy(); }
-        Energy -= 100;
+        Energy -= 1;
     }
 
     public void Feed(IAbstractEntity entity)
