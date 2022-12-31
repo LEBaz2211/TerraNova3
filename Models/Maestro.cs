@@ -93,6 +93,7 @@ internal class SmartList
         entitiesPos = new Dictionary<(int, int), IAbstractEntity>();
         foreach (IAbstractEntity e in entities)
         {
+            if (!entitiesPos.Keys.Contains((e.Row, e.Col)))
             entitiesPos.Add((e.Row,e.Col),e); 
         }
         
