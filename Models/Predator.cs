@@ -152,4 +152,9 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
     {
         throw new NotImplementedException();
     }
+
+    public void Breed(IAbstractEntity mate)
+    {
+        throw new NotImplementedException();
+    }
 }

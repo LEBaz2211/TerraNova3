@@ -24,7 +24,7 @@ public interface IAbstractMoving
 
     void LookForEnemy();
 
-    void Breed();
+    void Breed(IAbstractEntity mate);
 
     void Repost();
 }

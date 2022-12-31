@@ -64,9 +64,9 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
         ContactZone = 10;
     }
 
-    public void Breed()
+    public void Breed(IAbstractEntity mate)
     {
-        throw new NotImplementedException();
+        
     }
     public void ConvertEnergytoHP()
     {
@@ -135,22 +135,25 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     public void LookForMate()
     {
         var closestMate = new Dictionary<IAbstractEntity, double>();
+        var list = herbs.GetProxyEntities(this);
 
-        foreach (IAbstractEntity herb in herbs.GetEntities())
+        if (list.Count != 0)
         {
-            double distance = Math.Sqrt(Math.Pow(Math.Abs(herb.Row - Row), 2) + Math.Pow(Math.Abs(herb.Col - Col), 2));
-            if (closestMate.Keys.Count == 0) { closestMate.Add(herb, distance); }
-            else if (distance < closestMate.Values.Last() & distance != 0) { closestMate.Remove(closestMate.Keys.First()); closestMate.Add(herb, distance); }
-        }
+            foreach ((IAbstractEntity herb, double distance) in list)
+            {
+                if (closestMate.Keys.Count == 0) { closestMate.Add(herb, distance); }
+                else if (distance < closestMate.Values.Last() & distance != 0) { closestMate.Remove(closestMate.Keys.First()); closestMate.Add(herb, distance); }
+            }
 
-        int rowDist = closestMate.Keys.First().Row - Row;
-        int colDist = closestMate.Keys.First().Col - Col;
-        if (Math.Abs(rowDist) >= Math.Abs(colDist) & rowDist != 0)
-        {
-            Move(rowDist / Math.Abs(rowDist), 0);
+            int rowDist = closestMate.Keys.First().Row - Row;
+            int colDist = closestMate.Keys.First().Col - Col;
+            if (Math.Abs(rowDist) >= Math.Abs(colDist) & rowDist != 0)
+            {
+                Move(rowDist / Math.Abs(rowDist), 0);
+            }
+            else if (colDist != 0) { Move(0, (colDist / Math.Abs(colDist))); }
+            else { Breed(closestMate.Keys.First()); }
         }
-        else if (colDist != 0) { Move(0, (colDist / Math.Abs(colDist))); }
-        else { Breed(); }
     }
 
     public void Move(int row, int col)
@@ -168,7 +171,9 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     {
         EnergyDecay();
 
-        LookForFood();
+        if(Energy <= MaxEnergy / 2) { LookForFood(); }
+        else if(Energy > MaxEnergy / 2) { LookForMate(); }
+        
         
     }
 
