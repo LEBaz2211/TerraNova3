@@ -9,8 +9,6 @@ namespace TerraNova3.Models;
 internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
 {
 
-    TileSet tile;
-
     private int _row;
     public int Row { get => _row; set => _row = value; }
 
@@ -19,9 +17,6 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
 
     private int _contactZone;
     public int ContactZone { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-    private string _entityType;
-    public string EntityType { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
     private Image entityImage;
     public Image EntityImage { get => entityImage; set => entityImage = value; }
