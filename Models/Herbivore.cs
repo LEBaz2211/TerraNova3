@@ -26,11 +26,11 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     private Image entityImage;
     public Image EntityImage { get => entityImage; set => entityImage = value; }
 
-    private int _HitPoints;
-    public int HitPoints { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    private int _hitPoints;
+    public int HitPoints { get => _hitPoints; set => _hitPoints = value; }
 
     private int _maxHitPoints;
-    public int MaxHitPoints { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public int MaxHitPoints { get => _maxHitPoints; set => _maxHitPoints = value ; }
 
     private int _energy;
     public int Energy { get => _energy; set => _energy = value; }
@@ -59,6 +59,8 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
         this.herbs = herbs;
         MaxEnergy = 3000;
         Energy = MaxEnergy;
+        MaxHitPoints = 100;
+        HitPoints = MaxHitPoints;
         ContactZone = 10;
     }
 
@@ -68,7 +70,7 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     }
     public void ConvertEnergytoHP()
     {
-        if (Energy >= MaxEnergy)
+        if (Energy > 100)
         {
             Energy -= 100;
             HitPoints += 1;
@@ -76,11 +78,20 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     }
     public void ConvertHPtoEnergy()
     {
-        if (HitPoints > 0)
+
+        Energy += 100;
+        HitPoints -= 1;
+
+    }
+
+    public void EnergyDecay()
+    {
+        if (HitPoints < MaxHitPoints)
         {
-            Energy += 100;
-            HitPoints -= 1;
+            ConvertEnergytoHP();
         }
+        else if (Energy == 0) { ConvertHPtoEnergy(); }
+        Energy -= 100;
     }
 
     public void Feed(IAbstractEntity entity)
@@ -153,15 +164,6 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     {
         throw new NotImplementedException();
     }
-    public void EnergyDecay()
-    {
-        if (Energy >= MaxEnergy & HitPoints < MaxHitPoints)
-        {
-            ConvertEnergytoHP();
-        }
-        else if (Energy == 0) { ConvertHPtoEnergy(); }
-        else { Energy -= 1; }
-    }
 
     public void Update()
     {
@@ -186,5 +188,10 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     public bool Removed()
     {
         return !IsAlive();
+    }
+
+    public int GetHitPoints()
+    {
+        throw new NotImplementedException();
     }
 }

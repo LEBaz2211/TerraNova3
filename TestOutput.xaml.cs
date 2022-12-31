@@ -102,8 +102,9 @@ public partial class TestOutput : ContentPage
 
             // Update Game at 60fps
             tiles.update();
-            P.Text = tiles.plnts.GetEntities()[0].Energy.ToString();
-            H.Text = tiles.herbs.GetEntities()[0].Energy.ToString();
+            var plant = tiles.plnts.GetEntities()[0];
+            P.Text = plant.Energy.ToString();
+            H.Text = plant.GetHitPoints().ToString();
             await Task.Delay(8);
         }
     }

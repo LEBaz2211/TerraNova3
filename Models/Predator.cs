@@ -147,4 +147,9 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
     {
         return !IsAlive();
     }
+
+    public int GetHitPoints()
+    {
+        throw new NotImplementedException();
+    }
 }

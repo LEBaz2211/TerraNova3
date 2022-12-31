@@ -35,5 +35,8 @@ public interface IAbstractEntity
     void EnergyDecay();
 
     bool Removed();
+
+    ///MUST REMOVE AFTER TESTING
+    int GetHitPoints();
 }
 

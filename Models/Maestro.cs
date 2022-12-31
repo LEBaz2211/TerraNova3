@@ -126,7 +126,7 @@ internal class SmartList
     {
         entities.Add(entity);
     }
-    public void remove(IAbstractEntity entity)
+    public void  remove(IAbstractEntity entity)
     {
         entities.Remove(entity);
     }

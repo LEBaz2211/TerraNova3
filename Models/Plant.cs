@@ -65,11 +65,8 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
 
     public void ConvertHPtoEnergy()
     {
-        if (HitPoints > 0)
-        {
-            Energy += 100;
-            HitPoints -= 1;
-        }
+        Energy += 100;
+        HitPoints -= 1;
     }
 
     public void Seed()
@@ -80,13 +77,12 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
     public void EnergyDecay()
     {
 
-        if (Energy >= MaxEnergy & HitPoints < MaxHitPoints)
+        if(Energy <= 0) { ConvertHPtoEnergy(); }
+        else if (HitPoints < MaxHitPoints)
         {
             ConvertEnergytoHP();
         }
-        else if(Energy == 0) { ConvertHPtoEnergy(); }
-        else { Energy -= 1;}
-        
+        Energy -= 1;
     }
 
     public void ConvertEnergytoHP()
@@ -113,5 +109,10 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
     public bool Removed()
     {
         return !IsAlive();
+    }
+
+    public int GetHitPoints()
+    {
+        return HitPoints;
     }
 }
