@@ -160,8 +160,10 @@ internal class SmartList
     public void update(OverlayGrid overlayGrid)
     {
         makePos();
-        foreach (IAbstractEntity e in entities)
+        List<IAbstractEntity> temp = entities;
+        foreach (IAbstractEntity e in temp)
         {
+
             if (e.Removed())
             {
                 overlayGrid.RemoveEntity(e);
