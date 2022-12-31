@@ -2,8 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:TerraNova3"
-             x:Class="TerraNova3.PreGame"
-             Title="PreGame">
+             x:Class="TerraNova3.PreTest"
+             Title="PreTest">
     <ContentPage.Resources>
         <local:FloatToIntConverter x:Key="floatToInt" />
     </ContentPage.Resources>

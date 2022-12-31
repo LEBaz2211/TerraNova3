@@ -12,6 +12,6 @@ public partial class DesktopMainView : ContentView
     }
     private void OnLoadClicked(object sender, EventArgs e)
     {
-        Application.Current.MainPage.Navigation.PushModalAsync(new PreGame(), true);
+        Application.Current.MainPage.Navigation.PushModalAsync(new PreTest(), true);
     }
 }
