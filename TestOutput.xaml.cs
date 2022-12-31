@@ -56,9 +56,9 @@ public partial class TestOutput : ContentPage
         //P.Text = pn.ToString();
         //H.Text = hn.ToString();
         C.Text = cn.ToString();
+
         
-
-
+        
 
 
         // Create a list of all the positions in the grid
