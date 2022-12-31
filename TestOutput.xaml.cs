@@ -38,7 +38,7 @@ public partial class TestOutput : ContentPage
         {
             Image image = new Image();
             image.Source = "herbivores.png";
-            tiles.herbs.add(new Herbivore(positions[i].Item1, positions[i].Item2, image));
+            tiles.herbs.add(new Herbivore(positions[i].Item1, positions[i].Item2, image, tiles.plnts, tiles.herbs));
         }
         for (var i = hn + pn; i < hn + pn + cn; i++)
         {
@@ -53,10 +53,10 @@ public partial class TestOutput : ContentPage
         Grid grid = tiles.getBackground();
         Grid overlay = tiles.getOverlay().GetGrid();
 
-        P.Text = pn.ToString();
+        //P.Text = pn.ToString();
         H.Text = hn.ToString();
         C.Text = cn.ToString();
-
+        P.Text = tiles.plnts.GetProxyEntities(tiles.herbs.GetEntities()[0])[0].ToString();
         
         
 

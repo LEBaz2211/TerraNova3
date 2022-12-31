@@ -80,12 +80,47 @@ internal class TileSet
 internal class SmartList
 {
     private List<IAbstractEntity> entities;
+    private Dictionary<(int,int), IAbstractEntity> entitiesPos;
+    
 
     public SmartList(List<IAbstractEntity> entitiesList)
     {
         entities = entitiesList;
+        
     }
+    public void makePos()
+    {
+        entitiesPos = new Dictionary<(int, int), IAbstractEntity>();
+        foreach (IAbstractEntity e in entities)
+        {
+            entitiesPos.Add((e.Row,e.Col),e); 
+        }
+        
+    }
+    public List<((int, int), double)> calcProxy(IAbstractEntity e)
+    {
+        List<((int, int), double)> res = new List<((int, int), double)>();
+        int r = e.ContactZone;
+        int x = e.Col;
+        int y = e.Row;
+       
 
+        for (int col = x - r; col <= x + r; col++)
+        {
+            for (int row = y - r; row <= y + r; row++)
+            {
+                // Calculate the distance between the current point and the center
+                double distance = Math.Sqrt((col - x) * (col - x) + (row - y) * (row - y));
+
+                // If the distance is less than or equal to the radius, add the point to the list
+                if (distance <= r)
+                {
+                    res.Add(((row, col), distance));
+                }
+            }
+        }
+        return res;
+    }
     public void add(IAbstractEntity entity)
     {
         entities.Add(entity);
@@ -98,10 +133,35 @@ internal class SmartList
     {
         return entities;
     }
+
+    public List<(IAbstractEntity, double)> GetProxyEntities(IAbstractEntity e)
+    {
+        List<(IAbstractEntity, double)> proxy = new List<(IAbstractEntity, double)>();
+        List<((int, int), double)> proxyPos = calcProxy(e);
+
+        foreach(((int, int)pos , double distance) in proxyPos)
+        {
+            //    if (entitiesPos[pos.Item1] != e)
+            //    {
+            //        proxy.Add((entitiesPos[pos.Item1], pos.Item2));
+            //    }
+            if (entitiesPos.Keys.Contains(pos))
+            {
+                proxy.Add((entitiesPos[pos], distance));
+            }
+            
+            
+
+        }
+        return proxy;
+    }
+
     public void update(OverlayGrid overlayGrid)
     {
+        makePos();
         foreach (IAbstractEntity e in entities)
         {
+            
             e.Update();
             overlayGrid.RemoveEntity(e);
             overlayGrid.AddEntity(e);

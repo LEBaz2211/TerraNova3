@@ -21,7 +21,7 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     public int Col { get => _col; set => _col = value; }
 
     private int _contactZone;
-    public int ContactZone { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public int ContactZone { get => _contactZone; set => _contactZone = value; }
 
     private Image entityImage;
     public Image EntityImage { get => entityImage; set => entityImage = value; }
@@ -59,6 +59,7 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
         this.herbs = herbs;
         MaxEnergy = 3000;
         Energy = MaxEnergy;
+        ContactZone = 10;
     }
 
     public void Breed()
@@ -84,13 +85,19 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     public void LookForFood()
     {
         var closestPlant = new Dictionary<IAbstractEntity,double>() ;
+        var list = plnts.GetProxyEntities(this);
 
-        foreach(IAbstractEntity plant in plnts.GetEntities())
+        if (list.Count != 0)
         {
-            double distance = Math.Sqrt(Math.Pow(Math.Abs(plant.Row - Row), 2) + Math.Pow(Math.Abs(plant.Col - Col), 2));
-            if (closestPlant.Keys.Count == 0) { closestPlant.Add(plant, distance); }
-            else if (distance < closestPlant.Values.Last()) { closestPlant.Remove(closestPlant.Keys.First()); closestPlant.Add(plant, distance); }
+            foreach ((IAbstractEntity plant, double distance) in list)
+            {
+                if (closestPlant.Keys.Count == 0) { closestPlant.Add(plant, distance); }
+                else if (distance < closestPlant.Values.Last()) { closestPlant.Remove(closestPlant.Keys.First()); closestPlant.Add(plant, distance);}
+            }
         }
+        
+
+      
 
         int rowDist = closestPlant.Keys.First().Row - Row;
         int colDist = closestPlant.Keys.First().Col - Col;
