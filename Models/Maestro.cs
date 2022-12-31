@@ -142,13 +142,13 @@ internal class SmartList
 
         foreach(((int, int)pos , double distance) in proxyPos)
         {
-            //    if (entitiesPos[pos.Item1] != e)
-            //    {
-            //        proxy.Add((entitiesPos[pos.Item1], pos.Item2));
-            //    }
+            
             if (entitiesPos.Keys.Contains(pos))
             {
-                proxy.Add((entitiesPos[pos], distance));
+                if (!Object.ReferenceEquals(entitiesPos[pos],e))
+                {
+                    proxy.Add((entitiesPos[pos], distance));
+                }
             }
             
             
