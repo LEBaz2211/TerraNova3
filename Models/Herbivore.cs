@@ -109,19 +109,17 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
                 if (closestPlant.Keys.Count == 0) { closestPlant.Add(plant, distance); }
                 else if (distance < closestPlant.Values.Last()) { closestPlant.Remove(closestPlant.Keys.First()); closestPlant.Add(plant, distance);}
             }
+            int rowDist = closestPlant.Keys.First().Row - Row;
+            int colDist = closestPlant.Keys.First().Col - Col;
+            if (Math.Abs(rowDist) >= Math.Abs(colDist) & rowDist != 0)
+            {
+                Move(rowDist / Math.Abs(rowDist), 0);
+            }
+            else if(colDist != 0){ Move(0, (colDist/Math.Abs(colDist))); }
+            else { Feed(closestPlant.Keys.First()); }
         }
         
-
-      
-
-        int rowDist = closestPlant.Keys.First().Row - Row;
-        int colDist = closestPlant.Keys.First().Col - Col;
-        if (Math.Abs(rowDist) >= Math.Abs(colDist) & rowDist != 0)
-        {
-            Move(rowDist / Math.Abs(rowDist), 0);
-        }
-        else if(colDist != 0){ Move(0, (colDist/Math.Abs(colDist))); }
-        else { Feed(closestPlant.Keys.First()); }
+   
     }
 
     public void LookForMate()
