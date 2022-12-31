@@ -2,13 +2,16 @@
 using Microsoft.Maui.Controls;
 using TerraNova3.View_Models;
 using TerraNova3.Models;
+
 using TerraNova3.Model;
+
 
 namespace TerraNova3;
 
 public partial class TestOutput : ContentPage
 {
     TileSet tiles;
+    Boolean running;
 
 
 
@@ -70,14 +73,16 @@ public partial class TestOutput : ContentPage
     }
 
     public void OnBackClicked(object sender, EventArgs e)
+
     {
+        running = false;
         Application.Current.MainPage.Navigation.PushModalAsync(new PreGame(), true);
     }
     public void OnFillClicked(object sender, EventArgs e)
 
     {
-
-        tiles.update();
+        running = true;
+        Start();
 
     }
     public void OnClearClicked(object sender, EventArgs e)
@@ -87,5 +92,16 @@ public partial class TestOutput : ContentPage
         
 
 
+    }
+    public async void Start()
+    {
+
+        while (running)
+        {
+
+            // Update Game at 60fps
+            tiles.update();
+            await Task.Delay(8);
+        }
     }
 }
