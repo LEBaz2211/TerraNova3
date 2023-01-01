@@ -141,7 +141,12 @@ public class SmartList
     {
         return !entitiesPos.ContainsKey((x, y));
     }
-    
+
+    public Dictionary<(int, int), IAbstractEntity> GetEntitiesPos()
+    {
+        return entitiesPos;
+    }
+
     public void makePos()
     {
         entitiesPos = new Dictionary<(int, int), IAbstractEntity>();

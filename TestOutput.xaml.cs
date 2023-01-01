@@ -22,7 +22,7 @@ public partial class TestOutput : ContentPage
         int hn = Preferences.Get("HerbivoresNumber", 0);
         int cn = Preferences.Get("CarnivoresNumber", 0);
 
-        tiles = new TileSet(pn, hn, cn, 20);
+        tiles = new TileSet(pn, hn, cn, 40);
 
         Grid overlay = tiles.getOverlay().GetGrid();
         
@@ -79,8 +79,16 @@ public partial class TestOutput : ContentPage
             // Update Game at 60fps
             Global.ResetTotalEnergy();
             tiles.update();
-            //Plant plant = tiles.plnts.GetEntities()[0] as Plant;
-            //P.Text = plant.HitPoints.ToString();/*tiles.pFood.GetEntities().Count.ToString()*/;
+            if (tiles.herbs.GetEntities().Count != 0)
+            {
+                Herbivore herb = tiles.herbs.GetEntities()[0] as Herbivore;
+                P.Text = herb.Energy.ToString(); tiles.pFood.GetEntities().Count.ToString();
+            }
+/*            if (tiles.apexs.GetEntities().Count != 0)
+            {
+                Predator apex = tiles.apexs.GetEntities()[0] as Predator;
+                P.Text = apex.HitPoints.ToString();*//*tiles.pFood.GetEntities().Count.ToString()*//*
+            }*/
             H.Text = Global.GetTotalEnergy().ToString();
             Global.TickGameTime();
             await Task.Delay(8);

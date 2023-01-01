@@ -75,9 +75,6 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     private int _decayRate;
     public int DecayRate { get => _decayRate; set => _decayRate = value; }
 
-    private bool _iseating;
-    public bool ISEating { get => _iseating; set => _iseating = value; }
-
     private int _eatSpeed;
     public int EatSpeed { get => _eatSpeed; set => _eatSpeed = value; }
 
@@ -106,8 +103,7 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
         ContactZone = 10;
         VisionRadius = 10;
 
-        ISEating = false;
-        EatSpeed = 20;
+        EatSpeed = 100;
 
         LostEnergy = 0;
         DecayRate = 8;
@@ -115,6 +111,7 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
         Sex = rand.Next(2);
         Mate = null;
         BreedCoolDown = false;
+        GestationPeriod = 10;
 
         EntityID = Global.GetID();
 
@@ -133,46 +130,33 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
 
     public void LookForFood()
     {
+        var closestPlant = new Dictionary<IAbstractEntity, double>();
+        var list = plnts.GetProxyEntities(this, VisionRadius);
 
-        if (ISEating & Energy <= MaxEnergy - MaxEnergy * (90 / 100))
+        if (list.Count != 0)
         {
-            var list = plnts.GetProxyEntities(this, 0);
-            if (list.Count != 0) { if (list[0].Item1.Energy >= EatSpeed) { Feed(list[0].Item1); } }
-            else { ISEating = false; LookForFood(); }
-        }
-        else if (!ISEating)
-        {
-            var closestPlant = new Dictionary<IAbstractEntity, double>();
-            var list = plnts.GetProxyEntities(this, VisionRadius);
-
-            if (list.Count != 0)
+            foreach ((IAbstractEntity pl, double distance) in list)
             {
-                foreach ((IAbstractEntity pl, double distance) in list)
-                {
-                    Plant plant = pl as Plant;
-                    if (closestPlant.Keys.Count == 0) { closestPlant.Add(plant, distance); }
-                    else if (distance < closestPlant.Values.Last()) { closestPlant.Remove(closestPlant.Keys.First()); closestPlant.Add(plant, distance); }
-                }
-
-                int rowDist = closestPlant.Keys.First().Row - Row;
-                int colDist = closestPlant.Keys.First().Col - Col;
-
-                if (Math.Abs(rowDist) >= Math.Abs(colDist) & rowDist != 0)
-                {
-                    Move(rowDist / Math.Abs(rowDist), 0);
-                }
-                else if (colDist != 0) { Move(0, colDist / Math.Abs(colDist)); }
-                else
-                {
-                    ISEating = true;
-                    Feed(closestPlant.Keys.First());
-                }
+                Plant plant = pl as Plant;
+                if (closestPlant.Keys.Count == 0) { closestPlant.Add(plant, distance); }
+                else if (distance < closestPlant.Values.Last()) { closestPlant.Remove(closestPlant.Keys.First()); closestPlant.Add(plant, distance); }
             }
-            else { RandomMove(); }
-        }
-        else { ISEating = false; }
 
-        
+            int rowDist = closestPlant.Keys.First().Row - Row;
+            int colDist = closestPlant.Keys.First().Col - Col;
+
+            if (Math.Abs(rowDist) >= Math.Abs(colDist) & rowDist != 0)
+            {
+                Move(rowDist / Math.Abs(rowDist), 0);
+            }
+            else if (colDist != 0) { Move(0, colDist / Math.Abs(colDist)); }
+            else
+            {
+                Feed(closestPlant.Keys.First());
+            }
+        }
+        else { RandomMove(); }
+
     }
 
     public void LookForMate()
@@ -229,11 +213,11 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
             LostEnergy += MaxEnergy/3;
             Mate = null;
             BreedCoolDown = true;
-            CoolDown = 50;
+            CoolDown = GestationPeriod;
         }
         else
         {
-            Energy -= (MaxEnergy / 3);
+            Energy -= (MaxEnergy/3);
             LostEnergy += (MaxEnergy / 3);
             Mate = null;
         }
@@ -244,10 +228,10 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
         CoolDown -= 1;
         if (CoolDown == 0)
         {
+            BreedCoolDown = false;
             Herbivore newHerb = new Herbivore(Row, Col, plnts, herbs, aFood, pFood);
             herbs.add(newHerb);
             Energy -= MaxEnergy / 2;
-            BreedCoolDown = false;
         }
     }
     
@@ -280,7 +264,7 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     public void EnergyDecay()
     {
         if (Energy <= 0) { ConvertHPtoEnergy(); }
-        else if (HitPoints < MaxHitPoints)
+        else if (HitPoints < MaxHitPoints & Energy >= MaxEnergy - MaxEnergy/10)
         {
             ConvertEnergytoHP();
         }
@@ -290,18 +274,13 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
 
     public void ConvertEnergytoHP()
     {
-        if (Energy >= MaxEnergy*(90/100))
-        {
-            Energy -= MaxEnergy*(10/100) ;
-            HitPoints += 1;
-        }
+        Energy -= MaxEnergy/10 ;
+        HitPoints += 1;
     }
     public void ConvertHPtoEnergy()
     {
-
-        Energy += MaxEnergy*(2/100);
+        Energy += MaxEnergy/10;
         HitPoints -= 1;
-
     }
     public bool IsAlive()
     {
@@ -326,7 +305,7 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
         EnergyDecay();
         Poop();
 
-        if ( Energy <= MaxEnergy/2 | ISEating) { LookForFood(); }
+        if ( Energy <= MaxEnergy/2 ) { LookForFood(); }
         else if ( Energy > MaxEnergy/2 ) { LookForMate(); }
 
 

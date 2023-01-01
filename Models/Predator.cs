@@ -78,9 +78,6 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
     private int _decayRate;
     public int DecayRate { get => _decayRate; set => _decayRate = value; }
 
-    private bool _iseating;
-    public bool ISEating { get => _iseating; set => _iseating = value; }
-
     private int _eatSpeed;
     public int EatSpeed { get => _eatSpeed; set => _eatSpeed = value; }
 
@@ -112,7 +109,7 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
 
         DecayRate = 10;
         LostEnergy = 0;
-        EatSpeed = 50;
+        EatSpeed = 100;
 
         AttackDamage = 30;
 
@@ -134,16 +131,16 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
     {
         if (Sex == 0)
         {
-            Energy -= MaxEnergy*(30/100);
-            LostEnergy += MaxEnergy * (30 / 100);
+            Energy -= MaxEnergy / 6;
+            LostEnergy += MaxEnergy /6;
             Mate = null;
             BreedCoolDown = true;
             CoolDown = GestationPeriod;
         }
         else
         {
-            Energy -= MaxEnergy*(30 / 100);
-            LostEnergy += MaxEnergy * (30 / 100);
+            Energy -= MaxEnergy/6;
+            LostEnergy += MaxEnergy/6;
             Mate = null;
         }
 
@@ -187,44 +184,32 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
 
     public void LookForFood()
     {
+        var closestMeat = new Dictionary<Meat, double>();
+        var list = aFood.GetProxyEntities(this, VisionRadius);
 
-        if (ISEating & Energy <= MaxEnergy - MaxEnergy * (90 / 100))
+        if (list.Count != 0)
         {
-            var list = aFood.GetProxyEntities(this, 0);
-            if (list.Count != 0) { if (list[0].Item1.Energy >= EatSpeed) { Feed(list[0].Item1); } }
-            else { ISEating = false; LookForFood(); }
-        }
-        else if (!ISEating)
-        {
-            var closestMeat = new Dictionary<Meat, double>();
-            var list = aFood.GetProxyEntities(this, VisionRadius);
-
-            if (list.Count != 0)
+            foreach ((IAbstractEntity m, double distance) in list)
             {
-                foreach ((IAbstractEntity m, double distance) in list)
-                {
-                    Meat meat = m as Meat;
-                    if (closestMeat.Keys.Count == 0) { closestMeat.Add(meat, distance); }
-                    else if (distance < closestMeat.Values.Last()) { closestMeat.Remove(closestMeat.Keys.First()); closestMeat.Add(meat, distance); }
-                }
-
-                int rowDist = closestMeat.Keys.First().Row - Row;
-                int colDist = closestMeat.Keys.First().Col - Col;
-
-                if (Math.Abs(rowDist) >= Math.Abs(colDist) & rowDist != 0)
-                {
-                    Move(rowDist / Math.Abs(rowDist), 0);
-                }
-                else if (colDist != 0) { Move(0, colDist / Math.Abs(colDist)); }
-                else 
-                {
-                    ISEating = true;
-                    Feed(closestMeat.Keys.First() as IAbstractEntity);
-                }
+                Meat meat = m as Meat;
+                if (closestMeat.Keys.Count == 0) { closestMeat.Add(meat, distance); }
+                else if (distance < closestMeat.Values.Last()) { closestMeat.Remove(closestMeat.Keys.First()); closestMeat.Add(meat, distance); }
             }
-            else { LookForEnemy(); }
+
+            int rowDist = closestMeat.Keys.First().Row - Row;
+            int colDist = closestMeat.Keys.First().Col - Col;
+
+            if (Math.Abs(rowDist) >= Math.Abs(colDist) & rowDist != 0)
+            {
+                Move(rowDist / Math.Abs(rowDist), 0);
+            }
+            else if (colDist != 0) { Move(0, colDist / Math.Abs(colDist)); }
+            else 
+            {
+                Feed(closestMeat.Keys.First() as IAbstractEntity);
+            }
         }
-        else { ISEating = false; }
+        else { LookForEnemy(); }
 
     }
 
@@ -290,7 +275,7 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
     public void EnergyDecay()
     {
         if (Energy <= 0) { ConvertHPtoEnergy(); }
-        else if (HitPoints < MaxHitPoints)
+        else if (HitPoints < MaxHitPoints & Energy >= MaxEnergy - MaxEnergy/10)
         {
             ConvertEnergytoHP();
         }
@@ -300,18 +285,13 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
 
     public void ConvertEnergytoHP()
     {
-        if (Energy >= MaxEnergy)
-        {
-            Energy -= MaxEnergy * (10 / 100);
-            HitPoints += 1;
-        }
+        Energy -= MaxEnergy/100;
+        HitPoints += 1;
     }
     public void ConvertHPtoEnergy()
     {
-
-        Energy += MaxEnergy * (2 / 100);
+        Energy += MaxEnergy/100;
         HitPoints -= 1;
-
     }
 
 
@@ -366,7 +346,7 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
         EnergyDecay();
         Poop();
 
-        if (Energy <= MaxEnergy / 2 | ISEating) { LookForFood(); }
+        if (Energy <= MaxEnergy / 2) { LookForFood(); }
         else if (Energy > MaxEnergy / 2) { LookForMate(); }
         else { RandomMove(); }
 

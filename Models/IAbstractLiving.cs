@@ -12,8 +12,6 @@ public interface IAbstractLiving
 
     List<string> DietList { get; set; }
 
-    bool ISEating { get; set; }
-
     int EatSpeed { get; set; }
 
     void Feed(IAbstractEntity entity);
