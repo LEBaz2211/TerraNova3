@@ -44,12 +44,13 @@
 
 
 
-        <Image
+        <ImageButton
             Source="plant.png"
     
             Grid.Row="2"
             Grid.RowSpan="2"
             Grid.Column="1"
+            Clicked="GoToPlantPref"
             />
 
         <Label
@@ -66,7 +67,7 @@
 
         <Slider
             Minimum="0"
-            Maximum="20"
+            Maximum="100"
             Value="10"
             x:Name="PlantSlider"
             Grid.Row="3"
@@ -77,12 +78,14 @@
 
 
 
-        <Image
+        <ImageButton
             Source="herbivores.png"
     
             Grid.Row="4"
             Grid.RowSpan="2"
             Grid.Column="1"
+
+            Clicked="GoToHerbivorePref"
             />
 
         <Label
@@ -99,7 +102,7 @@
 
         <Slider
             Minimum="0"
-            Maximum="20"
+            Maximum="100"
             Value="10"
             x:Name="HerbivoresSlider"
             Grid.Row="5"
@@ -110,12 +113,14 @@
 
 
 
-        <Image
+        <ImageButton
             Source="carnivores.png"
     
             Grid.Row="6"
             Grid.RowSpan="2"
             Grid.Column="1"
+
+            Clicked="GoToPredatorPref"
             />
 
         <Label
@@ -132,7 +137,7 @@
 
         <Slider
             Minimum="0"
-            Maximum="20"
+            Maximum="100"
             Value="10"
             x:Name="CarnivoresSlider"
             

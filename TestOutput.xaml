@@ -4,7 +4,8 @@
              
              x:Class="TerraNova3.TestOutput"
              Title="TestOutput">
-    <ScrollView >
+    <ScrollView
+        Orientation="Both">
         <VerticalStackLayout>
             <Label Text="Number of P: " x:Name="P"/>
             <Label Text="Number of H: " x:Name="H"/>

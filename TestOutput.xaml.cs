@@ -66,6 +66,8 @@ public partial class TestOutput : ContentPage
     }
     public void OnClearClicked(object sender, EventArgs e)
     {
+        this.ScaleX += 0.1;
+        this.ScaleY += 0.1;
 
 
     }
