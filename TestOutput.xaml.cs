@@ -68,12 +68,10 @@ public partial class TestOutput : ContentPage
     {
 
 
-        
-
-
     }
     public async void Start()
     {
+        Global.ResetGameTime();
 
         while (running)
         {
@@ -81,8 +79,8 @@ public partial class TestOutput : ContentPage
             // Update Game at 60fps
             Global.ResetTotalEnergy();
             tiles.update();
-            Plant plant = tiles.plnts.GetEntities()[0] as Plant;
-            P.Text = plant.HitPoints.ToString();/*tiles.pFood.GetEntities().Count.ToString()*/;
+            //Plant plant = tiles.plnts.GetEntities()[0] as Plant;
+            //P.Text = plant.HitPoints.ToString();/*tiles.pFood.GetEntities().Count.ToString()*/;
             H.Text = Global.GetTotalEnergy().ToString();
             Global.TickGameTime();
             await Task.Delay(8);

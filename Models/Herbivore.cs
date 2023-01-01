@@ -78,6 +78,12 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     private bool _iseating;
     public bool ISEating { get => _iseating; set => _iseating = value; }
 
+    private int _eatSpeed;
+    public int EatSpeed { get => _eatSpeed; set => _eatSpeed = value; }
+
+    private int _gestationTime;
+    public int GestationPeriod { get => _gestationTime; set => _gestationTime = value; }
+
     public Herbivore(int row, int col, SmartList plnts, SmartList herbs, SmartList aFood, SmartList pFood)
     {
         Row = row;
@@ -101,6 +107,7 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
         VisionRadius = 10;
 
         ISEating = false;
+        EatSpeed = 20;
 
         LostEnergy = 0;
         DecayRate = 8;
@@ -115,8 +122,8 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
 
     public void Feed(IAbstractEntity entity)
     {
-        Energy += 20;
-        entity.Energy -= 20;
+        Energy += EatSpeed;
+        entity.Energy -= EatSpeed;
     }
 
     public void LookForEnemy()
@@ -130,7 +137,8 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
         if (ISEating & Energy <= MaxEnergy - MaxEnergy * (90 / 100))
         {
             var list = plnts.GetProxyEntities(this, 0);
-            Feed(list[0].Item1);
+            if (list.Count != 0) { if (list[0].Item1.Energy >= EatSpeed) { Feed(list[0].Item1); } }
+            else { ISEating = false; LookForFood(); }
         }
         else if (!ISEating)
         {
@@ -282,7 +290,7 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
 
     public void ConvertEnergytoHP()
     {
-        if (Energy >= MaxEnergy)
+        if (Energy >= MaxEnergy*(90/100))
         {
             Energy -= MaxEnergy*(10/100) ;
             HitPoints += 1;
@@ -316,7 +324,7 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     public void Update()
     {
         EnergyDecay();
-        //Poop();
+        Poop();
 
         if ( Energy <= MaxEnergy/2 | ISEating) { LookForFood(); }
         else if ( Energy > MaxEnergy/2 ) { LookForMate(); }

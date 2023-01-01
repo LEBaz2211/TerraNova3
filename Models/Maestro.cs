@@ -81,7 +81,7 @@ internal class TileSet
     {
         List<(int, int)> positions = overlayGrid.GetRandomPositions();
 
-        //addOrganicMatter(positions);
+        addOrganicMatter(positions);
         addPlants(positions);
         addHerbs(positions);
         addApexs(positions);
@@ -117,9 +117,9 @@ internal class TileSet
     {
         for (int i = plNumber + heNumber + plNumber; i < positions.Count; i++)
         {
-            if (i % 4 == 0)
+            if (i % 10 == 0)
             { 
-                pFood.add(new OrganicMatter(positions[i].Item1, positions[i].Item2, 1000));
+                pFood.add(new OrganicMatter(positions[i].Item1, positions[i].Item2, 100));
             }
         }
     }
@@ -170,7 +170,7 @@ public class SmartList
                 (int, int) gridSize = Global.GetSize();
 
                 // If the distance is less than or equal to the radius, add the point to the list ONLY if they are in the grid
-                if (distance <= r & row >= 0 & col >= 0 & row < gridSize.Item1 & col < gridSize.Item2)
+                if (distance <= r & row >= 0 & col >= 0 & row <= gridSize.Item1 & col <= gridSize.Item2)
                 {
                     res.Add(((row, col), distance));
                 }
@@ -196,7 +196,7 @@ public class SmartList
         List<(IAbstractEntity, double)> proxy = new List<(IAbstractEntity, double)>();
         List<((int, int), double)> proxyPos = calcProxy(e, zone);
 
-        foreach(((int, int)pos , double distance) in proxyPos)
+        foreach(((int, int) pos , double distance) in proxyPos)
         {
             
             if (entitiesPos.Keys.Contains(pos))
@@ -225,7 +225,7 @@ public class SmartList
             }
             else
             {
-                e.Update();
+                if (Global.GetGameTime() > 1) { e.Update(); }
                 Global.AddToTotalEnergy(e.Energy);
                 Global.AddToTotalEnergy(e.LostEnergy);
                 overlayGrid.RemoveEntity(e);
@@ -267,6 +267,11 @@ public static class Global
     public static int GetGameTime()
     {
         return GameTime;
+    }
+
+    public static void ResetGameTime()
+    {
+        GameTime = 0;
     }
 
     public static void ResetTotalEnergy()

@@ -72,6 +72,12 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
     private int _decayRate;
     public int DecayRate { get => _decayRate; set => _decayRate = value; }
 
+    private bool _iseating;
+    public bool ISEating { get => _iseating; set => _iseating = value; }
+
+    private int _eatSpeed;
+    public int EatSpeed { get => _eatSpeed; set => _eatSpeed = value; }
+
     public Plant(int row, int col, SmartList plnts, SmartList pFood)
     {
         Row = row;
@@ -96,6 +102,8 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
 
         SeedZone = 2;
         RootZone = 4;
+        ISEating = false;
+        EatSpeed = 10;
 
         WinterCycleTime = 200;
         SpringCycleTime = 10;
@@ -106,17 +114,14 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
 
     public void Feed(IAbstractEntity entity)
     {
-        if (Energy <= MaxEnergy)
-        {
-            Energy += 10;
-            entity.Energy -= 10;
-        }
+        Energy += EatSpeed;
+        entity.Energy -= EatSpeed;
     }
 
     public void ConvertHPtoEnergy()
     {
         Energy += MaxEnergy*(5/100);
-        HitPoints -= MaxHitPoints*(10/100);
+        HitPoints -= 1;
     }
 
     public void Seed()
@@ -155,10 +160,10 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
 
     public void ConvertEnergytoHP()
     {
-        if (Energy >= MaxEnergy)
+        if (Energy >= MaxEnergy*(90/100))
         {
             Energy -= MaxEnergy * (5 / 100);
-            HitPoints += MaxHitPoints * (5 / 100);
+            HitPoints += 1;
         }
     }
 
@@ -166,7 +171,7 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
     {
         if (HitPoints <= 0)
         {
-            pFood.add(new OrganicMatter(Row, Col, LostEnergy));
+            pFood.add(new OrganicMatter(Row, Col, Energy+LostEnergy));
             return false;
         }
         else
@@ -193,6 +198,7 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
                 else if (distance < closestOrganicMatter.Values.Last()) { closestOrganicMatter.Remove(closestOrganicMatter.Keys.First()); closestOrganicMatter.Add(organicMatter, distance); }
             }
             Feed(closestOrganicMatter.Keys.First());
+            if(Energy == MaxEnergy * (95 / 100)) { ISEating = false; }
         }
     }
 
@@ -211,7 +217,7 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
         EnergyDecay();
         SeasonalChange();
 
-        if(Energy <= MaxEnergy * (75 / 100)) { LookForOrganicMatter(); }
+        if(Energy <= MaxEnergy * (75 / 100) | ISEating) { LookForOrganicMatter(); }
 
         if(Spring & Energy >= MaxEnergy*(75/100)) { Seed(); }
     }

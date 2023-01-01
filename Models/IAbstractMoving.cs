@@ -8,15 +8,15 @@ public interface IAbstractMoving
 
     // The sex of the moving entity
     int Sex { get; set; }
-    
+
+    int GestationPeriod { get; set; }
+
     bool BreedCoolDown { get; set; }
 
     int CoolDown { get; set; }
 
     // The speed of the moving entity
     int Speed { get; set; }
-
-    bool ISEating { get; set; }
 
     // The vision radius of the moving entity
     int VisionRadius { get; set; }

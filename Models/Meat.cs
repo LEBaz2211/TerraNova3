@@ -42,7 +42,7 @@ public class Meat : IAbstractEntity
         MaxEnergy = maxEnergy;
         Energy = MaxEnergy;
         LostEnergy = 0;
-        DecayRate = 10;
+        DecayRate = 1;
 
         this.pFood = pFood;
 
@@ -61,7 +61,7 @@ public class Meat : IAbstractEntity
 
     public bool Removed()
     {
-        if (Energy <= 0) { pFood.add(new OrganicMatter(Row, Col, LostEnergy)); return true; }
+        if (Energy <= 0) { pFood.add(new OrganicMatter(Row, Col, Energy + LostEnergy)); return true; }
         else { return false; }
     }
 

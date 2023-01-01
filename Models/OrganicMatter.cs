@@ -40,6 +40,9 @@ public class OrganicMatter : IAbstractEntity
         MaxEnergy = maxEnergy;
         Energy = MaxEnergy;
 
+        DecayRate = 0;
+        LostEnergy = 0;
+
         Image image = new Image();
         image.Source = "organic.png";
         EntityImage = image;

@@ -81,7 +81,11 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
     private bool _iseating;
     public bool ISEating { get => _iseating; set => _iseating = value; }
 
+    private int _eatSpeed;
+    public int EatSpeed { get => _eatSpeed; set => _eatSpeed = value; }
 
+    private int _gestationTime;
+    public int GestationPeriod { get => _gestationTime; set => _gestationTime = value; }
 
     // Constructor
     public Predator(int row, int col, SmartList apexs, SmartList herbs, SmartList aFood, SmartList pFood)
@@ -100,19 +104,22 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
         this.pFood = pFood;
 
         MaxEnergy = 1000;
-        Energy = MaxEnergy;
-        MaxHitPoints = 30;
+        Energy = MaxEnergy/4;
+        MaxHitPoints = 100;
         HitPoints = MaxHitPoints;
         ContactZone = 10;
         VisionRadius = 10;
 
         DecayRate = 10;
         LostEnergy = 0;
+        EatSpeed = 50;
 
         AttackDamage = 30;
 
         Sex = rand.Next(2);
         Mate = null;
+        GestationPeriod = 50;
+
         BreedCoolDown = false;
 
         EntityID = Global.GetID();
@@ -127,14 +134,16 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
     {
         if (Sex == 0)
         {
-            Energy -= MaxEnergy / 6;
+            Energy -= MaxEnergy*(30/100);
+            LostEnergy += MaxEnergy * (30 / 100);
             Mate = null;
             BreedCoolDown = true;
-            CoolDown = 20;
+            CoolDown = GestationPeriod;
         }
         else
         {
-            Energy -= MaxEnergy / 3;
+            Energy -= MaxEnergy*(30 / 100);
+            LostEnergy += MaxEnergy * (30 / 100);
             Mate = null;
         }
 
@@ -144,12 +153,8 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
 
     public void Feed(IAbstractEntity meat)
     {
-        if (Energy <= MaxEnergy)
-        {
-            Energy += 100;
-            meat.Energy -= 100;
-        }
-
+        Energy += EatSpeed;
+        meat.Energy -= EatSpeed;
     }
 
     public void LookForEnemy()
@@ -182,29 +187,44 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
 
     public void LookForFood()
     {
-        var closestMeat = new Dictionary<Meat, double>();
-        var list = aFood.GetProxyEntities(this, VisionRadius);
 
-        if (list.Count != 0)
+        if (ISEating & Energy <= MaxEnergy - MaxEnergy * (90 / 100))
         {
-            foreach ((IAbstractEntity m, double distance) in list)
-            {
-                Meat meat = m as Meat;
-                if (closestMeat.Keys.Count == 0) { closestMeat.Add(meat, distance); }
-                else if (distance < closestMeat.Values.Last()) { closestMeat.Remove(closestMeat.Keys.First()); closestMeat.Add(meat, distance); }
-            }
-
-            int rowDist = closestMeat.Keys.First().Row - Row;
-            int colDist = closestMeat.Keys.First().Col - Col;
-
-            if (Math.Abs(rowDist) >= Math.Abs(colDist) & rowDist != 0)
-            {
-                Move(rowDist / Math.Abs(rowDist), 0);
-            }
-            else if (colDist != 0) { Move(0, colDist / Math.Abs(colDist)); }
-            else { Feed(closestMeat.Keys.First() as IAbstractEntity); }
+            var list = aFood.GetProxyEntities(this, 0);
+            if (list.Count != 0) { if (list[0].Item1.Energy >= EatSpeed) { Feed(list[0].Item1); } }
+            else { ISEating = false; LookForFood(); }
         }
-        else { LookForEnemy(); }
+        else if (!ISEating)
+        {
+            var closestMeat = new Dictionary<Meat, double>();
+            var list = aFood.GetProxyEntities(this, VisionRadius);
+
+            if (list.Count != 0)
+            {
+                foreach ((IAbstractEntity m, double distance) in list)
+                {
+                    Meat meat = m as Meat;
+                    if (closestMeat.Keys.Count == 0) { closestMeat.Add(meat, distance); }
+                    else if (distance < closestMeat.Values.Last()) { closestMeat.Remove(closestMeat.Keys.First()); closestMeat.Add(meat, distance); }
+                }
+
+                int rowDist = closestMeat.Keys.First().Row - Row;
+                int colDist = closestMeat.Keys.First().Col - Col;
+
+                if (Math.Abs(rowDist) >= Math.Abs(colDist) & rowDist != 0)
+                {
+                    Move(rowDist / Math.Abs(rowDist), 0);
+                }
+                else if (colDist != 0) { Move(0, colDist / Math.Abs(colDist)); }
+                else 
+                {
+                    ISEating = true;
+                    Feed(closestMeat.Keys.First() as IAbstractEntity);
+                }
+            }
+            else { LookForEnemy(); }
+        }
+        else { ISEating = false; }
 
     }
 
@@ -299,7 +319,7 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
     {
         if (HitPoints <= 0)
         {
-            aFood.add(new Meat(Row, Col, LostEnergy, pFood));
+            aFood.add(new Meat(Row, Col, Energy + LostEnergy, pFood));
             return false;
         }
         else
@@ -321,6 +341,7 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
         if (CoolDown == 0)
         {
             Predator newApex = new Predator(Row, Col, apexs, herbs, aFood, pFood);
+            Energy -= MaxEnergy / 2;
             apexs.add(newApex);
             BreedCoolDown = false;
         }
@@ -343,8 +364,9 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
     public void Update()
     {
         EnergyDecay();
+        Poop();
 
-        if (Energy <= MaxEnergy / 2) { LookForFood(); }
+        if (Energy <= MaxEnergy / 2 | ISEating) { LookForFood(); }
         else if (Energy > MaxEnergy / 2) { LookForMate(); }
         else { RandomMove(); }
 
@@ -353,6 +375,10 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
 
     public void Poop()
     {
-        throw new NotImplementedException();
+        if (Global.GetGameTime() % 5 == 0 & rand.Next(4) == 0)
+        {
+            pFood.add(new OrganicMatter(Row, Col, LostEnergy));
+            LostEnergy = 0;
+        }
     }
 }
