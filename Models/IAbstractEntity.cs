@@ -39,7 +39,5 @@ public interface IAbstractEntity
 
     bool Removed();
 
-    ///MUST REMOVE AFTER TESTING
-    int GetHitPoints();
 }
 

@@ -7,7 +7,11 @@ public interface IAbstractMoving
 {
 
     // The sex of the moving entity
-    string Sex { get; set; }
+    int Sex { get; set; }
+    
+    bool BreedCoolDown { get; set; }
+
+    int CoolDown { get; set; }
 
     // The speed of the moving entity
     int Speed { get; set; }
@@ -15,7 +19,7 @@ public interface IAbstractMoving
     // The vision radius of the moving entity
     int VisionRadius { get; set; }
 
-    bool Mated { get; set; }
+    IAbstractEntity Mate { get; set; }
 
     void Move(int row, int col);
 
@@ -25,7 +29,9 @@ public interface IAbstractMoving
 
     void LookForEnemy();
 
-    void Breed(IAbstractEntity mate);
+    void Breed();
+
+    void Gestation();
 
     void Repost();
 }

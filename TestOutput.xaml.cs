@@ -24,34 +24,12 @@ public partial class TestOutput : ContentPage
 
         tiles = new TileSet(pn, hn, cn, 20);
 
-
-        OverlayGrid overlayGrid = tiles.getOverlay();
-        List<(int, int)> positions = overlayGrid.GetRandomPositions();
-
-        for (var i = 0; i < pn; i++)
-        {
-            Image image = new Image();
-            image.Source = "plant.png";
-            tiles.plnts.add(new Plant(positions[i].Item1, positions[i].Item2, image));
-        }
-        for (var i = pn; i < hn + pn; i++)
-        {
-            Image image = new Image();
-            image.Source = "herbivores.png";
-            tiles.herbs.add(new Herbivore(positions[i].Item1, positions[i].Item2, image, tiles.plnts, tiles.herbs));
-        }
-        for (var i = hn + pn; i < hn + pn + cn; i++)
-        {
-            Image image = new Image();
-            image.Source = "carnivores.png";
-            tiles.apexs.add(new Predator(positions[i].Item1, positions[i].Item2, image));
-        }
-
+        Grid overlay = tiles.getOverlay().GetGrid();
         
         tiles.update();
 
         Grid grid = tiles.getBackground();
-        Grid overlay = tiles.getOverlay().GetGrid();
+        
 
         //P.Text = pn.ToString();
         //H.Text = hn.ToString();
@@ -102,10 +80,11 @@ public partial class TestOutput : ContentPage
 
             // Update Game at 60fps
             tiles.update();
-            var plant = tiles.plnts.GetEntities()[0];
-            P.Text = plant.Energy.ToString();
-            H.Text = plant.GetHitPoints().ToString();
-            await Task.Delay(8);
+/*            Herbivore herb = tiles.herbs.GetEntities()[0] as Herbivore;
+            Herbivore mate = herb.Mate as Herbivore;
+            P.Text = herb.Sex.ToString();
+            H.Text = mate.Sex.ToString();*/
+            await Task.Delay(200);
         }
     }
 }

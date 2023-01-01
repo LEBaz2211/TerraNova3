@@ -45,11 +45,15 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
     private int _entityID;
     public int EntityID { get => _entityID; set => _entityID = value; }
 
-    public Plant(int row, int col, Image image)
+    public Plant(int row, int col)
     {
         Row = row;
         Col = col;
+        
+        Image image = new Image();
+        image.Source = "plant.png";
         EntityImage = image;
+        
         MaxEnergy = 3000;
         Energy = MaxEnergy;
         MaxHitPoints = 10;
@@ -116,8 +120,18 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
         return !IsAlive();
     }
 
-    public int GetHitPoints()
+    public int GetSex()
     {
-        return HitPoints;
+        throw new NotImplementedException();
+    }
+
+    public bool GetMated()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void SetMated()
+    {
+        throw new NotImplementedException();
     }
 }

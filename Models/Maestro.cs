@@ -1,8 +1,11 @@
-﻿using System;
+﻿using Microsoft.Maui;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TerraNova3.Model;
+using TerraNova3.Models;
 using TerraNova3.View_Models;
 
 namespace TerraNova3.Models;
@@ -18,6 +21,8 @@ internal class TileSet
     private int plNumber;
     private int heNumber;
     private int prNumber;
+
+    List<(int, int)> positions;
 
     private int turnC;
 
@@ -73,7 +78,35 @@ internal class TileSet
     }
     public OverlayGrid getOverlay()
     {
+        List<(int, int)> positions = overlayGrid.GetRandomPositions();
+        addPlants(positions);
+        addHerbs(positions);
+        addApexs(positions);
         return overlayGrid;
+    }
+
+    public void addPlants(List<(int, int)> positions)
+    {
+        for (int i = 0; i < plNumber; i++)
+        {
+            plnts.add(new Plant(positions[i].Item1, positions[i].Item2));
+        }
+    }
+
+    public void addHerbs(List<(int, int)> positions)
+    {
+        for (int i = 0; i < heNumber; i++)
+        {
+            herbs.add(new Herbivore(positions[i].Item1, positions[i].Item2, plnts, herbs));
+        }
+    }
+
+    public void addApexs(List<(int, int)> positions)
+    {
+        for (int i = 0; i < prNumber; i++)
+        {
+            apexs.add(new Predator(positions[i].Item1, positions[i].Item2));
+        }
     }
 }
 
