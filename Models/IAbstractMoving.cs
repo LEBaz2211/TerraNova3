@@ -23,6 +23,8 @@ public interface IAbstractMoving
 
     void Move(int row, int col);
 
+    void RandomMove();
+
     void LookForFood();
 
     void LookForMate();

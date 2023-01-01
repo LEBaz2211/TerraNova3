@@ -92,8 +92,6 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
 
     }
 
-
-
     public void Feed(IAbstractEntity entity)
     {
         if(Energy <= MaxEnergy)
@@ -121,15 +119,18 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
                 if (closestPlant.Keys.Count == 0) { closestPlant.Add(plant, distance); }
                 else if (distance < closestPlant.Values.Last()) { closestPlant.Remove(closestPlant.Keys.First()); closestPlant.Add(plant, distance);}
             }
+
             int rowDist = closestPlant.Keys.First().Row - Row;
             int colDist = closestPlant.Keys.First().Col - Col;
+
             if (Math.Abs(rowDist) >= Math.Abs(colDist) & rowDist != 0)
             {
                 Move(rowDist / Math.Abs(rowDist), 0);
             }
-            else if(colDist != 0){ Move(0, (colDist/Math.Abs(colDist))); }
+            else if(colDist != 0){ Move(0, colDist/Math.Abs(colDist)); }
             else { Feed(closestPlant.Keys.First()); }
         }
+        else { RandomMove(); }
         
     }
 
@@ -175,6 +176,7 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
             else if (colDist != 0) { Move(0, (colDist / Math.Abs(colDist))); }
             else { Breed(); }
         }
+        else { RandomMove(); }
     }
 
     public void Breed()
@@ -209,6 +211,15 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     {
         Row += row;
         Col += col;
+    }
+
+    public void RandomMove()
+    {
+        int dir = rand.Next(3);
+        if (dir == 0) { Move(0, 1); }
+        else if(dir == 1){ Move(1, 0); }
+        else if (dir == 2) { Move(0, -1); }
+        else { Move(-1, 0); }
     }
 
     public void Repost()
@@ -259,14 +270,17 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
         return !IsAlive();
     }
     
-    public void Update()
+    public void Update((int, int) size)
     {
         EnergyDecay();
 
-        if(Energy <= MaxEnergy/2 ) { LookForFood(); }
-        else if(Energy > MaxEnergy / 2) { LookForMate(); }
+        if ( Energy <= MaxEnergy/2 ) { LookForFood(); }
+        else if ( Energy > MaxEnergy / 2 ) { LookForMate(); }
+        else { RandomMove(); }
 
         if (BreedCoolDown == true) { Gestation(); }
 
     }
+
+
 }

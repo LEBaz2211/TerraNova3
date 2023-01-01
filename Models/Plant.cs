@@ -62,7 +62,7 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
         EntityID = Global.GetID();
     }
 
-    public void Update()
+    public void Update((int, int) size)
     {
         EnergyDecay();
     }
@@ -120,18 +120,4 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
         return !IsAlive();
     }
 
-    public int GetSex()
-    {
-        throw new NotImplementedException();
-    }
-
-    public bool GetMated()
-    {
-        throw new NotImplementedException();
-    }
-
-    public void SetMated()
-    {
-        throw new NotImplementedException();
-    }
 }

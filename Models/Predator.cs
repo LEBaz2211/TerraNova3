@@ -131,7 +131,7 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
         throw new NotImplementedException();
     }
 
-    public void Update()
+    public void Update((int, int) size)
     {
 
     }
@@ -170,4 +170,10 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
     {
         throw new NotImplementedException();
     }
+
+    public void RandomMove()
+    {
+        throw new NotImplementedException();
+    }
+
 }

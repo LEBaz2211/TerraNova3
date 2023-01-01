@@ -92,4 +92,10 @@ public class OverlayGrid
         return positions;
     }
 
+    public (int,int) GetSize()
+    {
+        return (_numRows, _numColumns);
+    }
+
+
 }

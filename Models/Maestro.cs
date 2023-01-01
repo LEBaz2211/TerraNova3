@@ -202,7 +202,7 @@ internal class SmartList
             }
             else
             {
-                e.Update();
+                e.Update(overlayGrid.GetSize());
                 overlayGrid.RemoveEntity(e);
                 overlayGrid.AddEntity(e);
             }
@@ -219,6 +219,5 @@ public static class Global
     {
         ID++;
         return ID;
-
     }
 }
