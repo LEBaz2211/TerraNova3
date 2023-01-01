@@ -84,7 +84,7 @@ public partial class TestOutput : ContentPage
             Herbivore mate = herb.Mate as Herbivore;
             P.Text = herb.Sex.ToString();
             H.Text = mate.Sex.ToString();*/
-            await Task.Delay(200);
+            await Task.Delay(8);
         }
     }
 }

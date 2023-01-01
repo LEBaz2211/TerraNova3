@@ -57,15 +57,21 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
 
     private int _entityID;
     public int EntityID { get => _entityID; set => _entityID = value; }
-    public bool Mated { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    int IAbstractMoving.Sex { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public bool BreedCoolDown { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public int CoolDown { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public IAbstractEntity Mate { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
 
 
     // Constructor
-    public Predator(int row, int col, Image image)
+    public Predator(int row, int col)
     {
         Row = row;
         Col = col;
+
+        Image image = new Image();
+        image.Source = "carnivores.png";
         EntityImage = image;
 
 
@@ -155,12 +161,12 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
         return !IsAlive();
     }
 
-    public int GetHitPoints()
+    public void Breed(IAbstractEntity mate)
     {
         throw new NotImplementedException();
     }
 
-    public void Breed(IAbstractEntity mate)
+    public void Gestation()
     {
         throw new NotImplementedException();
     }
