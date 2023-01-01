@@ -96,7 +96,7 @@ internal class TileSet
 
     public void addHerbs(List<(int, int)> positions)
     {
-        for (int i = 0; i < heNumber; i++)
+        for (int i = plNumber; i < heNumber + plNumber; i++)
         {
             herbs.add(new Herbivore(positions[i].Item1, positions[i].Item2, plnts, herbs));
         }
@@ -104,7 +104,7 @@ internal class TileSet
 
     public void addApexs(List<(int, int)> positions)
     {
-        for (int i = 0; i < prNumber; i++)
+        for (int i = heNumber + plNumber; i < prNumber + heNumber + plNumber; i++)
         {
             apexs.add(new Predator(positions[i].Item1, positions[i].Item2));
         }
