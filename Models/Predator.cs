@@ -131,7 +131,7 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
         throw new NotImplementedException();
     }
 
-    public void Update((int, int) size)
+    public void Update()
     {
 
     }

@@ -29,7 +29,7 @@ public interface IAbstractEntity
 
     Image EntityImage { get; set; }
 
-    void Update((int, int) size);
+    void Update();
 
     void ConvertHPtoEnergy();
 

@@ -215,11 +215,12 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
 
     public void RandomMove()
     {
+        (int, int) size = Global.GetSize();
         int dir = rand.Next(3);
-        if (dir == 0) { Move(0, 1); }
-        else if(dir == 1){ Move(1, 0); }
-        else if (dir == 2) { Move(0, -1); }
-        else { Move(-1, 0); }
+        if (dir == 0 & Col < size.Item2) { Move(0, 1); }
+        else if (dir == 1 & Row < size.Item1){ Move(1, 0); }
+        else if (dir == 2 & Col > 0) { Move(0, -1); }
+        else if (Row > 0){ Move(-1, 0); }
     }
 
     public void Repost()
@@ -270,7 +271,7 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
         return !IsAlive();
     }
     
-    public void Update((int, int) size)
+    public void Update()
     {
         EnergyDecay();
 

@@ -62,7 +62,7 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
         EntityID = Global.GetID();
     }
 
-    public void Update((int, int) size)
+    public void Update()
     {
         EnergyDecay();
     }

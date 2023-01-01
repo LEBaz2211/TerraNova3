@@ -54,9 +54,10 @@ internal class TileSet
         TerraGrid gridGen = new TerraGrid(size, size);
         gridGen.GenerateGrid();
 
+
         overlayGrid = new OverlayGrid(gridGen);
 
-        
+        Global.SetSize((gridGen.GetNumRows(), gridGen.GetNumColumns()));
 
         background = gridGen.GetGrid();
         
@@ -202,7 +203,7 @@ internal class SmartList
             }
             else
             {
-                e.Update(overlayGrid.GetSize());
+                e.Update();
                 overlayGrid.RemoveEntity(e);
                 overlayGrid.AddEntity(e);
             }
@@ -214,10 +215,21 @@ internal class SmartList
 public static class Global
 {
     public static int ID = 0;
+    public static (int, int) Size = (0, 0);
 
     public static int GetID()
     {
         ID++;
         return ID;
+    }
+
+    public static void SetSize((int,int) size)
+    {
+        Size = size;
+    }
+
+    public static (int, int) GetSize()
+    {
+        return Size;
     }
 }
