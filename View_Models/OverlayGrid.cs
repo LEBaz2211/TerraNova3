@@ -54,7 +54,7 @@ public class OverlayGrid
 
     public void RemoveEntity(IAbstractEntity entity)
     {
-        if (_entity.Remove(entity)){ 
+        if (_entity.Remove(entity)){
             _grid.Children.Remove(entity.EntityImage);
             
         }

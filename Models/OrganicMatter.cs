@@ -35,14 +35,14 @@ public class OrganicMatter : IAbstractEntity
         Energy = MaxEnergy;
 
         Image image = new Image();
-        image.Source = "organicmatter.png";
+        image.Source = "organic.png";
         EntityImage = image;
 
         EntityID = Global.GetID();
     }
     public void EnergyDecay()
     {
-        Energy -= 1;
+
     }
 
     public bool Removed()
@@ -53,6 +53,6 @@ public class OrganicMatter : IAbstractEntity
 
     public void Update()
     {
-        EnergyDecay();
+
     }
 }

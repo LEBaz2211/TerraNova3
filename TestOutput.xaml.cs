@@ -80,11 +80,10 @@ public partial class TestOutput : ContentPage
 
             // Update Game at 60fps
             tiles.update();
-/*            Herbivore herb = tiles.herbs.GetEntities()[0] as Herbivore;
-            Herbivore mate = herb.Mate as Herbivore;
-            P.Text = herb.Col.ToString();
-            H.Text = herb.Row.ToString();*/
-            await Task.Delay(200);
+            Plant plant = tiles.plnts.GetEntities()[0] as Plant;
+            P.Text = tiles.pFood.GetEntities().Count.ToString();
+            H.Text = tiles.plnts.GetEntities().Count.ToString();
+            await Task.Delay(8);
         }
     }
 }

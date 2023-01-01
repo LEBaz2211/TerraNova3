@@ -80,9 +80,12 @@ internal class TileSet
     public OverlayGrid getOverlay()
     {
         List<(int, int)> positions = overlayGrid.GetRandomPositions();
+
+        addOrganicMatter(positions);
         addPlants(positions);
         addHerbs(positions);
         addApexs(positions);
+        
         return overlayGrid;
     }
 
@@ -90,7 +93,7 @@ internal class TileSet
     {
         for (int i = 0; i < plNumber; i++)
         {
-            plnts.add(new Plant(positions[i].Item1, positions[i].Item2));
+            plnts.add(new Plant(positions[i].Item1, positions[i].Item2, plnts, pFood));
         }
     }
 
@@ -109,6 +112,17 @@ internal class TileSet
             apexs.add(new Predator(positions[i].Item1, positions[i].Item2, apexs, herbs, aFood, pFood));
         }
     }
+
+    public void addOrganicMatter(List<(int, int)> positions)
+    {
+        for (int i = plNumber + heNumber + plNumber; i < positions.Count; i++)
+        {
+            if (i % 4 == 0)
+            { 
+                pFood.add(new OrganicMatter(positions[i].Item1, positions[i].Item2));
+            }
+        }
+    }
 }
 
 public class SmartList
@@ -122,6 +136,12 @@ public class SmartList
         entities = entitiesList;
         
     }
+
+    public bool ISFree(int x, int y)
+    {
+        return !entitiesPos.ContainsKey((x, y));
+    }
+    
     public void makePos()
     {
         entitiesPos = new Dictionary<(int, int), IAbstractEntity>();
@@ -147,8 +167,10 @@ public class SmartList
                 // Calculate the distance between the current point and the center
                 double distance = Math.Sqrt((col - x) * (col - x) + (row - y) * (row - y));
 
-                // If the distance is less than or equal to the radius, add the point to the list
-                if (distance <= r)
+                (int, int) gridSize = Global.GetSize();
+
+                // If the distance is less than or equal to the radius, add the point to the list ONLY if they are in the grid
+                if (distance <= r & row >= 0 & col >= 0 & row < gridSize.Item1 & col < gridSize.Item2)
                 {
                     res.Add(((row, col), distance));
                 }

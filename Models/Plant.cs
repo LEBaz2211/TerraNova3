@@ -9,6 +9,12 @@ namespace TerraNova3.Model;
 
 internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
 {
+    Random rand = new Random();
+
+    SmartList pFood;
+
+    SmartList plnts;
+
     private int _row;
     public int Row { get => _row; set => _row = value; }
 
@@ -37,15 +43,30 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
     public List<string> DietList { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
     private int _rootZone;
-    public int RootZone { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public int RootZone { get => _rootZone; set => _rootZone = value; }
 
     private int _seedZone;
-    public int SeedZone { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public int SeedZone { get => _seedZone; set => _seedZone = value; }
 
     private int _entityID;
     public int EntityID { get => _entityID; set => _entityID = value; }
 
-    public Plant(int row, int col)
+    private int _timer;
+    public int Timer { get => _timer; set => _timer = value; }
+
+    private bool _winter;
+    public bool Winter { get => _winter; set => _winter = value; }
+
+    private bool _spring;
+    public bool Spring { get => _spring; set => _spring = value; }
+
+    private int _winterCycleTime;
+    public int WinterCycleTime { get => _winterCycleTime; set => _winterCycleTime = value; }
+
+    private int _springCycleTime;
+    public int SpringCycleTime { get => _springCycleTime; set => _springCycleTime = value; }
+
+    public Plant(int row, int col, SmartList plnts, SmartList pFood)
     {
         Row = row;
         Col = col;
@@ -53,34 +74,62 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
         Image image = new Image();
         image.Source = "plant.png";
         EntityImage = image;
-        
-        MaxEnergy = 3000;
-        Energy = MaxEnergy;
+
+        this.pFood = pFood;
+        this.plnts = plnts;
+
+        MaxEnergy = 2000;
+        Energy = MaxEnergy/2;
         MaxHitPoints = 10;
         HitPoints = MaxHitPoints;
 
         EntityID = Global.GetID();
-    }
 
-    public void Update()
-    {
-        EnergyDecay();
+        SeedZone = 2;
+        RootZone = 4;
+
+        WinterCycleTime = 200;
+        SpringCycleTime = 10;
+        Timer = WinterCycleTime;
+        Winter = true;
+        Spring = false;
     }
 
     public void Feed(IAbstractEntity entity)
     {
-        throw new NotImplementedException();
+        if (Energy <= MaxEnergy)
+        {
+            Energy += 100;
+            entity.Energy -= 100;
+        }
     }
 
     public void ConvertHPtoEnergy()
     {
-        Energy += 100;
-        HitPoints -= 1;
+        Energy += MaxEnergy*(5/100);
+        HitPoints -= MaxHitPoints*(10/100);
     }
 
     public void Seed()
     {
-        throw new NotImplementedException();
+        List<((int, int),double)> freePostitions = plnts.calcProxy(this, SeedZone);
+          
+
+        int nbFreePos = freePostitions.Count;
+
+        if (nbFreePos != 0)
+        {
+            int randomPos = rand.Next(0, nbFreePos);
+
+            if(plnts.ISFree(freePostitions[randomPos].Item1.Item1, freePostitions[randomPos].Item1.Item2))
+            {
+
+                Energy -= MaxEnergy / 2;
+
+                plnts.add(new Plant(freePostitions[randomPos].Item1.Item1, freePostitions[randomPos].Item1.Item2, plnts, pFood));
+                
+            }
+        }
     }
 
     public void EnergyDecay()
@@ -98,8 +147,8 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
     {
         if (Energy >= MaxEnergy)
         {
-            Energy -= 100;
-            HitPoints += 1;
+            Energy -= MaxEnergy * (5 / 100);
+            HitPoints += MaxHitPoints * (5 / 100);
         }
     }
 
@@ -120,4 +169,39 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
         return !IsAlive();
     }
 
+    public void LookForOrganicMatter()
+    {
+        var closestOrganicMatter = new Dictionary<IAbstractEntity, double>();
+        var list = pFood.GetProxyEntities(this, RootZone);
+
+        if (list.Count != 0)
+        {
+            foreach ((IAbstractEntity organicMatter, double distance) in list)
+            {
+                if (closestOrganicMatter.Keys.Count == 0) { closestOrganicMatter.Add(organicMatter, distance); }
+                else if (distance < closestOrganicMatter.Values.Last()) { closestOrganicMatter.Remove(closestOrganicMatter.Keys.First()); closestOrganicMatter.Add(organicMatter, distance); }
+            }
+            Feed(closestOrganicMatter.Keys.First());
+        }
+    }
+
+    public void SeasonalChange()
+    {
+        if (Timer <= 0) 
+        { 
+            if (Winter) { Winter = false; Spring = true; Timer = SpringCycleTime; }
+            else { Winter = true; Spring = false; Timer = WinterCycleTime; }
+        }
+        else if (Timer > 0) { Timer -= 1; }
+    }
+
+    public void Update()
+    {
+        EnergyDecay();
+        SeasonalChange();
+
+        if(Energy <= MaxEnergy * (75 / 100)) { LookForOrganicMatter(); }
+
+        if(Spring & Energy >= MaxEnergy*(75/100)) { Seed(); }
+    }
 }

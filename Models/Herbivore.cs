@@ -86,7 +86,7 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
         
         MaxEnergy = 1000;
         Energy = MaxEnergy;
-        MaxHitPoints = 30;
+        MaxHitPoints = 35;
         HitPoints = MaxHitPoints;
         ContactZone = 10;
         VisionRadius = 10;
@@ -247,7 +247,7 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
         {
             ConvertEnergytoHP();
         }
-        Energy -= 10;
+        Energy -= 8;
     }
 
     public void ConvertEnergytoHP()
