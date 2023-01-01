@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TerraNova3.Model;
-using static Android.Icu.Text.CaseMap;
 
 namespace TerraNova3.Models;
 
@@ -56,7 +55,7 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
     public int Speed { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
     private int _visionRadius;
-    public int VisionRadius { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public int VisionRadius { get => _visionRadius; set => _visionRadius = value; }
 
     private int _entityID;
     public int EntityID { get => _entityID; set => _entityID = value; }
@@ -71,7 +70,7 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
     public int CoolDown { get => _coolDown; set => _coolDown = value; }
 
     private int _attackDamage;
-    public int AttackDamage { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public int AttackDamage { get => _attackDamage; set => _attackDamage = value; }
 
 
 
@@ -98,6 +97,9 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
         MaxHitPoints = 30;
         HitPoints = MaxHitPoints;
         ContactZone = 10;
+        VisionRadius = 10;
+
+        AttackDamage = 30;
 
         Sex = rand.Next(2);
         Mate = null;
@@ -143,7 +145,7 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
     public void LookForEnemy()
     {
         var closestHerb = new Dictionary<Herbivore, double>();
-        var list = herbs.GetProxyEntities(this);
+        var list = herbs.GetProxyEntities(this, VisionRadius);
 
         if (list.Count != 0)
         {
@@ -171,7 +173,7 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
     public void LookForFood()
     {
         var closestMeat = new Dictionary<Meat, double>();
-        var list = aFood.GetProxyEntities(this);
+        var list = aFood.GetProxyEntities(this, VisionRadius);
 
         if (list.Count != 0)
         {
@@ -199,7 +201,7 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
     public void LookForMate()
     {
         var closestMate = new Dictionary<Predator, double>();
-        var list = apexs.GetProxyEntities(this);
+        var list = apexs.GetProxyEntities(this, VisionRadius);
 
         if (list.Count != 0 & Mate == null)
         {
@@ -225,6 +227,7 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
                 }
                 else if (colDist != 0) { Move(0, (colDist / Math.Abs(colDist))); }
             }
+            else { RandomMove(); }
 
         }
         else if (Mate != null)
@@ -261,22 +264,21 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
         {
             ConvertEnergytoHP();
         }
-        Energy -= 1;
+        Energy -= 10;
     }
 
     public void ConvertEnergytoHP()
     {
         if (Energy >= MaxEnergy)
         {
-            Energy -= MaxEnergy / 300;
+            Energy -= MaxEnergy * (10 / 100);
             HitPoints += 1;
         }
     }
-
     public void ConvertHPtoEnergy()
     {
 
-        Energy += MaxEnergy / 300;
+        Energy += MaxEnergy * (2 / 100);
         HitPoints -= 1;
 
     }
@@ -315,11 +317,15 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
     public void RandomMove()
     {
         (int, int) size = Global.GetSize();
-        int dir = rand.Next(3);
-        if (dir == 0 & Col < size.Item2) { Move(0, 1); }
-        else if (dir == 1 & Row < size.Item1) { Move(1, 0); }
-        else if (dir == 2 & Col > 0) { Move(0, -1); }
-        else if (Row > 0) { Move(-1, 0); }
+        int dir = rand.Next(4);
+        if (Row == size.Item1) { Move(-1, 0); }
+        else if (Row == 0) { Move(1, 0); }
+        else if (Col == size.Item2) { Move(0, -1); }
+        else if (Col == 0) { Move(0, 1); }
+        else if (dir == 0) { Move(0, 1); }
+        else if (dir == 1) { Move(1, 0); }
+        else if (dir == 2) { Move(0, -1); }
+        else if (dir == 3) { Move(-1, 0); }
     }
 
     public void Update()

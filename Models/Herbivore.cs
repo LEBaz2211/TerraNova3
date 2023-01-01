@@ -17,6 +17,10 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
 
     SmartList herbs;
 
+    SmartList pFood;
+
+    SmartList aFood;
+
     private int _row;
     public int Row { get => _row; set => _row = value; }
 
@@ -51,7 +55,7 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     public int Speed { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
     private int _visionRadius;
-    public int VisionRadius { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public int VisionRadius { get => _visionRadius; set => _visionRadius = value; }
 
     private int _entityID;
     public int EntityID { get => _entityID; set => _entityID = value; }
@@ -65,7 +69,7 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     private int _coolDown;
     public int CoolDown { get => _coolDown; set => _coolDown = value; }
 
-    public Herbivore(int row, int col, SmartList plnts, SmartList herbs)
+    public Herbivore(int row, int col, SmartList plnts, SmartList herbs, SmartList aFood, SmartList pFood)
     {
         Row = row;
         Col = col;
@@ -77,12 +81,15 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
         
         this.plnts = plnts;
         this.herbs = herbs;
+        this.pFood = pFood;
+        this.aFood = aFood;
         
         MaxEnergy = 1000;
         Energy = MaxEnergy;
         MaxHitPoints = 30;
         HitPoints = MaxHitPoints;
         ContactZone = 10;
+        VisionRadius = 10;
         
         Sex = rand.Next(2);
         Mate = null;
@@ -109,7 +116,7 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     public void LookForFood()
     {
         var closestPlant = new Dictionary<IAbstractEntity,double>() ;
-        var list = plnts.GetProxyEntities(this);
+        var list = plnts.GetProxyEntities(this, VisionRadius);
 
         if (list.Count != 0)
         {
@@ -137,7 +144,7 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     public void LookForMate()
     {
         var closestMate = new Dictionary<Herbivore, double>();
-        var list = herbs.GetProxyEntities(this);
+        var list = herbs.GetProxyEntities(this, VisionRadius);
 
         if (list.Count != 0 & Mate == null)
         {
@@ -201,7 +208,7 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
         CoolDown -= 1;
         if (CoolDown == 0)
         {
-            Herbivore newHerb = new Herbivore(Row, Col, plnts, herbs);
+            Herbivore newHerb = new Herbivore(Row, Col, plnts, herbs, aFood, pFood);
             herbs.add(newHerb);
             BreedCoolDown = false;
         }
@@ -240,7 +247,7 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
         {
             ConvertEnergytoHP();
         }
-        Energy -= 1;
+        Energy -= 10;
     }
 
     public void ConvertEnergytoHP()
@@ -262,6 +269,7 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     {
         if (HitPoints <= 0)
         {
+            aFood.add(new Meat(Row, Col, pFood));
             return false;
         }
         else

@@ -98,7 +98,7 @@ internal class TileSet
     {
         for (int i = plNumber; i < heNumber + plNumber; i++)
         {
-            herbs.add(new Herbivore(positions[i].Item1, positions[i].Item2, plnts, herbs));
+            herbs.add(new Herbivore(positions[i].Item1, positions[i].Item2, plnts, herbs, aFood, pFood));
         }
     }
 
@@ -106,12 +106,12 @@ internal class TileSet
     {
         for (int i = heNumber + plNumber; i < prNumber + heNumber + plNumber; i++)
         {
-            apexs.add(new Predator(positions[i].Item1, positions[i].Item2));
+            apexs.add(new Predator(positions[i].Item1, positions[i].Item2, apexs, herbs, aFood, pFood));
         }
     }
 }
 
-internal class SmartList
+public class SmartList
 {
     private List<IAbstractEntity> entities;
     private Dictionary<(int,int), IAbstractEntity> entitiesPos;
@@ -132,10 +132,10 @@ internal class SmartList
         }
         
     }
-    public List<((int, int), double)> calcProxy(IAbstractEntity e)
+    public List<((int, int), double)> calcProxy(IAbstractEntity e, int zone)
     {
         List<((int, int), double)> res = new List<((int, int), double)>();
-        int r = e.ContactZone;
+        int r = zone;
         int x = e.Col;
         int y = e.Row;
        
@@ -169,10 +169,10 @@ internal class SmartList
         return entities;
     }
 
-    public List<(IAbstractEntity, double)> GetProxyEntities(IAbstractEntity e)
+    public List<(IAbstractEntity, double)> GetProxyEntities(IAbstractEntity e, int zone)
     {
         List<(IAbstractEntity, double)> proxy = new List<(IAbstractEntity, double)>();
-        List<((int, int), double)> proxyPos = calcProxy(e);
+        List<((int, int), double)> proxyPos = calcProxy(e, zone);
 
         foreach(((int, int)pos , double distance) in proxyPos)
         {

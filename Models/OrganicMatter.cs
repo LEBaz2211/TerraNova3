@@ -7,7 +7,7 @@ using TerraNova3.Models;
 
 namespace TerraNova3.Model;
 
-internal class OrganicMatter : IAbstractEntity
+public class OrganicMatter : IAbstractEntity
 {
     private int _entityID;
     public int EntityID { get => _entityID; set => _entityID = value; }
@@ -25,14 +25,18 @@ internal class OrganicMatter : IAbstractEntity
     public int MaxEnergy { get => _maxEnergy; set => _maxEnergy = value; }
 
     public Image entityImage;
-    public Image EntityImage { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public Image EntityImage { get => entityImage; set => entityImage = value; }
 
-    OrganicMatter(int row, int col)
+    public OrganicMatter(int row, int col)
     {
         Row = row;
         Col = col;
         MaxEnergy = 1000;
         Energy = MaxEnergy;
+
+        Image image = new Image();
+        image.Source = "organicmatter.png";
+        EntityImage = image;
 
         EntityID = Global.GetID();
     }
