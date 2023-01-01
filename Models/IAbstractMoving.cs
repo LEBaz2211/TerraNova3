@@ -19,6 +19,8 @@ public interface IAbstractMoving
     // The vision radius of the moving entity
     int VisionRadius { get; set; }
 
+    int ContactZone { get; set; }
+
     IAbstractEntity Mate { get; set; }
 
     void Move(int row, int col);

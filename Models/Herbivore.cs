@@ -163,6 +163,7 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
                 }
                 else if (colDist != 0) { Move(0, (colDist / Math.Abs(colDist))); }
             }
+            else { RandomMove(); }
 
         }
         else if(Mate != null)
@@ -183,17 +184,16 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     {
         if (Sex == 0)
         {
-            Energy -= MaxEnergy / 6;
+            Energy -= (MaxEnergy / 3);
             Mate = null;
             BreedCoolDown = true;
             CoolDown = 20;
         }
         else
         {
-            Energy -= MaxEnergy / 3;
+            Energy -= (MaxEnergy / 3);
             Mate = null;
         }
-
     }
     
     public void Gestation()
@@ -216,11 +216,15 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     public void RandomMove()
     {
         (int, int) size = Global.GetSize();
-        int dir = rand.Next(3);
-        if (dir == 0 & Col < size.Item2) { Move(0, 1); }
-        else if (dir == 1 & Row < size.Item1){ Move(1, 0); }
-        else if (dir == 2 & Col > 0) { Move(0, -1); }
-        else if (Row > 0){ Move(-1, 0); }
+        int dir = rand.Next(4);
+        if(Row == size.Item1) { Move(-1, 0); }
+        else if (Row == 0) { Move(1, 0); }
+        else if (Col == size.Item2) { Move(0, -1); }
+        else if (Col == 0) { Move(0, 1); }
+        else if (dir == 0) { Move(0, 1); }
+        else if (dir == 1){ Move(1, 0); }
+        else if (dir == 2) { Move(0, -1); }
+        else if (dir == 3){ Move(-1, 0); }
     }
 
     public void Repost()
@@ -243,14 +247,14 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     {
         if (Energy >= MaxEnergy)
         {
-            Energy -= MaxEnergy / 300;
+            Energy -= MaxEnergy*(10/100) ;
             HitPoints += 1;
         }
     }
     public void ConvertHPtoEnergy()
     {
 
-        Energy += MaxEnergy / 300;
+        Energy += MaxEnergy*(2/100);
         HitPoints -= 1;
 
     }
@@ -276,12 +280,11 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
         EnergyDecay();
 
         if ( Energy <= MaxEnergy/2 ) { LookForFood(); }
-        else if ( Energy > MaxEnergy / 2 ) { LookForMate(); }
-        else { RandomMove(); }
+        else if ( Energy > MaxEnergy/2 ) { LookForMate(); }
+
 
         if (BreedCoolDown == true) { Gestation(); }
 
     }
-
 
 }

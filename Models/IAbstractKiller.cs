@@ -9,6 +9,6 @@ internal interface IAbstractKiller
 
 
     // Abstract method that must be implemented by derived classes
-    void Attack(IAbstractEntity prey);
+    void Attack(IAbstractLiving prey);
 }
 

@@ -16,4 +16,8 @@ public interface IAbstractLiving
 
     bool IsAlive();
 
+    void ConvertHPtoEnergy();
+
+    void ConvertEnergytoHP();
+
 }

@@ -19,8 +19,6 @@ public interface IAbstractEntity
 
     int Col { get; set; }
 
-    int ContactZone { get; set; }
-
     // The current energy of the living entity
     int Energy { get; set; }
 
@@ -30,10 +28,6 @@ public interface IAbstractEntity
     Image EntityImage { get; set; }
 
     void Update();
-
-    void ConvertHPtoEnergy();
-
-    void ConvertEnergytoHP();
 
     void EnergyDecay();
 
