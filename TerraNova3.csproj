@@ -93,5 +93,14 @@
 	  <MauiXaml Update="PreTest.xaml">
 	    <SubType></SubType>
 	  </MauiXaml>
+	  <MauiXaml Update="PredatorPref.xaml">
+	    <SubType></SubType>
+	  </MauiXaml>
+	  <MauiXaml Update="HerbivorePref.xaml">
+	    <SubType></SubType>
+	  </MauiXaml>
+	  <MauiXaml Update="PlantPref.xaml">
+	    <SubType></SubType>
+	  </MauiXaml>
 	</ItemGroup>
 </Project>

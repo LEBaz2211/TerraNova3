@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TerraNova3.PlantPref"
+             Title="PlantPref">
+
+    <StackLayout>
+        <HorizontalStackLayout>
+            <Button
+                Text="Back"
+                Clicked="OnBackClicked"
+                />
+            <Button
+                Text="Save"
+                Clicked="OnSaveClicked"
+                />
+            <Button
+                Text="Reset"
+                Clicked="OnResetClicked"
+                />
+        </HorizontalStackLayout>
+        <Label Text="Hit Points" />
+        <Entry x:Name="hitPointsEntry" Keyboard="Numeric" />
+        <Label Text="Energy" />
+        <Entry x:Name="energyEntry" Keyboard="Numeric" />
+        <Label Text="Energy Decay Percentage" />
+        <Entry x:Name="energyDecayEntry" Keyboard="Numeric" />
+        <Label Text="Seeding Energy Cost Percentage" />
+        <Entry x:Name="seedingEnergyCostEntry" Keyboard="Numeric" />
+        <Label Text="Seeding Cooldown" />
+        <Entry x:Name="seedingCooldownEntry" Keyboard="Numeric" />
+        <Label Text="Root Radius" />
+        <Entry x:Name="rootRadiusEntry" Keyboard="Numeric" />
+        <Label Text="Seeding Radius" />
+        <Entry x:Name="seedingRadiusEntry" Keyboard="Numeric" />
+    </StackLayout>
+</ContentPage>

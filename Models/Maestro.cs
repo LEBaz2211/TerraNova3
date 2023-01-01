@@ -133,8 +133,7 @@ public class SmartList
 
     public SmartList(List<IAbstractEntity> entitiesList)
     {
-        entities = entitiesList;
-        
+        entities = entitiesList; 
     }
 
     public bool ISFree(int x, int y)
