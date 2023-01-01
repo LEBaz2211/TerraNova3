@@ -315,7 +315,7 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
 
     public void Poop()
     {
-        if(Global.GetGameTime()%5 == 0 & rand.Next(4) == 0)
+        if(rand.Next(10) == 0)
         {
             pFood.add(new OrganicMatter(Row, Col, LostEnergy));
             LostEnergy = 0;

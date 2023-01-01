@@ -134,7 +134,7 @@ public class SmartList
     public SmartList(List<IAbstractEntity> entitiesList)
     {
         entities = entitiesList;
-        
+        entitiesPos = new Dictionary<(int, int), IAbstractEntity>();
     }
 
     public bool ISFree(int x, int y)
@@ -230,9 +230,7 @@ public class SmartList
             }
             else
             {
-                if (Global.GetGameTime() > 1) { e.Update(); }
-                Global.AddToTotalEnergy(e.Energy);
-                Global.AddToTotalEnergy(e.LostEnergy);
+                e.Update();
                 overlayGrid.RemoveEntity(e);
                 overlayGrid.AddEntity(e);
             }
@@ -246,7 +244,6 @@ public static class Global
     public static int ID = 0;
     public static (int, int) Size = (0, 0);
     public static int GameTime = 0;
-    public static int TotalEnergy = 0;
 
     public static int GetID()
     {
@@ -279,18 +276,4 @@ public static class Global
         GameTime = 0;
     }
 
-    public static void ResetTotalEnergy()
-    {
-        TotalEnergy = 0;
-    }
-
-    public static void AddToTotalEnergy(int energy)
-    {
-        TotalEnergy += energy;
-    }
-
-    public static int GetTotalEnergy()
-    {
-        return TotalEnergy;
-    }
 }

@@ -71,13 +71,11 @@ public partial class TestOutput : ContentPage
     }
     public async void Start()
     {
-        Global.ResetGameTime();
 
         while (running)
         {
 
             // Update Game at 60fps
-            Global.ResetTotalEnergy();
             tiles.update();
             if (tiles.herbs.GetEntities().Count != 0)
             {
@@ -89,8 +87,6 @@ public partial class TestOutput : ContentPage
                 Predator apex = tiles.apexs.GetEntities()[0] as Predator;
                 P.Text = apex.HitPoints.ToString();*//*tiles.pFood.GetEntities().Count.ToString()*//*
             }*/
-            H.Text = Global.GetTotalEnergy().ToString();
-            Global.TickGameTime();
             await Task.Delay(8);
         }
     }
