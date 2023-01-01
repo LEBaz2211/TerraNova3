@@ -29,13 +29,20 @@ public class Meat : IAbstractEntity
     public Image entityImage;
     public Image EntityImage { get => entityImage; set => entityImage = value; }
 
+    private int _lostEnergy;
+    public int LostEnergy { get => _lostEnergy; set => _lostEnergy = value; }
 
-    public Meat(int row, int col, SmartList pFood)
+    private int _decayRate;
+    public int DecayRate { get => _decayRate; set => _decayRate = value; }
+
+    public Meat(int row, int col, int maxEnergy, SmartList pFood)
     {
         Row = row;
         Col = col;
-        MaxEnergy = 2000;
+        MaxEnergy = maxEnergy;
         Energy = MaxEnergy;
+        LostEnergy = 0;
+        DecayRate = 10;
 
         this.pFood = pFood;
 
@@ -48,12 +55,13 @@ public class Meat : IAbstractEntity
     
     public void EnergyDecay()
     {
-        Energy -= 1;
+        Energy -= DecayRate;
+        LostEnergy += DecayRate;
     }
 
     public bool Removed()
     {
-        if (Energy <= 0) { pFood.add(new OrganicMatter(Row, Col)); return true; }
+        if (Energy <= 0) { pFood.add(new OrganicMatter(Row, Col, LostEnergy)); return true; }
         else { return false; }
     }
 

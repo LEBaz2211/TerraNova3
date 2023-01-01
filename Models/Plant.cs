@@ -66,6 +66,12 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
     private int _springCycleTime;
     public int SpringCycleTime { get => _springCycleTime; set => _springCycleTime = value; }
 
+    private int _lostEnergy;
+    public int LostEnergy { get => _lostEnergy; set => _lostEnergy = value; }
+
+    private int _decayRate;
+    public int DecayRate { get => _decayRate; set => _decayRate = value; }
+
     public Plant(int row, int col, SmartList plnts, SmartList pFood)
     {
         Row = row;
@@ -78,10 +84,13 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
         this.pFood = pFood;
         this.plnts = plnts;
 
-        MaxEnergy = 2000;
+        MaxEnergy = 500;
         Energy = MaxEnergy/2;
-        MaxHitPoints = 10;
+        MaxHitPoints = 2;
         HitPoints = MaxHitPoints;
+
+        DecayRate = 1;
+        LostEnergy = 0;
 
         EntityID = Global.GetID();
 
@@ -99,8 +108,8 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
     {
         if (Energy <= MaxEnergy)
         {
-            Energy += 100;
-            entity.Energy -= 100;
+            Energy += 10;
+            entity.Energy -= 10;
         }
     }
 
@@ -140,7 +149,8 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
         {
             ConvertEnergytoHP();
         }
-        Energy -= 1;
+        Energy -= DecayRate;
+        LostEnergy += DecayRate;
     }
 
     public void ConvertEnergytoHP()
@@ -156,6 +166,7 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
     {
         if (HitPoints <= 0)
         {
+            pFood.add(new OrganicMatter(Row, Col, LostEnergy));
             return false;
         }
         else

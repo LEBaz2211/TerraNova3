@@ -27,11 +27,17 @@ public class OrganicMatter : IAbstractEntity
     public Image entityImage;
     public Image EntityImage { get => entityImage; set => entityImage = value; }
 
-    public OrganicMatter(int row, int col)
+    private int _lostEnergy;
+    public int LostEnergy { get => _lostEnergy; set => _lostEnergy = value; }
+
+    private int _decayRate;
+    public int DecayRate { get => _decayRate; set => _decayRate = value; }
+
+    public OrganicMatter(int row, int col, int maxEnergy)
     {
         Row = row;
         Col = col;
-        MaxEnergy = 1000;
+        MaxEnergy = maxEnergy;
         Energy = MaxEnergy;
 
         Image image = new Image();

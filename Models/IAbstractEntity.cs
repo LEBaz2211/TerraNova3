@@ -25,6 +25,10 @@ public interface IAbstractEntity
     // The maximum energy of the living entity
     int MaxEnergy { get; set; }
 
+    int LostEnergy { get; set; }
+
+    int DecayRate { get; set; }
+
     Image EntityImage { get; set; }
 
     void Update();

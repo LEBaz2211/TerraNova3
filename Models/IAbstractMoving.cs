@@ -16,6 +16,8 @@ public interface IAbstractMoving
     // The speed of the moving entity
     int Speed { get; set; }
 
+    bool ISEating { get; set; }
+
     // The vision radius of the moving entity
     int VisionRadius { get; set; }
 
@@ -38,5 +40,7 @@ public interface IAbstractMoving
     void Gestation();
 
     void Repost();
+
+    void Poop();
 }
 

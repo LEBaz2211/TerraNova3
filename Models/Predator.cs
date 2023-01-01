@@ -72,7 +72,14 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
     private int _attackDamage;
     public int AttackDamage { get => _attackDamage; set => _attackDamage = value; }
 
+    private int _lostEnergy;
+    public int LostEnergy { get => _lostEnergy; set => _lostEnergy = value; }
 
+    private int _decayRate;
+    public int DecayRate { get => _decayRate; set => _decayRate = value; }
+
+    private bool _iseating;
+    public bool ISEating { get => _iseating; set => _iseating = value; }
 
 
 
@@ -98,6 +105,9 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
         HitPoints = MaxHitPoints;
         ContactZone = 10;
         VisionRadius = 10;
+
+        DecayRate = 10;
+        LostEnergy = 0;
 
         AttackDamage = 30;
 
@@ -264,7 +274,8 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
         {
             ConvertEnergytoHP();
         }
-        Energy -= 10;
+        Energy -= DecayRate;
+        LostEnergy += DecayRate;
     }
 
     public void ConvertEnergytoHP()
@@ -288,6 +299,7 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
     {
         if (HitPoints <= 0)
         {
+            aFood.add(new Meat(Row, Col, LostEnergy, pFood));
             return false;
         }
         else
@@ -339,4 +351,8 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
         if (BreedCoolDown == true) { Gestation(); }
     }
 
+    public void Poop()
+    {
+        throw new NotImplementedException();
+    }
 }

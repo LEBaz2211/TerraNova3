@@ -69,6 +69,15 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     private int _coolDown;
     public int CoolDown { get => _coolDown; set => _coolDown = value; }
 
+    private int _lostEnergy;
+    public int LostEnergy { get => _lostEnergy; set => _lostEnergy = value; }
+
+    private int _decayRate;
+    public int DecayRate { get => _decayRate; set => _decayRate = value; }
+
+    private bool _iseating;
+    public bool ISEating { get => _iseating; set => _iseating = value; }
+
     public Herbivore(int row, int col, SmartList plnts, SmartList herbs, SmartList aFood, SmartList pFood)
     {
         Row = row;
@@ -85,11 +94,16 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
         this.aFood = aFood;
         
         MaxEnergy = 1000;
-        Energy = MaxEnergy;
+        Energy = MaxEnergy / 2;
         MaxHitPoints = 35;
         HitPoints = MaxHitPoints;
         ContactZone = 10;
         VisionRadius = 10;
+
+        ISEating = false;
+
+        LostEnergy = 0;
+        DecayRate = 8;
         
         Sex = rand.Next(2);
         Mate = null;
@@ -101,11 +115,8 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
 
     public void Feed(IAbstractEntity entity)
     {
-        if(Energy <= MaxEnergy)
-        {
-            Energy += 100;
-            entity.Energy -= 100;
-        }
+        Energy += 20;
+        entity.Energy -= 20;
     }
 
     public void LookForEnemy()
@@ -115,29 +126,44 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
 
     public void LookForFood()
     {
-        var closestPlant = new Dictionary<IAbstractEntity,double>() ;
-        var list = plnts.GetProxyEntities(this, VisionRadius);
 
-        if (list.Count != 0)
+        if (ISEating & Energy <= MaxEnergy - MaxEnergy * (90 / 100))
         {
-            foreach ((IAbstractEntity pl, double distance) in list)
-            {
-                Plant plant = pl as Plant;
-                if (closestPlant.Keys.Count == 0) { closestPlant.Add(plant, distance); }
-                else if (distance < closestPlant.Values.Last()) { closestPlant.Remove(closestPlant.Keys.First()); closestPlant.Add(plant, distance);}
-            }
-
-            int rowDist = closestPlant.Keys.First().Row - Row;
-            int colDist = closestPlant.Keys.First().Col - Col;
-
-            if (Math.Abs(rowDist) >= Math.Abs(colDist) & rowDist != 0)
-            {
-                Move(rowDist / Math.Abs(rowDist), 0);
-            }
-            else if(colDist != 0){ Move(0, colDist/Math.Abs(colDist)); }
-            else { Feed(closestPlant.Keys.First()); }
+            var list = plnts.GetProxyEntities(this, 0);
+            Feed(list[0].Item1);
         }
-        else { RandomMove(); }
+        else if (!ISEating)
+        {
+            var closestPlant = new Dictionary<IAbstractEntity, double>();
+            var list = plnts.GetProxyEntities(this, VisionRadius);
+
+            if (list.Count != 0)
+            {
+                foreach ((IAbstractEntity pl, double distance) in list)
+                {
+                    Plant plant = pl as Plant;
+                    if (closestPlant.Keys.Count == 0) { closestPlant.Add(plant, distance); }
+                    else if (distance < closestPlant.Values.Last()) { closestPlant.Remove(closestPlant.Keys.First()); closestPlant.Add(plant, distance); }
+                }
+
+                int rowDist = closestPlant.Keys.First().Row - Row;
+                int colDist = closestPlant.Keys.First().Col - Col;
+
+                if (Math.Abs(rowDist) >= Math.Abs(colDist) & rowDist != 0)
+                {
+                    Move(rowDist / Math.Abs(rowDist), 0);
+                }
+                else if (colDist != 0) { Move(0, colDist / Math.Abs(colDist)); }
+                else
+                {
+                    ISEating = true;
+                    Feed(closestPlant.Keys.First());
+                }
+            }
+            else { RandomMove(); }
+        }
+        else { ISEating = false; }
+
         
     }
 
@@ -191,14 +217,16 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     {
         if (Sex == 0)
         {
-            Energy -= (MaxEnergy / 3);
+            Energy -= MaxEnergy/3;
+            LostEnergy += MaxEnergy/3;
             Mate = null;
             BreedCoolDown = true;
-            CoolDown = 20;
+            CoolDown = 50;
         }
         else
         {
             Energy -= (MaxEnergy / 3);
+            LostEnergy += (MaxEnergy / 3);
             Mate = null;
         }
     }
@@ -210,6 +238,7 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
         {
             Herbivore newHerb = new Herbivore(Row, Col, plnts, herbs, aFood, pFood);
             herbs.add(newHerb);
+            Energy -= MaxEnergy / 2;
             BreedCoolDown = false;
         }
     }
@@ -247,7 +276,8 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
         {
             ConvertEnergytoHP();
         }
-        Energy -= 8;
+        Energy -= DecayRate;
+        LostEnergy += DecayRate;
     }
 
     public void ConvertEnergytoHP()
@@ -269,7 +299,7 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     {
         if (HitPoints <= 0)
         {
-            aFood.add(new Meat(Row, Col, pFood));
+            aFood.add(new Meat(Row, Col, LostEnergy + Energy, pFood));
             return false;
         }
         else
@@ -286,8 +316,9 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     public void Update()
     {
         EnergyDecay();
+        //Poop();
 
-        if ( Energy <= MaxEnergy/2 ) { LookForFood(); }
+        if ( Energy <= MaxEnergy/2 | ISEating) { LookForFood(); }
         else if ( Energy > MaxEnergy/2 ) { LookForMate(); }
 
 
@@ -295,4 +326,12 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
 
     }
 
+    public void Poop()
+    {
+        if(Global.GetGameTime()%5 == 0 & rand.Next(4) == 0)
+        {
+            pFood.add(new OrganicMatter(Row, Col, LostEnergy));
+            LostEnergy = 0;
+        }
+    }
 }

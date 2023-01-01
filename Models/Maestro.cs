@@ -81,7 +81,7 @@ internal class TileSet
     {
         List<(int, int)> positions = overlayGrid.GetRandomPositions();
 
-        addOrganicMatter(positions);
+        //addOrganicMatter(positions);
         addPlants(positions);
         addHerbs(positions);
         addApexs(positions);
@@ -119,7 +119,7 @@ internal class TileSet
         {
             if (i % 4 == 0)
             { 
-                pFood.add(new OrganicMatter(positions[i].Item1, positions[i].Item2));
+                pFood.add(new OrganicMatter(positions[i].Item1, positions[i].Item2, 1000));
             }
         }
     }
@@ -226,6 +226,8 @@ public class SmartList
             else
             {
                 e.Update();
+                Global.AddToTotalEnergy(e.Energy);
+                Global.AddToTotalEnergy(e.LostEnergy);
                 overlayGrid.RemoveEntity(e);
                 overlayGrid.AddEntity(e);
             }
@@ -238,6 +240,8 @@ public static class Global
 {
     public static int ID = 0;
     public static (int, int) Size = (0, 0);
+    public static int GameTime = 0;
+    public static int TotalEnergy = 0;
 
     public static int GetID()
     {
@@ -253,5 +257,30 @@ public static class Global
     public static (int, int) GetSize()
     {
         return Size;
+    }
+
+    public static void TickGameTime()
+    {
+        GameTime++;
+    }
+
+    public static int GetGameTime()
+    {
+        return GameTime;
+    }
+
+    public static void ResetTotalEnergy()
+    {
+        TotalEnergy = 0;
+    }
+
+    public static void AddToTotalEnergy(int energy)
+    {
+        TotalEnergy += energy;
+    }
+
+    public static int GetTotalEnergy()
+    {
+        return TotalEnergy;
     }
 }
