@@ -28,12 +28,13 @@
         <Entry x:Name="energyDecayEntry" Keyboard="Numeric" />
         <Label Text="Mating Energy Cost Percentage" />
         <Entry x:Name="matingEnergyCostEntry" Keyboard="Numeric" />
-        <Label Text="Breeding Cooldown" />
-        <Entry x:Name="breedingCooldownEntry" Keyboard="Numeric" />
+
         <Label Text="Gestation Period" />
         <Entry x:Name="gestationPeriodEntry" Keyboard="Numeric" />
         <Label Text="Attack Damage" />
         <Entry x:Name="attackDamageEntry" Keyboard="Numeric" />
+        <Label Text="Attack Radius" />
+        <Entry x:Name="attackRadiusEntry" Keyboard="Numeric" />
         <Label Text="Vision Radius" />
         <Entry x:Name="visionRadiusEntry" Keyboard="Numeric" />
         <Label Text="Contact Radius" />
