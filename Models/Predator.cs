@@ -84,6 +84,12 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
     private int _gestationTime;
     public int GestationPeriod { get => _gestationTime; set => _gestationTime = value; }
 
+    private int _attackZone;
+    public int AttackZone { get => _attackZone; set => _attackZone = value; }
+
+    private int _matingEnergyCostPercentage;
+    public int MatingEnergyCostPercentage { get => _matingEnergyCostPercentage; set => _matingEnergyCostPercentage = value; }
+
     // Constructor
     public Predator(int row, int col, SmartList apexs, SmartList herbs, SmartList aFood, SmartList pFood)
     {
@@ -100,22 +106,26 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
         this.aFood = aFood;
         this.pFood = pFood;
 
-        MaxEnergy = 1000;
+        MaxEnergy = Preferences.Get("PredatorEnergy", 1000);
         Energy = MaxEnergy/4;
-        MaxHitPoints = 100;
+        MaxHitPoints = Preferences.Get("PredatorHitPoints", 100);
         HitPoints = MaxHitPoints;
-        ContactZone = 10;
-        VisionRadius = 10;
+        ContactZone = Preferences.Get("PredatorContactRadius", 0);
+        AttackZone = Preferences.Get("PredatorAttackRadius", 1);
+        VisionRadius = Preferences.Get("PredatorVisionRadius", 10);
 
-        DecayRate = 10;
+        MatingEnergyCostPercentage = Preferences.Get("PredatorMatingEnergyCostPercentage", 50);
+
+        DecayRate = Preferences.Get("PredatorEnergyDecayPercentage", 1);
+        ;
         LostEnergy = 0;
         EatSpeed = 100;
 
-        AttackDamage = 30;
+        AttackDamage = Preferences.Get("PredatorAttackDamage", 30);
 
         Sex = rand.Next(2);
         Mate = null;
-        GestationPeriod = 50;
+        GestationPeriod = Preferences.Get("PredatorGestationPeriod", 50);
 
         BreedCoolDown = false;
 
@@ -156,7 +166,7 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
 
     public void LookForEnemy()
     {
-        var closestHerb = new Dictionary<Herbivore, double>();
+        (Herbivore closestHerb, double smallestDist) = new Tuple<Herbivore, double>(null, 0);
         var list = herbs.GetProxyEntities(this, VisionRadius);
 
         if (list.Count != 0)
@@ -164,19 +174,19 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
             foreach ((IAbstractEntity herb, double distance) in list)
             {
                 Herbivore prey = herb as Herbivore;
-                if (closestHerb.Keys.Count == 0) { closestHerb.Add(prey, distance); }
-                else if (distance < closestHerb.Values.Last()) { closestHerb.Remove(closestHerb.Keys.First()); closestHerb.Add(prey, distance); }
+                if (closestHerb == null) { closestHerb = prey; smallestDist = distance; }
+                else if (distance < smallestDist) { closestHerb = prey; smallestDist = distance; }
             }
 
-            int rowDist = closestHerb.Keys.First().Row - Row;
-            int colDist = closestHerb.Keys.First().Col - Col;
-
-            if (Math.Abs(rowDist) >= Math.Abs(colDist) & rowDist != 0)
+            int rowDist = closestHerb.Row - Row;
+            int colDist = closestHerb.Col - Col;
+            
+            if (Math.Abs(rowDist) >= Math.Abs(colDist) + AttackZone & rowDist != 0)
             {
                 Move(rowDist / Math.Abs(rowDist), 0);
             }
-            else if (colDist != 0) { Move(0, colDist / Math.Abs(colDist)); }
-            else { Attack(closestHerb.Keys.First()); }
+            else if (colDist != 0 & Math.Abs(colDist) > AttackZone) { Move(0, colDist / Math.Abs(colDist)); }
+            else { Attack(closestHerb); }
         }
         else { RandomMove(); }
 
@@ -184,7 +194,7 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
 
     public void LookForFood()
     {
-        var closestMeat = new Dictionary<Meat, double>();
+        (Meat closestMeat, double smallestDist) = new Tuple<Meat, double>(null, 0);
         var list = aFood.GetProxyEntities(this, VisionRadius);
 
         if (list.Count != 0)
@@ -192,22 +202,19 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
             foreach ((IAbstractEntity m, double distance) in list)
             {
                 Meat meat = m as Meat;
-                if (closestMeat.Keys.Count == 0) { closestMeat.Add(meat, distance); }
-                else if (distance < closestMeat.Values.Last()) { closestMeat.Remove(closestMeat.Keys.First()); closestMeat.Add(meat, distance); }
+                if (closestMeat == null) { closestMeat = meat; smallestDist = distance; }
+                else if (distance < smallestDist) { closestMeat = meat; smallestDist = distance; }
             }
 
-            int rowDist = closestMeat.Keys.First().Row - Row;
-            int colDist = closestMeat.Keys.First().Col - Col;
+            int rowDist = closestMeat.Row - Row;
+            int colDist = closestMeat.Col - Col;
 
-            if (Math.Abs(rowDist) >= Math.Abs(colDist) & rowDist != 0)
+            if (Math.Abs(rowDist) >= Math.Abs(colDist) + ContactZone & rowDist != 0)
             {
                 Move(rowDist / Math.Abs(rowDist), 0);
             }
-            else if (colDist != 0) { Move(0, colDist / Math.Abs(colDist)); }
-            else 
-            {
-                Feed(closestMeat.Keys.First() as IAbstractEntity);
-            }
+            else if (colDist != 0 & Math.Abs(colDist) > ContactZone) { Move(0, colDist / Math.Abs(colDist)); }
+            else { Feed(closestMeat); }
         }
         else { LookForEnemy(); }
 
@@ -215,7 +222,7 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
 
     public void LookForMate()
     {
-        var closestMate = new Dictionary<Predator, double>();
+        (Predator closestMate, double smallestDist) = new Tuple<Predator, double>(null, 0);
         var list = apexs.GetProxyEntities(this, VisionRadius);
 
         if (list.Count != 0 & Mate == null)
@@ -225,22 +232,22 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
                 Predator predator = pr as Predator;
                 if (predator.Sex != Sex & predator.Mate == null & predator.BreedCoolDown == false)
                 {
-                    if (closestMate.Keys.Count == 0) { closestMate.Add(predator, distance); }
-                    else if (distance < closestMate.Values.Last()) { closestMate.Remove(closestMate.Keys.First()); closestMate.Add(predator, distance); }
+                    if (closestMate == null) { closestMate = predator; smallestDist = distance; }
+                    else if (distance < smallestDist) { closestMate = predator; smallestDist = distance; }
                 }
             }
 
-            if (closestMate.Keys.Count != 0)
+            if (closestMate != null)
             {
-                Mate = closestMate.Keys.First();
-                closestMate.Keys.First().Mate = this;
-                int rowDist = closestMate.Keys.First().Row - Row;
-                int colDist = closestMate.Keys.First().Col - Col;
-                if (Math.Abs(rowDist) >= Math.Abs(colDist) & rowDist != 0)
+                Mate = closestMate;
+                closestMate.Mate = this;
+                int rowDist = closestMate.Row - Row;
+                int colDist = closestMate.Col - Col;
+                if (Math.Abs(rowDist) >= Math.Abs(colDist) + ContactZone & rowDist != 0)
                 {
                     Move(rowDist / Math.Abs(rowDist), 0);
                 }
-                else if (colDist != 0) { Move(0, (colDist / Math.Abs(colDist))); }
+                else if (colDist != 0 & Math.Abs(colDist) > ContactZone) { Move(0, (colDist / Math.Abs(colDist))); }
             }
             else { RandomMove(); }
 
@@ -279,8 +286,8 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
         {
             ConvertEnergytoHP();
         }
-        Energy -= DecayRate;
-        LostEnergy += DecayRate;
+        Energy -= Convert.ToInt32(MaxEnergy*(DecayRate/100));
+        LostEnergy += Convert.ToInt32(MaxEnergy*(DecayRate/100));
     }
 
     public void ConvertEnergytoHP()
@@ -321,7 +328,7 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
         if (CoolDown == 0)
         {
             Predator newApex = new Predator(Row, Col, apexs, herbs, aFood, pFood);
-            Energy -= MaxEnergy / 2;
+            Energy -= Convert.ToInt32(MaxEnergy * (MatingEnergyCostPercentage/100));
             apexs.add(newApex);
             BreedCoolDown = false;
         }
@@ -355,9 +362,9 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
 
     public void Poop()
     {
-        if (rand.Next(10) == 0)
+        if (rand.Next(15) == 0)
         {
-            pFood.add(new OrganicMatter(Row, Col, LostEnergy));
+            pFood.add(new OrganicMatter(Row, Col, LostEnergy, pFood));
             LostEnergy = 0;
         }
     }

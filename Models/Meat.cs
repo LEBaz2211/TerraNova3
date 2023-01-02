@@ -61,7 +61,7 @@ public class Meat : IAbstractEntity
 
     public bool Removed()
     {
-        if (Energy <= 0) { pFood.add(new OrganicMatter(Row, Col, Energy + LostEnergy)); return true; }
+        if (Energy <= 0) { pFood.add(new OrganicMatter(Row, Col, Energy + LostEnergy, pFood)); return true; }
         else { return false; }
     }
 

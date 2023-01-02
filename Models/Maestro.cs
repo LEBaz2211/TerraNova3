@@ -119,7 +119,7 @@ internal class TileSet
         {
             if (i % 10 == 0)
             { 
-                pFood.add(new OrganicMatter(positions[i].Item1, positions[i].Item2, 100));
+                pFood.add(new OrganicMatter(positions[i].Item1, positions[i].Item2, 2000, pFood));
             }
         }
     }

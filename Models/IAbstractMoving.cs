@@ -13,6 +13,8 @@ public interface IAbstractMoving
 
     bool BreedCoolDown { get; set; }
 
+    int MatingEnergyCostPercentage { get; set; }
+
     int CoolDown { get; set; }
 
     // The speed of the moving entity

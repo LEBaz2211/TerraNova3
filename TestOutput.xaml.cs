@@ -79,10 +79,9 @@ public partial class TestOutput : ContentPage
 
             // Update Game at 60fps
             tiles.update();
-            if (tiles.herbs.GetEntities().Count != 0)
+            if (tiles.pFood.GetEntities().Count != 0)
             {
-                Herbivore herb = tiles.herbs.GetEntities()[0] as Herbivore;
-                P.Text = herb.Energy.ToString(); tiles.pFood.GetEntities().Count.ToString();
+                P.Text = tiles.pFood.GetEntities().Count.ToString();
             }
 /*            if (tiles.apexs.GetEntities().Count != 0)
             {

@@ -9,6 +9,9 @@ namespace TerraNova3.Model;
 
 public class OrganicMatter : IAbstractEntity
 {
+
+    SmartList pFood;
+    
     private int _entityID;
     public int EntityID { get => _entityID; set => _entityID = value; }
 
@@ -33,12 +36,14 @@ public class OrganicMatter : IAbstractEntity
     private int _decayRate;
     public int DecayRate { get => _decayRate; set => _decayRate = value; }
 
-    public OrganicMatter(int row, int col, int maxEnergy)
+    public OrganicMatter(int row, int col, int maxEnergy, SmartList pFood)
     {
         Row = row;
         Col = col;
         MaxEnergy = maxEnergy;
         Energy = MaxEnergy;
+
+        this.pFood = pFood;
 
         DecayRate = 0;
         LostEnergy = 0;
@@ -60,8 +65,20 @@ public class OrganicMatter : IAbstractEntity
         else { return false; }
     }
 
+    public void PooCombine()
+    {
+        foreach (OrganicMatter poo in pFood.GetEntities())
+        {
+            if (poo.Row == Row && poo.Col == Col && poo.EntityID != EntityID)
+            {
+                Energy += poo.Energy;
+                poo.Energy = 0;
+            }
+        }
+    }
+
     public void Update()
     {
-
+        PooCombine();
     }
 }

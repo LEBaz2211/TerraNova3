@@ -87,22 +87,22 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
         this.pFood = pFood;
         this.plnts = plnts;
 
-        MaxEnergy = 500;
+        MaxEnergy = 1000;
         Energy = MaxEnergy/2;
         MaxHitPoints = 2;
         HitPoints = MaxHitPoints;
 
-        DecayRate = 1;
+        DecayRate = 5;
         LostEnergy = 0;
 
         EntityID = Global.GetID();
 
         SeedZone = 10;
         RootZone = 4;
-        EatSpeed = 30;
+        EatSpeed = 50 + (EatSpeed - plnts.GetEntities().Count);
 
-        WinterCycleTime = 100;
-        SpringCycleTime = 10;
+        WinterCycleTime = 15;
+        SpringCycleTime = 20;
         Timer = WinterCycleTime;
         Winter = true;
         Spring = false;
@@ -112,12 +112,6 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
     {
         Energy += EatSpeed;
         entity.Energy -= EatSpeed;
-    }
-
-    public void ConvertHPtoEnergy()
-    {
-        Energy += MaxEnergy / 100;
-        HitPoints -= 1;
     }
 
     public void Seed()
@@ -145,11 +139,16 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
     public void EnergyDecay()
     {
 
-        if(Energy <= 0) { ConvertHPtoEnergy(); }
+        if(Energy <= 0) 
+        {
+            ConvertHPtoEnergy();
+        }
         else if (HitPoints < MaxHitPoints & Energy >= MaxEnergy / 100)
         {
             ConvertEnergytoHP();
         }
+        
+        
         Energy -= DecayRate;
         LostEnergy += DecayRate;
     }
@@ -160,11 +159,16 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
         HitPoints += 1;
     }
 
+    public void ConvertHPtoEnergy()
+    {
+        Energy += MaxEnergy / 100;
+        HitPoints -= 1;
+    }
     public bool IsAlive()
     {
         if (HitPoints <= 0)
         {
-            pFood.add(new OrganicMatter(Row, Col, Energy+LostEnergy));
+            pFood.add(new OrganicMatter(Row, Col, Energy+LostEnergy, pFood));
             return false;
         }
         else

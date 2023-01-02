@@ -80,6 +80,9 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
 
     private int _gestationTime;
     public int GestationPeriod { get => _gestationTime; set => _gestationTime = value; }
+    
+    private int _matingEnergyCostPercentage;
+    public int MatingEnergyCostPercentage { get => _matingEnergyCostPercentage; set => _matingEnergyCostPercentage = value; }
 
     public Herbivore(int row, int col, SmartList plnts, SmartList herbs, SmartList aFood, SmartList pFood)
     {
@@ -111,7 +114,7 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
         Sex = rand.Next(2);
         Mate = null;
         BreedCoolDown = false;
-        GestationPeriod = 10;
+        GestationPeriod = 30;
 
         EntityID = Global.GetID();
 
@@ -149,7 +152,10 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
             {
                 Move(rowDist / Math.Abs(rowDist), 0);
             }
-            else if (colDist != 0) { Move(0, colDist / Math.Abs(colDist)); }
+            else if (colDist != 0)
+            { 
+                Move(0, colDist / Math.Abs(colDist)); 
+            }
             else
             {
                 Feed(closestPlant.Keys.First());
@@ -161,7 +167,8 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
 
     public void LookForMate()
     {
-        var closestMate = new Dictionary<Herbivore, double>();
+        //var closestMate = new Dictionary<Herbivore, double>();
+        (Herbivore closestMate, double newDist) = new Tuple<Herbivore, double>(null, 0);
         var list = herbs.GetProxyEntities(this, VisionRadius);
 
         if (list.Count != 0 & Mate == null)
@@ -171,22 +178,27 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
                 Herbivore herb = hb as Herbivore;
                 if(herb.Sex != Sex & herb.Mate == null & herb.BreedCoolDown == false)
                 {
-                    if (closestMate.Keys.Count == 0) { closestMate.Add(herb, distance); }
-                    else if (distance < closestMate.Values.Last()) { closestMate.Remove(closestMate.Keys.First()); closestMate.Add(herb, distance); }
+                    if (closestMate == null) { closestMate = herb; newDist = distance; }
+                    else if (distance < newDist) { closestMate = herb; newDist = distance; }
                 }
             }
 
-            if(closestMate.Keys.Count != 0)
+            if (closestMate != null)
             {
-                Mate = closestMate.Keys.First();
-                closestMate.Keys.First().Mate = this;
-                int rowDist = closestMate.Keys.First().Row - Row;
-                int colDist = closestMate.Keys.First().Col - Col;
-                if (Math.Abs(rowDist) >= Math.Abs(colDist) & rowDist != 0)
+                Mate = closestMate;
+                closestMate.Mate = this;
+
+                int rowDist = closestMate.Row - Row;
+                int colDist = closestMate.Col - Col;
+                
+                if (Math.Abs(rowDist) >= Math.Abs(colDist) + ContactZone & rowDist != 0)
                 {
                     Move(rowDist / Math.Abs(rowDist), 0);
                 }
-                else if (colDist != 0) { Move(0, (colDist / Math.Abs(colDist))); }
+                else if (colDist != 0 & Math.Abs(colDist) > ContactZone)
+                {
+                    Move(0, colDist / Math.Abs(colDist));
+                }
             }
             else { RandomMove(); }
 
@@ -195,11 +207,11 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
         {
             int rowDist = Mate.Row - Row;
             int colDist = Mate.Col - Col;
-            if (Math.Abs(rowDist) >= Math.Abs(colDist) & rowDist != 0)
+            if (Math.Abs(rowDist) >= Math.Abs(colDist) + ContactZone & rowDist != 0)
             {
                 Move(rowDist / Math.Abs(rowDist), 0);
             }
-            else if (colDist != 0) { Move(0, (colDist / Math.Abs(colDist))); }
+            else if (colDist != 0 & Math.Abs(colDist) > ContactZone) { Move(0, (colDist / Math.Abs(colDist))); }
             else { Breed(); }
         }
         else { RandomMove(); }
@@ -315,9 +327,9 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
 
     public void Poop()
     {
-        if(rand.Next(10) == 0)
+        if(rand.Next(20) == 0)
         {
-            pFood.add(new OrganicMatter(Row, Col, LostEnergy));
+            pFood.add(new OrganicMatter(Row, Col, LostEnergy, pFood));
             LostEnergy = 0;
         }
     }
