@@ -116,8 +116,8 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
 
         MatingEnergyCostPercentage = Preferences.Get("PredatorMatingEnergyCostPercentage", 50);
 
-        DecayRate = Preferences.Get("PredatorEnergyDecayPercentage", 1);
-        ;
+        DecayRate = Convert.ToInt32( MaxEnergy*Preferences.Get("PredatorEnergyDecayPercentage", 1)/100);
+      
         LostEnergy = 0;
         EatSpeed = 100;
 
@@ -286,8 +286,8 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
         {
             ConvertEnergytoHP();
         }
-        Energy -= Convert.ToInt32(MaxEnergy*(DecayRate/100));
-        LostEnergy += Convert.ToInt32(MaxEnergy*(DecayRate/100));
+        Energy -= DecayRate;
+        LostEnergy += DecayRate;
     }
 
     public void ConvertEnergytoHP()

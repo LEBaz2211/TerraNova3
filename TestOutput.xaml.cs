@@ -22,7 +22,7 @@ public partial class TestOutput : ContentPage
         int hn = Preferences.Get("HerbivoresNumber", 0);
         int cn = Preferences.Get("CarnivoresNumber", 0);
 
-        tiles = new TileSet(pn, hn, cn, 40);
+        tiles = new TileSet(pn, hn, cn, 10);
 
         Grid overlay = tiles.getOverlay().GetGrid();
         
@@ -83,11 +83,11 @@ public partial class TestOutput : ContentPage
             {
                 P.Text = tiles.pFood.GetEntities().Count.ToString();
             }
-/*            if (tiles.apexs.GetEntities().Count != 0)
+            if (tiles.apexs.GetEntities().Count != 0)
             {
                 Predator apex = tiles.apexs.GetEntities()[0] as Predator;
-                P.Text = apex.HitPoints.ToString();*//*tiles.pFood.GetEntities().Count.ToString()*//*
-            }*/
+                P.Text = apex.Energy.ToString();
+            }
             await Task.Delay(8);
         }
     }

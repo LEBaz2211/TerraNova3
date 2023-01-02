@@ -6,7 +6,7 @@ public partial class HerbivorePref : ContentPage
     public int Energy { get; set; }
     public int EnergyDecayPercentage { get; set; }
     public int MatingEnergyCostPercentage { get; set; }
-    public int BreedingCooldown { get; set; }
+
     public int GestationPeriod { get; set; }
     public int VisionRadius { get; set; }
     public int ContactRadius { get; set; }
@@ -14,6 +14,7 @@ public partial class HerbivorePref : ContentPage
     public HerbivorePref()
     {
         InitializeComponent();
+        SetPref();
 
         
 
@@ -30,6 +31,7 @@ public partial class HerbivorePref : ContentPage
     private void OnResetClicked(object sender, EventArgs e)
     {
         ClearPref();
+        SetPref();
     }
     public void Parse()
     {
@@ -37,12 +39,21 @@ public partial class HerbivorePref : ContentPage
         Energy = int.Parse(energyEntry.Text);
         EnergyDecayPercentage = int.Parse(energyDecayEntry.Text);
         MatingEnergyCostPercentage = int.Parse(matingEnergyCostEntry.Text);
-        BreedingCooldown = int.Parse(breedingCooldownEntry.Text);
         GestationPeriod = int.Parse(gestationPeriodEntry.Text);
         VisionRadius = int.Parse(visionRadiusEntry.Text);
         ContactRadius = int.Parse(contactRadiusEntry.Text);
     }
 
+    public void SetPref()
+    {
+        hitPointsEntry.Text = $"{Preferences.Get("PlantHitPoints", 100)}";
+        energyEntry.Text = $"{Preferences.Get("PlantEnergy", 1000)}";
+        energyDecayEntry.Text = $"{Preferences.Get("PlantEnergyDecayPercentage", 1)}";
+        matingEnergyCostEntry.Text = $"{Preferences.Get("PlantSeedingEnergyCostPercentage", 50)}";
+        gestationPeriodEntry.Text = $"{Preferences.Get("PlantSeedingCooldown", 50)}";
+        visionRadiusEntry.Text = $"{Preferences.Get("PlantRootRadius", 30)}";
+        contactRadiusEntry.Text = $"{Preferences.Get("PlantSeedingRadius", 1)}";
+    }
 
     public void SavePref()
     {
@@ -50,7 +61,6 @@ public partial class HerbivorePref : ContentPage
         Preferences.Set("HerbivoreEnergy", Energy);
         Preferences.Set("HerbivoreEnergyDecayPercentage", EnergyDecayPercentage);
         Preferences.Set("HerbivoreMatingEnergyCostPercentage", MatingEnergyCostPercentage);
-        Preferences.Set("HerbivoreBreedingCooldown", BreedingCooldown);
         Preferences.Set("HerbivoreGestationPeriod", GestationPeriod);
         Preferences.Set("HerbivoreVisionRadius", VisionRadius);
         Preferences.Set("HerbivoreContactRadius", ContactRadius);
@@ -61,7 +71,6 @@ public partial class HerbivorePref : ContentPage
         Preferences.Remove("HerbivoreEnergy");
         Preferences.Remove("HerbivoreEnergyDecayPercentage");
         Preferences.Remove("HerbivoreMatingEnergyCostPercentage");
-        Preferences.Remove("HerbivoreBreedingCooldown");
         Preferences.Remove("HerbivoreGestationPeriod");
         Preferences.Remove("HerbivoreVisionRadius");
         Preferences.Remove("HerbivoreContactRadius");

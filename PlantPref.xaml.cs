@@ -7,13 +7,13 @@ public partial class PlantPref : ContentPage
     public int EnergyDecayPercentage { get; set; }
     public int SeedingEnergyCostPercentage { get; set; }
     public int SeedingCooldown { get; set; }
-
     public int RootRadius { get; set; }
     public int SeedingRadius { get; set; }
 
     public PlantPref()
     {
         InitializeComponent();
+        SetPref();
 
 
     }
@@ -29,17 +29,30 @@ public partial class PlantPref : ContentPage
     private void OnResetClicked(object sender, EventArgs e)
     {
         ClearPref();
+        SetPref();
     }
     public void Parse()
     {
         HitPoints = int.Parse(hitPointsEntry.Text);
         Energy = int.Parse(energyEntry.Text);
-        EnergyDecayPercentage = int.Parse(energyDecayEntry.Text);
+        EnergyDecayPercentage = Convert.ToInt32(Energy * 29 / 100);
+        //EnergyDecayPercentage = int.Parse(energyDecayEntry.Text);
         SeedingEnergyCostPercentage = int.Parse(seedingEnergyCostEntry.Text);
         SeedingCooldown = int.Parse(seedingCooldownEntry.Text);
-
         RootRadius = int.Parse(rootRadiusEntry.Text);
         SeedingRadius = int.Parse(seedingRadiusEntry.Text);
+    }
+
+    public void SetPref()
+    {
+        hitPointsEntry.Text = $"{Preferences.Get("PlantHitPoints", 100)}";
+        energyEntry.Text = $"{Preferences.Get("PlantEnergy", 1000)}";
+        energyDecayEntry.Text = $"{Preferences.Get("PlantEnergyDecayPercentage", 1)}";
+        seedingEnergyCostEntry.Text = $"{Preferences.Get("PlantSeedingEnergyCostPercentage", 50)}";
+        seedingCooldownEntry.Text = $"{Preferences.Get("PlantSeedingCooldown", 50)}";
+        rootRadiusEntry.Text = $"{Preferences.Get("PlantRootRadius", 30)}";
+        seedingRadiusEntry.Text = $"{Preferences.Get("PlantSeedingRadius", 1)}";
+
     }
 
 
@@ -50,7 +63,6 @@ public partial class PlantPref : ContentPage
         Preferences.Set("PlantEnergyDecayPercentage", EnergyDecayPercentage);
         Preferences.Set("PlantSeedingEnergyCostPercentage", SeedingEnergyCostPercentage);
         Preferences.Set("PlantSeedingCooldown", SeedingCooldown);
-
         Preferences.Set("PlantRootRadius", RootRadius);
         Preferences.Set("PlantSeedingRadius", SeedingRadius);
     }
@@ -61,7 +73,6 @@ public partial class PlantPref : ContentPage
         Preferences.Remove("PlantEnergyDecayPercentage");
         Preferences.Remove("PlantSeedingEnergyCostPercentage");
         Preferences.Remove("PlantSeedingCooldown");
-
         Preferences.Remove("PlantRootRadius");
         Preferences.Remove("PlantSeedingRadius");
     }

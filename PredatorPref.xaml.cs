@@ -17,8 +17,6 @@ public partial class PredatorPref : ContentPage
     {
         InitializeComponent();
         SetPref();
-
-
     }
     private void OnBackClicked(object sender, EventArgs e)
     {
@@ -55,13 +53,13 @@ public partial class PredatorPref : ContentPage
         Preferences.Set("PredatorEnergy", Energy);
         Preferences.Set("PredatorEnergyDecayPercentage", EnergyDecayPercentage);
         Preferences.Set("PredatorMatingEnergyCostPercentage", MatingEnergyCostPercentage);
-
         Preferences.Set("PredatorGestationPeriod", GestationPeriod);
         Preferences.Set("PredatorAttackDamage", AttackDamage);
         Preferences.Set("PredatorAttackRadius", AttackRadius);
         Preferences.Set("PredatorVisionRadius", VisionRadius);
         Preferences.Set("PredatorContactRadius", ContactRadius);
     }
+
     public void SetPref()
     {
         hitPointsEntry.Text = $"{Preferences.Get("PredatorHitPoints", 100)}";
@@ -74,13 +72,13 @@ public partial class PredatorPref : ContentPage
         visionRadiusEntry.Text = $"{Preferences.Get("PredatorVisionRadius", 10)}";
         contactRadiusEntry.Text = $"{Preferences.Get("PredatorContactRadius", 0)}";
     }
+
     public static void ClearPref()
     {
         Preferences.Remove("PredatorHitPoints");
         Preferences.Remove("PredatorEnergy");
         Preferences.Remove("PredatorEnergyDecayPercentage");
         Preferences.Remove("PredatorMatingEnergyCostPercentage");
-
         Preferences.Remove("PredatorGestationPeriod");
         Preferences.Remove("PredatorAttackDamage");
         Preferences.Remove("PredatorAttackRadius");
