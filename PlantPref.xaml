@@ -27,8 +27,10 @@
         <Entry x:Name="energyDecayEntry" Keyboard="Numeric" />
         <Label Text="Seeding Energy Cost Percentage" />
         <Entry x:Name="seedingEnergyCostEntry" Keyboard="Numeric" />
-        <Label Text="Seeding Cooldown" />
-        <Entry x:Name="seedingCooldownEntry" Keyboard="Numeric" />
+        <Label Text="Winter Time" />
+        <Entry x:Name="winterSeasonTimeEntry" Keyboard="Numeric" />
+        <Label Text="Spring Time" />
+        <Entry x:Name="springSeasonTimeEntry" Keyboard="Numeric" />
         <Label Text="Root Radius" />
         <Entry x:Name="rootRadiusEntry" Keyboard="Numeric" />
         <Label Text="Seeding Radius" />

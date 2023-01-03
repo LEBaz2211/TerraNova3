@@ -16,6 +16,8 @@ interface IAbstractStatic
 
     int SpringCycleTime { get; set; }
 
+    int SeedingEnergyCost { get; set; }
+
     int Timer { get; set; }
 
     bool Winter { get; set; }

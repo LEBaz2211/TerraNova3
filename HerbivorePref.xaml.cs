@@ -6,7 +6,7 @@ public partial class HerbivorePref : ContentPage
     public int Energy { get; set; }
     public int EnergyDecayPercentage { get; set; }
     public int MatingEnergyCostPercentage { get; set; }
-
+    public int LaborEnergyCostPercentage { get; set; }
     public int GestationPeriod { get; set; }
     public int VisionRadius { get; set; }
     public int ContactRadius { get; set; }
@@ -39,6 +39,7 @@ public partial class HerbivorePref : ContentPage
         Energy = int.Parse(energyEntry.Text);
         EnergyDecayPercentage = int.Parse(energyDecayEntry.Text);
         MatingEnergyCostPercentage = int.Parse(matingEnergyCostEntry.Text);
+        LaborEnergyCostPercentage = int.Parse(laborEnergyCostEntry.Text);
         GestationPeriod = int.Parse(gestationPeriodEntry.Text);
         VisionRadius = int.Parse(visionRadiusEntry.Text);
         ContactRadius = int.Parse(contactRadiusEntry.Text);
@@ -46,13 +47,15 @@ public partial class HerbivorePref : ContentPage
 
     public void SetPref()
     {
-        hitPointsEntry.Text = $"{Preferences.Get("PlantHitPoints", 100)}";
-        energyEntry.Text = $"{Preferences.Get("PlantEnergy", 1000)}";
-        energyDecayEntry.Text = $"{Preferences.Get("PlantEnergyDecayPercentage", 1)}";
-        matingEnergyCostEntry.Text = $"{Preferences.Get("PlantSeedingEnergyCostPercentage", 50)}";
-        gestationPeriodEntry.Text = $"{Preferences.Get("PlantSeedingCooldown", 50)}";
-        visionRadiusEntry.Text = $"{Preferences.Get("PlantRootRadius", 30)}";
-        contactRadiusEntry.Text = $"{Preferences.Get("PlantSeedingRadius", 1)}";
+        hitPointsEntry.Text = $"{Preferences.Get("HerbivoreHitPoints", 100)}";
+        energyEntry.Text = $"{Preferences.Get("HerbivoreEnergy", 1000)}";
+        energyDecayEntry.Text = $"{Preferences.Get("HerbivoreEnergyDecayPercentage", 1)}";
+        matingEnergyCostEntry.Text = $"{Preferences.Get("HerbivoreSeedingEnergyCostPercentage", 33)}";
+        laborEnergyCostEntry.Text = $"{Preferences.Get("HerbivoreLaborEnergyCostPercentage", 50)}";
+        gestationPeriodEntry.Text = $"{Preferences.Get("HerbivoreGestationPeriod", 30)}";
+        visionRadiusEntry.Text = $"{Preferences.Get("HerbivoreVisionRadius", 10)}";
+        contactRadiusEntry.Text = $"{Preferences.Get("HerbivoreContactRadius", 1)}";
+
     }
 
     public void SavePref()

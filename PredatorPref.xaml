@@ -28,7 +28,8 @@
         <Entry x:Name="energyDecayEntry" Keyboard="Numeric" />
         <Label Text="Mating Energy Cost Percentage" />
         <Entry x:Name="matingEnergyCostEntry" Keyboard="Numeric" />
-
+        <Label Text="Labor Energy Cost Percentage" />
+        <Entry x:Name="laborEnergyCostEntry" Keyboard="Numeric" />
         <Label Text="Gestation Period" />
         <Entry x:Name="gestationPeriodEntry" Keyboard="Numeric" />
         <Label Text="Attack Damage" />

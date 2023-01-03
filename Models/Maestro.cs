@@ -66,11 +66,11 @@ internal class TileSet
     }
     public void update()
     {
+        pFood.update(overlayGrid);
+        aFood.update(overlayGrid);
         plnts.update(overlayGrid);
         herbs.update(overlayGrid);
         apexs.update(overlayGrid);
-        pFood.update(overlayGrid);
-        aFood.update(overlayGrid);
     }
 
     public Grid getBackground()

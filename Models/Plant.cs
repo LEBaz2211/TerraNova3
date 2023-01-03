@@ -75,8 +75,13 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
     private int _eatSpeed;
     public int EatSpeed { get => _eatSpeed; set => _eatSpeed = value; }
 
+    private int _seedingEnergyCost;
+    public int SeedingEnergyCost { get => _seedingEnergyCost; set => _seedingEnergyCost = value; }
+
     public Plant(int row, int col, SmartList plnts, SmartList pFood)
     {
+
+
         Row = row;
         Col = col;
         
@@ -87,22 +92,24 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
         this.pFood = pFood;
         this.plnts = plnts;
 
-        MaxEnergy = 1000;
+        MaxEnergy = Preferences.Get("PlantEnergy", 1000);
         Energy = MaxEnergy/2;
-        MaxHitPoints = 2;
+        MaxHitPoints = Preferences.Get("PlantHitPoints", 2);
         HitPoints = MaxHitPoints;
 
-        DecayRate = 5;
+        DecayRate = Convert.ToInt32(MaxEnergy*Preferences.Get("PlantEnergyDecayPercentage", 1)/100);
         LostEnergy = 0;
 
         EntityID = Global.GetID();
 
-        SeedZone = 10;
-        RootZone = 4;
+        SeedZone = Preferences.Get("PlantSeedingRadius", 10);
+        RootZone = Preferences.Get("PlantRootRadius", 4);
         EatSpeed = 50 + (EatSpeed - plnts.GetEntities().Count);
 
-        WinterCycleTime = 15;
-        SpringCycleTime = 20;
+        SeedingEnergyCost = Convert.ToInt32(MaxEnergy*Preferences.Get("PlantSeedingEnergyCostPercentage", 50)/100);
+
+        WinterCycleTime = Preferences.Get("PlantWinterSeasonTime", 15);
+        SpringCycleTime = Preferences.Get("PlantSpringSeasonTime", 20);
         Timer = WinterCycleTime;
         Winter = true;
         Spring = false;
@@ -128,7 +135,7 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
             if(plnts.ISFree(freePostitions[randomPos].Item1.Item1, freePostitions[randomPos].Item1.Item2))
             {
 
-                Energy -= MaxEnergy / 2;
+                Energy -= SeedingEnergyCost;
 
                 plnts.add(new Plant(freePostitions[randomPos].Item1.Item1, freePostitions[randomPos].Item1.Item2, plnts, pFood));
                 

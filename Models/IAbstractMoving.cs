@@ -13,7 +13,9 @@ public interface IAbstractMoving
 
     bool BreedCoolDown { get; set; }
 
-    int MatingEnergyCostPercentage { get; set; }
+    int MatingEnergyCost { get; set; }
+
+    int LaborEnergyCost { get; set; }
 
     int CoolDown { get; set; }
 

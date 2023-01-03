@@ -87,8 +87,12 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
     private int _attackZone;
     public int AttackZone { get => _attackZone; set => _attackZone = value; }
 
-    private int _matingEnergyCostPercentage;
-    public int MatingEnergyCostPercentage { get => _matingEnergyCostPercentage; set => _matingEnergyCostPercentage = value; }
+    private int _matingEnergyCost;
+    public int MatingEnergyCost { get => _matingEnergyCost; set => _matingEnergyCost = value; }
+
+    private int _laborEnergyCost;
+    public int LaborEnergyCost { get => _laborEnergyCost; set => _laborEnergyCost = value; }
+
 
     // Constructor
     public Predator(int row, int col, SmartList apexs, SmartList herbs, SmartList aFood, SmartList pFood)
@@ -107,14 +111,16 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
         this.pFood = pFood;
 
         MaxEnergy = Preferences.Get("PredatorEnergy", 1000);
-        Energy = MaxEnergy/4;
+        Energy = LaborEnergyCost;
         MaxHitPoints = Preferences.Get("PredatorHitPoints", 100);
         HitPoints = MaxHitPoints;
         ContactZone = Preferences.Get("PredatorContactRadius", 0);
         AttackZone = Preferences.Get("PredatorAttackRadius", 1);
         VisionRadius = Preferences.Get("PredatorVisionRadius", 10);
 
-        MatingEnergyCostPercentage = Preferences.Get("PredatorMatingEnergyCostPercentage", 50);
+        MatingEnergyCost = Convert.ToInt32(MaxEnergy * Preferences.Get("PredatorMatingEnergyCostPercentage", 50)/100);
+
+        LaborEnergyCost = Convert.ToInt32(MaxEnergy * Preferences.Get("PredatorLaborEnergyCostPercentage", 50) / 100);
 
         DecayRate = Convert.ToInt32( MaxEnergy*Preferences.Get("PredatorEnergyDecayPercentage", 1)/100);
       
@@ -141,16 +147,16 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
     {
         if (Sex == 0)
         {
-            Energy -= MaxEnergy / 6;
-            LostEnergy += MaxEnergy /6;
+            Energy -= MatingEnergyCost;
+            LostEnergy += MatingEnergyCost;
             Mate = null;
             BreedCoolDown = true;
             CoolDown = GestationPeriod;
         }
         else
         {
-            Energy -= MaxEnergy/6;
-            LostEnergy += MaxEnergy/6;
+            Energy -= MatingEnergyCost ;
+            LostEnergy += MatingEnergyCost ;
             Mate = null;
         }
 
@@ -328,7 +334,7 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
         if (CoolDown == 0)
         {
             Predator newApex = new Predator(Row, Col, apexs, herbs, aFood, pFood);
-            Energy -= Convert.ToInt32(MaxEnergy * (MatingEnergyCostPercentage/100));
+            Energy -= LaborEnergyCost;
             apexs.add(newApex);
             BreedCoolDown = false;
         }

@@ -81,11 +81,16 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     private int _gestationTime;
     public int GestationPeriod { get => _gestationTime; set => _gestationTime = value; }
     
-    private int _matingEnergyCostPercentage;
-    public int MatingEnergyCostPercentage { get => _matingEnergyCostPercentage; set => _matingEnergyCostPercentage = value; }
+    private int _matingEnergyCost;
+    public int MatingEnergyCost { get => _matingEnergyCost; set => _matingEnergyCost = value; }
+
+    private int _laborEnergyCost;
+    public int LaborEnergyCost { get => _laborEnergyCost; set => _laborEnergyCost = value; }
 
     public Herbivore(int row, int col, SmartList plnts, SmartList herbs, SmartList aFood, SmartList pFood)
     {
+
+
         Row = row;
         Col = col;
         
@@ -99,22 +104,28 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
         this.pFood = pFood;
         this.aFood = aFood;
         
-        MaxEnergy = 1000;
-        Energy = MaxEnergy / 2;
-        MaxHitPoints = 35;
+        MaxEnergy = Preferences.Get("HerbivoreEnergy", 500);
+        Energy = Convert.ToInt32(MaxEnergy * (Preferences.Get("HerbivoreLaborEnergyCostPercentage", 50) / 100));
+        MaxHitPoints = Preferences.Get("HerbivoreHitPoints", 35);
         HitPoints = MaxHitPoints;
-        ContactZone = 10;
-        VisionRadius = 10;
-
+        
+        ContactZone = Preferences.Get("HerbivoreContactRadius", 10);
+        VisionRadius = Preferences.Get("HerbivoreVisionRadius", 10);
+        
         EatSpeed = 100;
 
         LostEnergy = 0;
-        DecayRate = 8;
-        
+        DecayRate = Convert.ToInt32(MaxEnergy*Preferences.Get("HerbivoreEnergyDecayPercentage", 1)/100);
+
+        MatingEnergyCost = Convert.ToInt32(MaxEnergy*Preferences.Get("HerbivoreMatingEnergyCostPercentage", 33)/100);
+
+        LaborEnergyCost = Convert.ToInt32(MaxEnergy * Preferences.Get("HerbivoreLaborEnergyCostPercentage", 50) / 100);
+
+
         Sex = rand.Next(2);
         Mate = null;
         BreedCoolDown = false;
-        GestationPeriod = 30;
+        GestationPeriod = Preferences.Get("HerbivoreGestationPeriod", 30);
 
         EntityID = Global.GetID();
 
@@ -221,16 +232,16 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     {
         if (Sex == 0)
         {
-            Energy -= MaxEnergy/3;
-            LostEnergy += MaxEnergy/3;
+            Energy -= MatingEnergyCost;
+            LostEnergy += MatingEnergyCost;
             Mate = null;
             BreedCoolDown = true;
             CoolDown = GestationPeriod;
         }
         else
         {
-            Energy -= (MaxEnergy/3);
-            LostEnergy += (MaxEnergy / 3);
+            Energy -= MatingEnergyCost;
+            LostEnergy += MatingEnergyCost;
             Mate = null;
         }
     }
@@ -243,7 +254,7 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
             BreedCoolDown = false;
             Herbivore newHerb = new Herbivore(Row, Col, plnts, herbs, aFood, pFood);
             herbs.add(newHerb);
-            Energy -= MaxEnergy / 2;
+            Energy -= LaborEnergyCost;
         }
     }
     
