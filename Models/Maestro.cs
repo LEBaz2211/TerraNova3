@@ -93,7 +93,7 @@ internal class TileSet
     {
         for (int i = 0; i < plNumber; i++)
         {
-            plnts.add(new Plant(positions[i].Item1, positions[i].Item2, plnts, pFood));
+            plnts.add(new Plant(positions[i%size].Item1, positions[i % size].Item2, plnts, pFood));
         }
     }
 
@@ -101,7 +101,7 @@ internal class TileSet
     {
         for (int i = plNumber; i < heNumber + plNumber; i++)
         {
-            herbs.add(new Herbivore(positions[i].Item1, positions[i].Item2, plnts, herbs, aFood, pFood));
+            herbs.add(new Herbivore(positions[i % size].Item1, positions[i % size].Item2, plnts, herbs, aFood, pFood));
         }
     }
 
@@ -109,7 +109,7 @@ internal class TileSet
     {
         for (int i = heNumber + plNumber; i < prNumber + heNumber + plNumber; i++)
         {
-            apexs.add(new Predator(positions[i].Item1, positions[i].Item2, apexs, herbs, aFood, pFood));
+            apexs.add(new Predator(positions[i % size].Item1, positions[i % size].Item2, apexs, herbs, aFood, pFood));
         }
     }
 
@@ -119,7 +119,7 @@ internal class TileSet
         {
             if (i % 10 == 0)
             { 
-                pFood.add(new OrganicMatter(positions[i].Item1, positions[i].Item2, 2000, pFood));
+                pFood.add(new OrganicMatter(positions[i % size].Item1, positions[i % size].Item2, 2000, pFood));
             }
         }
     }

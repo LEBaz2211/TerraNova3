@@ -12,6 +12,7 @@ public partial class PreGame : ContentPage
         PlantSlider.Value = (int)Preferences.Get("PlantsNumber", 10);
         HerbivoresSlider.Value = (int)Preferences.Get("HerbivoresNumber", 10);
         CarnivoresSlider.Value = (int)Preferences.Get("CarnivoresNumber", 10);
+        SizeSlider.Value = (int)Preferences.Get("Size", 20);
     }
     private void OnBackClicked(object sender, EventArgs e)
     {
@@ -21,7 +22,7 @@ public partial class PreGame : ContentPage
     private void OnPlayClicked(object sender, EventArgs e)
     {
         Save();
-        Application.Current.MainPage.Navigation.PushModalAsync(new TestOutput(), true);
+        Application.Current.MainPage.Navigation.PushModalAsync(new Game(), true);
     }
     private void GoToPredatorPref(object sender, EventArgs e)
     {
@@ -43,6 +44,7 @@ public partial class PreGame : ContentPage
         Preferences.Set("PlantsNumber", (int)PlantSlider.Value);
         Preferences.Set("HerbivoresNumber", (int)HerbivoresSlider.Value);
         Preferences.Set("CarnivoresNumber", (int)CarnivoresSlider.Value);
+        Preferences.Set("Size", (int)SizeSlider.Value);
     }
 
 

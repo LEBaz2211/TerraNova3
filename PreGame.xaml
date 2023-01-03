@@ -15,7 +15,7 @@
                 VerticalOptions="Center"
                 />
     <Grid
-        RowDefinitions=".05*,.05*,.15*,.05*,.15*,.05*,.15*,.05*,.3*"
+        RowDefinitions=".05*,.05*,.15*,.05*,.15*,.05*,.15*,.05*,.15*,.05*,.1*"
         ColumnDefinitions=".05*,.3*,.3*,.3*,.05*"
         >
         
@@ -147,7 +147,28 @@
             />
 
 
+        <Label
+            Text="{Binding Source={x:Reference SizeSlider},
+                                  Path=Value,
+                                  Converter={StaticResource floatToInt}}"
+            FontSize="60"
+            HorizontalOptions="Center"
+            VerticalOptions="End"
+            Grid.Row="8"
+            Grid.Column="2"
+            Grid.ColumnSpan="2"
+            />
 
+        <Slider
+            Minimum="1"
+            Maximum="100"
+            Value="10"
+            x:Name="SizeSlider"
+            
+            Grid.Row="9"
+            Grid.Column="2"
+            Grid.ColumnSpan="2"
+            />
 
         <Button
             x:Name="PlayBtn"
@@ -156,7 +177,7 @@
             BackgroundColor="Grey"
             TextColor="AntiqueWhite"
             HeightRequest="40"
-            Grid.Row="8"
+            Grid.Row="10"
             Grid.Column="2"
                 />
 
