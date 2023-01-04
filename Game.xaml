@@ -4,7 +4,7 @@
              x:Class="TerraNova3.Game"
              Title="Game">
 
-        <Grid RowDefinitions="20,.95*">
+        <Grid RowDefinitions="30,.95*">
 
         <HorizontalStackLayout x:Name="Nav"
                                Grid.Row="0">
@@ -26,6 +26,23 @@
             <Button
                     Text="ZoomOut"
                     Clicked="OnZoomOut"/>
+
+            <Label
+                    x:Name="P"
+                    Text="Plants:"/>
+
+            <Label
+                    x:Name="C"
+                    Text="Carnivores:"/>
+
+            <Label
+                    x:Name="H"
+                    Text="Herbivores:"/>
+
+            <Label
+                    x:Name="O"
+                    Text="Organic Matter:"/>
+
 
         </HorizontalStackLayout>
 

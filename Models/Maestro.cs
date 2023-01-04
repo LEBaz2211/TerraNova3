@@ -117,7 +117,7 @@ internal class TileSet
     {
         for (int i = plNumber + heNumber + plNumber; i < positions.Count; i++)
         {
-            if (i % 10 == 0)
+            if (i % 5 == 0)
             { 
                 pFood.add(new OrganicMatter(positions[i % size].Item1, positions[i % size].Item2, 2000, pFood));
             }

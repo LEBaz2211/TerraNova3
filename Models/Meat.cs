@@ -35,6 +35,9 @@ public class Meat : IAbstractEntity
     private int _decayRate;
     public int DecayRate { get => _decayRate; set => _decayRate = value; }
 
+    private Label _energyLabel;
+    public Label EnergyLabel { get => _energyLabel; set => _energyLabel = value; }
+
     public Meat(int row, int col, int maxEnergy, SmartList pFood)
     {
         Row = row;
@@ -49,6 +52,10 @@ public class Meat : IAbstractEntity
         Image image = new Image();
         image.Source = "meat.png";
         EntityImage = image;
+
+        Label energyLabel = new Label();
+        energyLabel.Text = Energy.ToString();
+        EnergyLabel = energyLabel;
 
         EntityID = Global.GetID();
     }

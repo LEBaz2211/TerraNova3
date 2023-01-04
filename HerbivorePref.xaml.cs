@@ -64,6 +64,7 @@ public partial class HerbivorePref : ContentPage
         Preferences.Set("HerbivoreEnergy", Energy);
         Preferences.Set("HerbivoreEnergyDecayPercentage", EnergyDecayPercentage);
         Preferences.Set("HerbivoreMatingEnergyCostPercentage", MatingEnergyCostPercentage);
+        Preferences.Set("HerbivoreLaborEnergyCostPercentage", LaborEnergyCostPercentage);
         Preferences.Set("HerbivoreGestationPeriod", GestationPeriod);
         Preferences.Set("HerbivoreVisionRadius", VisionRadius);
         Preferences.Set("HerbivoreContactRadius", ContactRadius);
@@ -74,6 +75,7 @@ public partial class HerbivorePref : ContentPage
         Preferences.Remove("HerbivoreEnergy");
         Preferences.Remove("HerbivoreEnergyDecayPercentage");
         Preferences.Remove("HerbivoreMatingEnergyCostPercentage");
+        Preferences.Remove("HerbivoreLaborEnergyCostPercentage");
         Preferences.Remove("HerbivoreGestationPeriod");
         Preferences.Remove("HerbivoreVisionRadius");
         Preferences.Remove("HerbivoreContactRadius");

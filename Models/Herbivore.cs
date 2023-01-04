@@ -87,6 +87,9 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     private int _laborEnergyCost;
     public int LaborEnergyCost { get => _laborEnergyCost; set => _laborEnergyCost = value; }
 
+    private Label _energyLabel;
+    public Label EnergyLabel { get => _energyLabel; set => _energyLabel = value; }
+
     public Herbivore(int row, int col, SmartList plnts, SmartList herbs, SmartList aFood, SmartList pFood)
     {
 
@@ -95,6 +98,8 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
         Col = col;
         
         
+
+
         Image image = new Image();
         image.Source = "herbivores.png";
         EntityImage = image;
@@ -105,7 +110,14 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
         this.aFood = aFood;
         
         MaxEnergy = Preferences.Get("HerbivoreEnergy", 500);
-        Energy = Convert.ToInt32(MaxEnergy * (Preferences.Get("HerbivoreLaborEnergyCostPercentage", 50) / 100));
+
+        DecayRate = Convert.ToInt32(MaxEnergy * Preferences.Get("HerbivoreEnergyDecayPercentage", 1) / 100);
+
+        MatingEnergyCost = Convert.ToInt32(MaxEnergy * Preferences.Get("HerbivoreMatingEnergyCostPercentage", 33) / 100);
+
+        LaborEnergyCost = Convert.ToInt32(MaxEnergy * Preferences.Get("HerbivoreLaborEnergyCostPercentage", 50) / 100);
+
+        Energy = LaborEnergyCost;
         MaxHitPoints = Preferences.Get("HerbivoreHitPoints", 35);
         HitPoints = MaxHitPoints;
         
@@ -115,12 +127,6 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
         EatSpeed = 100;
 
         LostEnergy = 0;
-        DecayRate = Convert.ToInt32(MaxEnergy*Preferences.Get("HerbivoreEnergyDecayPercentage", 1)/100);
-
-        MatingEnergyCost = Convert.ToInt32(MaxEnergy*Preferences.Get("HerbivoreMatingEnergyCostPercentage", 33)/100);
-
-        LaborEnergyCost = Convert.ToInt32(MaxEnergy * Preferences.Get("HerbivoreLaborEnergyCostPercentage", 50) / 100);
-
 
         Sex = rand.Next(2);
         Mate = null;
@@ -128,6 +134,10 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
         GestationPeriod = Preferences.Get("HerbivoreGestationPeriod", 30);
 
         EntityID = Global.GetID();
+
+        Label energyLabel = new Label();
+        energyLabel.Text = Energy.ToString();
+        EnergyLabel = energyLabel;
 
     }
 
@@ -211,7 +221,7 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
                     Move(0, colDist / Math.Abs(colDist));
                 }
             }
-            else { RandomMove(); }
+            else { LookForFood(); }
 
         }
         else if(Mate != null)
@@ -225,7 +235,7 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
             else if (colDist != 0 & Math.Abs(colDist) > ContactZone) { Move(0, (colDist / Math.Abs(colDist))); }
             else { Breed(); }
         }
-        else { RandomMove(); }
+        else { LookForFood(); }
     }
 
     public void Breed()
@@ -287,7 +297,7 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     public void EnergyDecay()
     {
         if (Energy <= 0) { ConvertHPtoEnergy(); }
-        else if (HitPoints < MaxHitPoints & Energy >= MaxEnergy - MaxEnergy/10)
+        else if (HitPoints < MaxHitPoints & Energy >= MaxEnergy/2)
         {
             ConvertEnergytoHP();
         }
@@ -328,8 +338,8 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
         EnergyDecay();
         Poop();
 
-        if ( Energy <= MaxEnergy/2 ) { LookForFood(); }
-        else if ( Energy > MaxEnergy/2 ) { LookForMate(); }
+        if (Energy > MaxEnergy - MaxEnergy / 3) { LookForMate(); }
+        else { LookForFood(); }
 
 
         if (BreedCoolDown == true) { Gestation(); }

@@ -93,6 +93,9 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
     private int _laborEnergyCost;
     public int LaborEnergyCost { get => _laborEnergyCost; set => _laborEnergyCost = value; }
 
+    private Label _energyLabel;
+    public Label EnergyLabel { get => _energyLabel; set => _energyLabel = value; }
+
 
     // Constructor
     public Predator(int row, int col, SmartList apexs, SmartList herbs, SmartList aFood, SmartList pFood)
@@ -105,12 +108,23 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
         image.Source = "carnivores.png";
         EntityImage = image;
 
+        Label energyLabel = new Label();
+        energyLabel.Text = Energy.ToString();
+        EnergyLabel = energyLabel;
+
         this.apexs = apexs;
         this.herbs = herbs;
         this.aFood = aFood;
         this.pFood = pFood;
 
         MaxEnergy = Preferences.Get("PredatorEnergy", 1000);
+
+        MatingEnergyCost = Convert.ToInt32(MaxEnergy * Preferences.Get("PredatorMatingEnergyCostPercentage", 50) / 100);
+
+        LaborEnergyCost = Convert.ToInt32(MaxEnergy * Preferences.Get("PredatorLaborEnergyCostPercentage", 50) / 100);
+
+        DecayRate = Convert.ToInt32(MaxEnergy * Preferences.Get("PredatorEnergyDecayPercentage", 1) / 100);
+
         Energy = LaborEnergyCost;
         MaxHitPoints = Preferences.Get("PredatorHitPoints", 100);
         HitPoints = MaxHitPoints;
@@ -118,11 +132,7 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
         AttackZone = Preferences.Get("PredatorAttackRadius", 1);
         VisionRadius = Preferences.Get("PredatorVisionRadius", 10);
 
-        MatingEnergyCost = Convert.ToInt32(MaxEnergy * Preferences.Get("PredatorMatingEnergyCostPercentage", 50)/100);
 
-        LaborEnergyCost = Convert.ToInt32(MaxEnergy * Preferences.Get("PredatorLaborEnergyCostPercentage", 50) / 100);
-
-        DecayRate = Convert.ToInt32( MaxEnergy*Preferences.Get("PredatorEnergyDecayPercentage", 1)/100);
       
         LostEnergy = 0;
         EatSpeed = 100;
@@ -255,7 +265,7 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
                 }
                 else if (colDist != 0 & Math.Abs(colDist) > ContactZone) { Move(0, (colDist / Math.Abs(colDist))); }
             }
-            else { RandomMove(); }
+            else { LookForFood(); }
 
         }
         else if (Mate != null)
@@ -269,7 +279,7 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
             else if (colDist != 0) { Move(0, (colDist / Math.Abs(colDist))); }
             else { Breed(); }
         }
-        else { RandomMove(); }
+        else { LookForFood(); }
     }
 
     public void Move(int row, int col)
@@ -288,7 +298,7 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
     public void EnergyDecay()
     {
         if (Energy <= 0) { ConvertHPtoEnergy(); }
-        else if (HitPoints < MaxHitPoints & Energy >= MaxEnergy - MaxEnergy/10)
+        else if (HitPoints < MaxHitPoints & Energy >= MaxEnergy/2)
         {
             ConvertEnergytoHP();
         }
@@ -359,9 +369,9 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
         EnergyDecay();
         Poop();
 
-        if (Energy <= MaxEnergy / 2) { LookForFood(); }
-        else if (Energy > MaxEnergy / 2) { LookForMate(); }
-        else { RandomMove(); }
+        
+        if (Energy > MaxEnergy - MaxEnergy / 4) { LookForMate(); }
+        else { LookForFood(); }
 
         if (BreedCoolDown == true) { Gestation(); }
     }

@@ -31,6 +31,8 @@ public interface IAbstractEntity
 
     Image EntityImage { get; set; }
 
+    Label EnergyLabel { get; set; }
+
     void Update();
 
     void EnergyDecay();

@@ -36,6 +36,9 @@ public class OrganicMatter : IAbstractEntity
     private int _decayRate;
     public int DecayRate { get => _decayRate; set => _decayRate = value; }
 
+    private Label _energyLabel;
+    public Label EnergyLabel { get => _energyLabel; set => _energyLabel = value; }
+
     public OrganicMatter(int row, int col, int maxEnergy, SmartList pFood)
     {
         Row = row;
@@ -51,6 +54,10 @@ public class OrganicMatter : IAbstractEntity
         Image image = new Image();
         image.Source = "organic.png";
         EntityImage = image;
+
+        Label energyLabel = new Label();
+        energyLabel.Text = Energy.ToString();
+        EnergyLabel = energyLabel;
 
         EntityID = Global.GetID();
     }
@@ -71,6 +78,7 @@ public class OrganicMatter : IAbstractEntity
         {
             if (poo.Row == Row && poo.Col == Col && poo.EntityID != EntityID)
             {
+                EntityImage.Source = "apex.png";
                 Energy += poo.Energy;
                 poo.Energy = 0;
             }

@@ -54,10 +54,8 @@ public partial class Game : ContentPage
 
     }
     public void OnStep(object sender, EventArgs e)
-
     {
         tiles.update();
-
     }
     void OnZoomIn(object sender, EventArgs e)
     {
@@ -66,6 +64,11 @@ public partial class Game : ContentPage
     void OnZoomOut(object sender, EventArgs e)
     {
         Layout.Scale = Layout.Scale / 1.1;
+    }
+
+    void Step()
+    {
+        tiles.update();
     }
     public async void Start()
     {

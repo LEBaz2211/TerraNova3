@@ -78,26 +78,37 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
     private int _seedingEnergyCost;
     public int SeedingEnergyCost { get => _seedingEnergyCost; set => _seedingEnergyCost = value; }
 
+    private Label _energyLabel;
+    public Label EnergyLabel { get => _energyLabel; set => _energyLabel = value; }
+
     public Plant(int row, int col, SmartList plnts, SmartList pFood)
     {
 
 
         Row = row;
         Col = col;
-        
+
+        Label energyLabel = new Label();
+        energyLabel.Text = Energy.ToString();
+        EnergyLabel = energyLabel;
+
         Image image = new Image();
         image.Source = "plant.png";
         EntityImage = image;
 
         this.pFood = pFood;
         this.plnts = plnts;
-
+        
+        
+        
         MaxEnergy = Preferences.Get("PlantEnergy", 1000);
-        Energy = MaxEnergy/2;
+        SeedingEnergyCost = Convert.ToInt32(MaxEnergy*Preferences.Get("PlantSeedingEnergyCostPercentage", 50)/100);
+        DecayRate = Convert.ToInt32(MaxEnergy * Preferences.Get("PlantEnergyDecayPercentage", 1) / 100);
+        Energy = SeedingEnergyCost;
         MaxHitPoints = Preferences.Get("PlantHitPoints", 2);
         HitPoints = MaxHitPoints;
 
-        DecayRate = Convert.ToInt32(MaxEnergy*Preferences.Get("PlantEnergyDecayPercentage", 1)/100);
+        
         LostEnergy = 0;
 
         EntityID = Global.GetID();
@@ -106,7 +117,7 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
         RootZone = Preferences.Get("PlantRootRadius", 4);
         EatSpeed = 50 + (EatSpeed - plnts.GetEntities().Count);
 
-        SeedingEnergyCost = Convert.ToInt32(MaxEnergy*Preferences.Get("PlantSeedingEnergyCostPercentage", 50)/100);
+        
 
         WinterCycleTime = Preferences.Get("PlantWinterSeasonTime", 15);
         SpringCycleTime = Preferences.Get("PlantSpringSeasonTime", 20);
@@ -220,7 +231,7 @@ internal class Plant : IAbstractEntity, IAbstractLiving, IAbstractStatic
         EnergyDecay();
         SeasonalChange();
 
-        if(Energy <= MaxEnergy - MaxEnergy/4) { LookForOrganicMatter(); }
+        if(Energy <= MaxEnergy - 10*DecayRate) { LookForOrganicMatter(); }
 
         if(Spring & Energy >= MaxEnergy - MaxEnergy / 4) { Seed(); }
     }
