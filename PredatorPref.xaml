@@ -40,6 +40,7 @@
         <Entry x:Name="visionRadiusEntry" Keyboard="Numeric" />
         <Label Text="Contact Radius" />
         <Entry x:Name="contactRadiusEntry" Keyboard="Numeric" />
+        
     </StackLayout>
 </ContentPage>
 

@@ -34,14 +34,14 @@ public partial class PlantPref : ContentPage
     }
     public void Parse()
     {
-        HitPoints = int.Parse(hitPointsEntry.Text);
-        Energy = int.Parse(energyEntry.Text);
-        EnergyDecayPercentage = int.Parse(energyDecayEntry.Text);
-        SeedingEnergyCostPercentage = int.Parse(seedingEnergyCostEntry.Text);
-        WinterSeasonTime = int.Parse(winterSeasonTimeEntry.Text);
-        SpringSeasonTime = int.Parse(springSeasonTimeEntry.Text);
-        RootRadius = int.Parse(rootRadiusEntry.Text);
-        SeedingRadius = int.Parse(seedingRadiusEntry.Text);
+        HitPoints = Math.Abs(int.Parse(hitPointsEntry.Text));
+        Energy = Math.Abs(int.Parse(energyEntry.Text));
+        EnergyDecayPercentage = Math.Abs(int.Parse(energyDecayEntry.Text));
+        SeedingEnergyCostPercentage = Math.Abs(int.Parse(seedingEnergyCostEntry.Text));
+        WinterSeasonTime = Math.Abs(int.Parse(winterSeasonTimeEntry.Text));
+        SpringSeasonTime = Math.Abs(int.Parse(springSeasonTimeEntry.Text));
+        RootRadius = Math.Abs(int.Parse(rootRadiusEntry.Text));
+        SeedingRadius = Math.Abs(int.Parse(seedingRadiusEntry.Text));
     }
 
     public void SetPref()
@@ -68,6 +68,7 @@ public partial class PlantPref : ContentPage
         Preferences.Set("PlantSpringSeasonTime", SpringSeasonTime);
         Preferences.Set("PlantRootRadius", RootRadius);
         Preferences.Set("PlantSeedingRadius", SeedingRadius);
+        foolCheck();
     }
     public static void ClearPref()
     {
@@ -79,5 +80,24 @@ public partial class PlantPref : ContentPage
         Preferences.Remove("PlantSpringSeasonTime");
         Preferences.Remove("PlantRootRadius");
         Preferences.Remove("PlantSeedingRadius");
+    }
+    public void foolCheck()
+    {
+        if (EnergyDecayPercentage > 100 || SeedingEnergyCostPercentage > 100)
+        {
+            BrowserOpen_Clicked();
+        }
+    }
+    private async void BrowserOpen_Clicked()
+    {
+        try
+        {
+            Uri uri = new Uri("https://www.youtube.com/watch?v=y2weNM4JtME");
+            await Browser.Default.OpenAsync(uri, BrowserLaunchMode.SystemPreferred);
+        }
+        catch (Exception ex)
+        {
+
+        }
     }
 }

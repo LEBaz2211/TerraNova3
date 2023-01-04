@@ -71,6 +71,8 @@
 	  <None Remove="Resources\Images\tile_top_left.png" />
 	  <None Remove="Resources\Images\tile_top_right.png" />
 	  <None Remove="Models\" />
+	  <None Remove="Resources\Images\why.mp4" />
+	  <None Remove="Resources\Raw\why.mp4" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -105,5 +107,9 @@
 	  <MauiXaml Update="Game.xaml">
 	    <SubType></SubType>
 	  </MauiXaml>
+	</ItemGroup>
+	<ItemGroup>
+	  <BundleResource Include="**/*" />
+	  <BundleResource Include="Resources\Raw\why.mp4" />
 	</ItemGroup>
 </Project>

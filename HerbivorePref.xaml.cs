@@ -35,14 +35,14 @@ public partial class HerbivorePref : ContentPage
     }
     public void Parse()
     {
-        HitPoints = int.Parse(hitPointsEntry.Text);
-        Energy = int.Parse(energyEntry.Text);
-        EnergyDecayPercentage = int.Parse(energyDecayEntry.Text);
-        MatingEnergyCostPercentage = int.Parse(matingEnergyCostEntry.Text);
-        LaborEnergyCostPercentage = int.Parse(laborEnergyCostEntry.Text);
-        GestationPeriod = int.Parse(gestationPeriodEntry.Text);
-        VisionRadius = int.Parse(visionRadiusEntry.Text);
-        ContactRadius = int.Parse(contactRadiusEntry.Text);
+        HitPoints = Math.Abs(int.Parse(hitPointsEntry.Text));
+        Energy = Math.Abs(int.Parse(energyEntry.Text));
+        EnergyDecayPercentage = Math.Abs(int.Parse(energyDecayEntry.Text));
+        MatingEnergyCostPercentage = Math.Abs(int.Parse(matingEnergyCostEntry.Text));
+        LaborEnergyCostPercentage = Math.Abs(int.Parse(laborEnergyCostEntry.Text));
+        GestationPeriod = Math.Abs(int.Parse(gestationPeriodEntry.Text));
+        VisionRadius = Math.Abs(int.Parse(visionRadiusEntry.Text));
+        ContactRadius = Math.Abs(int.Parse(contactRadiusEntry.Text));
     }
 
     public void SetPref()
