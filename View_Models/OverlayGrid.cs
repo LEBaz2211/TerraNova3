@@ -42,7 +42,7 @@ public class OverlayGrid
 
     public void AddEntity(IAbstractEntity entity)
     {
-        entity.EnergyLabel.Text = entity.EntityID.ToString();
+        entity.EnergyLabel.Text = entity.Energy.ToString();
         entity.EntityImage.WidthRequest = _cellSize;
         entity.EntityImage.HeightRequest = _cellSize;
         _grid.SetRow(entity.EntityImage, entity.Row);

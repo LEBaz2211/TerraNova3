@@ -278,9 +278,9 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
     {
         (int, int) size = Global.GetSize();
         int dir = rand.Next(4);
-        if(Row == size.Item1) { Move(-1, 0); }
+        if(Row == size.Item1-1) { Move(-1, 0); }
         else if (Row == 0) { Move(1, 0); }
-        else if (Col == size.Item2) { Move(0, -1); }
+        else if (Col == size.Item2-1) { Move(0, -1); }
         else if (Col == 0) { Move(0, 1); }
         else if (dir == 0) { Move(0, 1); }
         else if (dir == 1){ Move(1, 0); }

@@ -78,7 +78,6 @@ public class OrganicMatter : IAbstractEntity
         {
             if (poo.Row == Row && poo.Col == Col && poo.EntityID != EntityID)
             {
-                EntityImage.Source = "apex.png";
                 Energy += poo.Energy;
                 poo.Energy = 0;
             }
