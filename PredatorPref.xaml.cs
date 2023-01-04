@@ -1,4 +1,5 @@
-﻿namespace TerraNova3;
+﻿
+namespace TerraNova3;
 
 public partial class PredatorPref : ContentPage
 {
@@ -34,16 +35,16 @@ public partial class PredatorPref : ContentPage
     }
     public void Parse()
     {
-        HitPoints = int.Parse(hitPointsEntry.Text);
-        Energy = int.Parse(energyEntry.Text);
-        EnergyDecayPercentage = int.Parse(energyDecayEntry.Text);
-        MatingEnergyCostPercentage = int.Parse(matingEnergyCostEntry.Text);
-        LaborEnergyCostPercentage = int.Parse(laborEnergyCostEntry.Text);
-        GestationPeriod = int.Parse(gestationPeriodEntry.Text);
-        AttackDamage = int.Parse(attackDamageEntry.Text);
-        AttackRadius = int.Parse(attackRadiusEntry.Text);
-        VisionRadius = int.Parse(visionRadiusEntry.Text);
-        ContactRadius = int.Parse(contactRadiusEntry.Text);
+        HitPoints = Math.Abs(int.Parse(hitPointsEntry.Text));
+        Energy = Math.Abs(int.Parse(energyEntry.Text));
+        EnergyDecayPercentage = Math.Abs(int.Parse(energyDecayEntry.Text));
+        MatingEnergyCostPercentage = Math.Abs(int.Parse(matingEnergyCostEntry.Text));
+        LaborEnergyCostPercentage = Math.Abs(int.Parse(laborEnergyCostEntry.Text));
+        GestationPeriod = Math.Abs(int.Parse(gestationPeriodEntry.Text));
+        AttackDamage = Math.Abs(int.Parse(attackDamageEntry.Text));
+        AttackRadius = Math.Abs(int.Parse(attackRadiusEntry.Text));
+        VisionRadius = Math.Abs(int.Parse(visionRadiusEntry.Text));
+        ContactRadius = Math.Abs(int.Parse(contactRadiusEntry.Text));
     }
 
 
@@ -59,6 +60,8 @@ public partial class PredatorPref : ContentPage
         Preferences.Set("PredatorAttackRadius", AttackRadius);
         Preferences.Set("PredatorVisionRadius", VisionRadius);
         Preferences.Set("PredatorContactRadius", ContactRadius);
+        foolCheck();
+
     }
 
     public void SetPref()
@@ -88,6 +91,25 @@ public partial class PredatorPref : ContentPage
         Preferences.Remove("PredatorVisionRadius");
         Preferences.Remove("PredatorContactRadius");
         
+    }
+    public  void foolCheck()
+    {
+        if (EnergyDecayPercentage > 100 || MatingEnergyCostPercentage> 100 || LaborEnergyCostPercentage>100)
+        {
+            BrowserOpen_Clicked();
+        }
+    }
+    private async void BrowserOpen_Clicked()
+    {
+        try
+        {
+            Uri uri = new Uri("https://www.youtube.com/watch?v=y2weNM4JtME");
+            await Browser.Default.OpenAsync(uri, BrowserLaunchMode.SystemPreferred);
+        }
+        catch (Exception ex)
+        {
+            
+        }
     }
 }
 
