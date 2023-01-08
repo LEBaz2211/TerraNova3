@@ -80,5 +80,24 @@ public partial class HerbivorePref : ContentPage
         Preferences.Remove("HerbivoreVisionRadius");
         Preferences.Remove("HerbivoreContactRadius");
     }
+    public void foolCheck()
+    {
+        if (EnergyDecayPercentage > 100 || MatingEnergyCostPercentage > 100 || LaborEnergyCostPercentage > 100)
+        {
+            BrowserOpen_Clicked();
+        }
+    }
+    private async void BrowserOpen_Clicked()
+    {
+        try
+        {
+            Uri uri = new Uri("https://www.youtube.com/watch?v=y2weNM4JtME");
+            await Browser.Default.OpenAsync(uri, BrowserLaunchMode.SystemPreferred);
+        }
+        catch (Exception ex)
+        {
+
+        }
+    }
 }
 

@@ -22,24 +22,25 @@
                 >
                 
 
-            <ImageButton
+            <Button
                 x:Name="PlayBtn"
-                Source="terranova.png"
-                Aspect="AspectFit"
+                Text="Play"
+
                 Clicked="OnPlayClicked"
                 Grid.Row="1"
                 Grid.Column="1"
+                HeightRequest="40"
                 
 
 
                 />
-            <ImageButton
+            <Button
                 x:Name="LoadBtn"
-                Source="terranova.png"
-                Aspect="AspectFit"
+                Text="Settings"
                 Clicked="OnLoadClicked"               
                 Grid.Row="2"
                 Grid.Column="1"
+                HeightRequest="40"
                 
                 
                />
