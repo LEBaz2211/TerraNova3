@@ -221,7 +221,8 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
                     Move(0, colDist / Math.Abs(colDist));
                 }
             }
-            else { LookForFood(); }
+            else if(Energy <= MaxEnergy) { LookForFood(); }
+            else { RandomMove(); }
 
         }
         else if(Mate != null)
@@ -235,7 +236,8 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
             else if (colDist != 0 & Math.Abs(colDist) > ContactZone) { Move(0, (colDist / Math.Abs(colDist))); }
             else { Breed(); }
         }
-        else { LookForFood(); }
+        else if (Energy <= MaxEnergy) { LookForFood(); }
+        else { RandomMove(); }
     }
 
     public void Breed()
