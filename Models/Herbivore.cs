@@ -285,9 +285,9 @@ internal class Herbivore : IAbstractEntity, IAbstractLiving, IAbstractMoving
         else if (Col == size.Item2-1) { Move(0, -1); }
         else if (Col == 0) { Move(0, 1); }
         else if (dir == 0) { Move(0, 1); }
-        else if (dir == 1){ Move(1, 0); }
+        else if (dir == 1) { Move(1, 0); }
         else if (dir == 2) { Move(0, -1); }
-        else if (dir == 3){ Move(-1, 0); }
+        else if (dir == 3) { Move(-1, 0); }
     }
 
     public void Repost()
