@@ -14,8 +14,6 @@ Le digramme de séquence ci-dessous est celui d'un herbivore. Nous avons seuleme
  <img alt="Diagramme de séquence" src="Diagramme_séquence_Herbivore.png">
 </picture>
 
-Si l'animal meurt, il est remplacé par de la viande.
-
 ## Principes SOLID:
 
 ### Ségrégation des interfaces:
