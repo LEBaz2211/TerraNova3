@@ -45,14 +45,8 @@ class Predator : IAbstractEntity, IAbstractLiving, IAbstractMoving, IAbstractKil
     private int _maxEnergy;
     public int MaxEnergy { get => _maxEnergy; set => _maxEnergy = value; }
 
-    private List<string> _dietList;
-    public List<string> DietList { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
     private int _sex;
     public int Sex { get => _sex; set => _sex = value; }
-
-    private int _speed;
-    public int Speed { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
     private int _visionRadius;
     public int VisionRadius { get => _visionRadius; set => _visionRadius = value; }

@@ -11,7 +11,6 @@ namespace TerraNova3.Models;
 
 public interface IAbstractEntity
 {
-    // A dictionary to store the x and y positions of the entity on the grid
 
     int EntityID { get; set; }
     
@@ -19,10 +18,8 @@ public interface IAbstractEntity
 
     int Col { get; set; }
 
-    // The current energy of the living entity
     int Energy { get; set; }
 
-    // The maximum energy of the living entity
     int MaxEnergy { get; set; }
 
     int LostEnergy { get; set; }
