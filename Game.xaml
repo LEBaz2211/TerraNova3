@@ -27,22 +27,6 @@
                     Text="ZoomOut"
                     Clicked="OnZoomOut"/>
 
-            <Label
-                    x:Name="P"
-                    Text="Plants:"/>
-
-            <Label
-                    x:Name="C"
-                    Text="Carnivores:"/>
-
-            <Label
-                    x:Name="H"
-                    Text="Herbivores:"/>
-
-            <Label
-                    x:Name="O"
-                    Text="Organic Matter:"/>
-
 
         </HorizontalStackLayout>
 

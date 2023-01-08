@@ -10,7 +10,7 @@ namespace TerraNova3.View_Models;
 public class OverlayGrid
 {
     private Grid _grid;
-    //public List<IAbstractEntity> _entity;
+
     private TerraGrid _terraGrid;
     private int _cellSize;
     private int _numRows;
@@ -42,16 +42,16 @@ public class OverlayGrid
 
     public void AddEntity(IAbstractEntity entity)
     {
-        entity.EnergyLabel.Text = entity.Energy.ToString();
+        //entity.EnergyLabel.Text = entity.Energy.ToString();
         entity.EntityImage.WidthRequest = _cellSize;
         entity.EntityImage.HeightRequest = _cellSize;
         _grid.SetRow(entity.EntityImage, entity.Row);
-        _grid.SetRow(entity.EnergyLabel, entity.Row);
+        //_grid.SetRow(entity.EnergyLabel, entity.Row);
         _grid.SetColumn(entity.EntityImage, entity.Col);
-        _grid.SetColumn(entity.EnergyLabel, entity.Col);
+        //_grid.SetColumn(entity.EnergyLabel, entity.Col);
         entity.EntityImage.IsVisible = true;
         _grid.Children.Add(entity.EntityImage);
-        _grid.Children.Add(entity.EnergyLabel);
+        //_grid.Children.Add(entity.EnergyLabel);
 
     }
 
@@ -59,7 +59,7 @@ public class OverlayGrid
     {
         
         _grid.Children.Remove(e.EntityImage);
-        _grid.Children.Remove(e.EnergyLabel);
+        //_grid.Children.Remove(e.EnergyLabel);
 
     }
     public Grid GetGrid()
