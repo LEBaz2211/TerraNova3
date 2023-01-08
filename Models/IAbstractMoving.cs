@@ -6,7 +6,6 @@ namespace TerraNova3.Models;
 public interface IAbstractMoving
 {
 
-    // The sex of the moving entity
     int Sex { get; set; }
 
     int GestationPeriod { get; set; }
@@ -19,10 +18,8 @@ public interface IAbstractMoving
 
     int CoolDown { get; set; }
 
-    // The speed of the moving entity
-    int Speed { get; set; }
+    
 
-    // The vision radius of the moving entity
     int VisionRadius { get; set; }
 
     int ContactZone { get; set; }
@@ -42,8 +39,6 @@ public interface IAbstractMoving
     void Breed();
 
     void Gestation();
-
-    void Repost();
 
     void Poop();
 }
